@@ -5,7 +5,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 
 import java.util.List;
 
-public class UserMapper extends SqlSessionDaoSupport implements Dao<User> {
+public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
     @Override
     public List<User> selectAll() {
         return getSqlSession().selectList("com.suzumiya.mapper.UserMapper.selectAll");

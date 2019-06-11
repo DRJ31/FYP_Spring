@@ -1,6 +1,6 @@
 package com.suzumiya.service;
 
-import com.suzumiya.dao.UserMapper;
+import com.suzumiya.dao.UserDao;
 import com.suzumiya.model.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -9,11 +9,11 @@ import java.util.List;
 
 public class UserService {
     private List<User> users;
-    private UserMapper userMapper;
+    private UserDao userDao;
 
     public UserService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
-        this.userMapper = (UserMapper) ac.getBean("userDao");
+        this.userDao = (UserDao) ac.getBean("userDao");
         this.setUsers();
     }
 
@@ -22,7 +22,7 @@ public class UserService {
     }
 
     private void setUsers() {
-        this.users = userMapper.selectAll();
+        this.users = userDao.selectAll();
     }
 
     public void setUsers(List<User> users) {

@@ -24,7 +24,7 @@
 
     <!-- Settings for different Dao -->
 
-    <bean id="userDao" class="com.suzumiya.dao.UserMapper">
+    <bean id="userDao" class="com.suzumiya.dao.UserDao">
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
 </beans>

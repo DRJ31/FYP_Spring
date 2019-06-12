@@ -1,6 +1,5 @@
 package com.suzumiya.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.suzumiya.model.User;
 import com.suzumiya.service.UserService;
 import org.springframework.stereotype.Controller;

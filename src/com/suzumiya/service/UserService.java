@@ -1,11 +1,14 @@
 package com.suzumiya.service;
 
+import com.alibaba.fastjson.JSON;
 import com.suzumiya.dao.UserDao;
 import com.suzumiya.model.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserService {
     private List<User> users;
@@ -25,11 +28,13 @@ public class UserService {
         this.users = userDao.selectAll();
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public Map<String, List<User>> getUsersMap() {
+        Map<String, List<User>> result = new HashMap<>();
+        result.put("users", users);
+        return result;
     }
 
-    public String getFirstName() {
-        return this.users.get(0).getName();
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

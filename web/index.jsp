@@ -10,7 +10,4 @@
   <head>
     <title>$Title$</title>
   </head>
-  <body>
-  <a href="hello">hello action</a>
-  </body>
 </html>

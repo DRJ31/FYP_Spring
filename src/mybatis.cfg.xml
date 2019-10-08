@@ -8,5 +8,7 @@
     </typeAliases>
     <mappers>
         <mapper resource="com/suzumiya/mapper/UserMapper.xml" />
+        <mapper resource="com/suzumiya/mapper/SyllabusMapper.xml" />
+        <mapper resource="com/suzumiya/mapper/SchoolMapper.xml" />
     </mappers>
 </configuration>

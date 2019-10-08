@@ -1,0 +1,65 @@
+package com.suzumiya.service;
+
+import com.suzumiya.dao.SyllabusDao;
+import com.suzumiya.model.Syllabus;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class SyllabusService {
+    private List<Syllabus> syllabuses;
+    private SyllabusDao syllabusDao;
+    private Syllabus syllabus;
+
+    public SyllabusService() {
+        ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
+        this.syllabusDao = (SyllabusDao) ac.getBean("syllabusDao");
+        this.setSyllabuses();
+    }
+
+    public List<Syllabus> getSyllabuses() {
+        return syllabuses;
+    }
+
+    public SyllabusDao getSyllabusDao() {
+        return syllabusDao;
+    }
+
+    public void setSyllabusDao(SyllabusDao syllabusDao) {
+        this.syllabusDao = syllabusDao;
+    }
+
+    public Syllabus getSyllabus() {
+        return syllabus;
+    }
+
+    private void setSyllabuses() {
+        this.syllabuses = syllabusDao.selectAll();
+    }
+
+    private void setSyllabus(int s_id) {
+        this.syllabus = syllabusDao.selectById(s_id);
+    }
+
+    public Map<String, List<Syllabus>> getSyllabusesMap() {
+        Map<String, List<Syllabus>> result = new HashMap<>();
+        result.put("syllabuses", syllabuses);
+        return result;
+    }
+
+    public Map<String, Syllabus> getSyllabusMap(int id) {
+        Map<String, Syllabus> result = new HashMap<>();
+        setSyllabus(id);
+        result.put("syllabus", syllabus);
+        return result;
+    }
+
+    public Map<String, List<Syllabus>> getFavoriteSyllabuses(int uid) {
+        Map<String, List<Syllabus>> result = new HashMap<>();
+        result.put("syllabuses", syllabusDao.selectFavoriteSyllabuses(uid));
+        return result;
+    }
+}

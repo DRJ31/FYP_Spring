@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suzumiya.mapper.SyllabusMapper">
+    <resultMap id="syllabus" type="Syllabus">
+        <id column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="title" property="title" />
+        <result column="prepare" property="prepare" />
+        <result column="review" property="review" />
+        <result column="unit" property="unit" />
+        <result column="pre_req" property="pre_req" />
+        <result column="co_req" property="co_req" />
+        <result column="offer_unit" property="offer_unit" />
+        <result column="aim" property="aim" />
+        <association property="school" javaType="School">
+            <id column="school_id" property="id" />
+            <result column="name" property="name" />
+            <result column="location" property="location" />
+            <result column="introduction" property="introduction" />
+        </association>
+        <collection property="content" javaType="Content">
+            <id column="id" property="id" />
+            <result column="content_id" property="content_id" />
+            <result column="syllabus_id" property="syllabus_id" />
+            <result column="title" property="title" />
+            <result column="hours" property="hours" />
+            <result column="content" property="content" />
+        </collection>
+        <collection property="textBook" javaType="TextBook">
+            <id column="id" property="id" />
+            <result column="syllabus_id" property="syllabus_id" />
+            <result column="title" property="title" />
+            <result column="year" property="year" />
+            <result column="author" property="author" />
+        </collection>
+    </resultMap>
+    <select id="selectAll" resultMap="syllabus">
+        select syllabus.*,school.*,content.*,textbook.* from syllabus,school,content,textbook where syllabus.school_id=school.id
+    </select>
+    <select id="selectBySyllabusId" resultMap="syllabus">
+        select syllabus.*,school.*,content.*,textbook.* from syllabus,school,content,textbook where syllabus.id=#{id} and syllabus.school_id=school.id
+    </select>
+    <select id="selectFavoriteSyllabuses" resultMap="syllabus">
+        select syllabus.*,school.* from favorite_syllabus,syllabus,school where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id and syllabus.school_id=school.id
+    </select>
+</mapper>

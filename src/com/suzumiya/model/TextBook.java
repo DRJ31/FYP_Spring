@@ -7,6 +7,9 @@ public class TextBook {
     private int year;
     private String author;
 
+    public TextBook() {
+    }
+
     public int getId() {
         return id;
     }
@@ -47,6 +50,4 @@ public class TextBook {
         this.author = author;
     }
 
-    public TextBook() {
-    }
 }

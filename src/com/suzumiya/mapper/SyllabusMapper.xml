@@ -35,14 +35,32 @@
             <result column="year" property="year" />
             <result column="author" property="author" />
         </collection>
+        <collection property="assessment" javaType="Assessment">
+            <id column="id" property="id" />
+            <result column="syllabus_id" property="syllabus_id" />
+            <result column="method" property="method" />
+            <result column="weighting" property="weighting" />
+            <result column="description" property="description" />
+            <collection property="assessment_cilo" javaType="Assessment_Cilo">
+                <id column="id" property="id" />
+                <result column="assessment_id" property="assessment_id" />
+                <result column="cilo_id" property="cilo_id" />
+            </collection>
+        </collection>
+        <collection property="cilo" javaType="Cilo">
+            <id column="id" property="id" />
+            <result column="syllabus_id" property="syllabus_id" />
+            <result column="cilo_id" property="cilo_id" />
+            <result column="content" property="content" />
+        </collection>
     </resultMap>
     <select id="selectAll" resultMap="syllabus">
-        select syllabus.*,school.*,content.*,textbook.* from syllabus,school,content,textbook where syllabus.school_id=school.id
+        select syllabus.*,school.*,content.*,textbook.*,assessment.*,assessment_cilo.* from syllabus,school,content,textbook,assessment,assessment_cilo where syllabus.school_id=school.id
     </select>
     <select id="selectBySyllabusId" resultMap="syllabus">
-        select syllabus.*,school.*,content.*,textbook.* from syllabus,school,content,textbook where syllabus.id=#{id} and syllabus.school_id=school.id
+        select syllabus.*,school.*,content.*,textbook.*,assessment.*,assessment_cilo.* from syllabus,school,content,textbook,assessment,assessment_cilo where syllabus.id=#{id} and syllabus.school_id=school.id
     </select>
     <select id="selectFavoriteSyllabuses" resultMap="syllabus">
-        select syllabus.*,school.* from favorite_syllabus,syllabus,school where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id and syllabus.school_id=school.id
+        select syllabus.*,school.*,content.*,textbook.*,assessment.*,assessment_cilo.* from favorite_syllabus,syllabus,school,content,textbook,assessment,assessment_cilo where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id and syllabus.school_id=school.id
     </select>
 </mapper>

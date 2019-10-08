@@ -14,6 +14,27 @@ public class Syllabus {
     private String aim;
     private TextBook textBook;
     private Content content;
+    private Assessment assessment;
+    private Cilo cilo;
+
+    public Syllabus() {
+    }
+
+    public Cilo getCilo() {
+        return cilo;
+    }
+
+    public void setCilo(Cilo cilo) {
+        this.cilo = cilo;
+    }
+
+    public Assessment getAssessment() {
+        return assessment;
+    }
+
+    public void setAssessment(Assessment assessment) {
+        this.assessment = assessment;
+    }
 
     public Content getContent() {
         return content;
@@ -109,9 +130,6 @@ public class Syllabus {
 
     public void setAim(String aim) {
         this.aim = aim;
-    }
-
-    public Syllabus() {
     }
 
     public int getId(){

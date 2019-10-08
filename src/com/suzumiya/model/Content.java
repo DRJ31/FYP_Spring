@@ -9,6 +9,9 @@ public class Content {
     private String content;
     private Syllabus syllabus;
 
+    public Content() {
+    }
+
     public Syllabus getSyllabus() {
         return syllabus;
     }
@@ -65,6 +68,4 @@ public class Content {
         this.content = content;
     }
 
-    public Content() {
-    }
 }

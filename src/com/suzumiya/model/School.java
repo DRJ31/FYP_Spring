@@ -6,6 +6,9 @@ public class School {
     private String location;
     private String introduction;
 
+    public School() {
+    }
+
     public int getId() {
         return id;
     }
@@ -38,6 +41,4 @@ public class School {
         this.introduction = introduction;
     }
 
-    public School() {
-    }
 }

@@ -1,21 +1,21 @@
 package com.suzumiya.model;
 
-public class Cilo {
+public class Pilo {
     private int id;
     private int syllabus_id;
-    private int cilo_id;
+    private int pilo_id;
     private String content;
-    private Tla tla;
+    private Pilo_Cilo pilo_cilo;
 
-    public Cilo() {
+    public Pilo() {
     }
 
-    public Tla getTla() {
-        return tla;
+    public Pilo_Cilo getPilo_cilo() {
+        return pilo_cilo;
     }
 
-    public void setTla(Tla tla) {
-        this.tla = tla;
+    public void setPilo_cilo(Pilo_Cilo pilo_cilo) {
+        this.pilo_cilo = pilo_cilo;
     }
 
     public int getId() {
@@ -34,12 +34,12 @@ public class Cilo {
         this.syllabus_id = syllabus_id;
     }
 
-    public int getCilo_id() {
-        return cilo_id;
+    public int getPilo_id() {
+        return pilo_id;
     }
 
-    public void setCilo_id(int cilo_id) {
-        this.cilo_id = cilo_id;
+    public void setPilo_id(int pilo_id) {
+        this.pilo_id = pilo_id;
     }
 
     public String getContent() {
@@ -49,5 +49,4 @@ public class Cilo {
     public void setContent(String content) {
         this.content = content;
     }
-
 }

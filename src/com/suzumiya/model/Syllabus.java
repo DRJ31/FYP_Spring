@@ -16,8 +16,17 @@ public class Syllabus {
     private Content content;
     private Assessment assessment;
     private Cilo cilo;
+    private Pilo pilo;
 
     public Syllabus() {
+    }
+
+    public Pilo getPilo() {
+        return pilo;
+    }
+
+    public void setPilo(Pilo pilo) {
+        this.pilo = pilo;
     }
 
     public Cilo getCilo() {

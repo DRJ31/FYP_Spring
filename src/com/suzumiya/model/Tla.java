@@ -1,21 +1,11 @@
 package com.suzumiya.model;
 
-public class Cilo {
+public class Tla {
     private int id;
-    private int syllabus_id;
     private int cilo_id;
     private String content;
-    private Tla tla;
 
-    public Cilo() {
-    }
-
-    public Tla getTla() {
-        return tla;
-    }
-
-    public void setTla(Tla tla) {
-        this.tla = tla;
+    public Tla() {
     }
 
     public int getId() {
@@ -24,14 +14,6 @@ public class Cilo {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getSyllabus_id() {
-        return syllabus_id;
-    }
-
-    public void setSyllabus_id(int syllabus_id) {
-        this.syllabus_id = syllabus_id;
     }
 
     public int getCilo_id() {

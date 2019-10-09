@@ -61,4 +61,8 @@ public class UserService {
         result.put("user", user);
         return result;
     }
+
+    public void insertUser(User user){
+        userDao.insertUser(user);
+    }
 }

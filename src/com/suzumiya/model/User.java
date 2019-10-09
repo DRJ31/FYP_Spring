@@ -6,6 +6,7 @@ public class User {
     private String password;
     private String email;
     private Role role;
+    private int role_id;
 
     public User() {
         // Empty constructor
@@ -19,6 +20,13 @@ public class User {
         this.name = name;
         this.password = password;
         this.email = email;
+    }
+
+    public User(String name, String password, String email, int role_id) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.role_id = role_id;
     }
 
     public User(int id, String name, String password) {
@@ -65,5 +73,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
     }
 }

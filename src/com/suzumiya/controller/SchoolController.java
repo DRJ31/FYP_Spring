@@ -2,7 +2,6 @@ package com.suzumiya.controller;
 
 import com.suzumiya.model.School;
 import com.suzumiya.service.SchoolService;
-import com.suzumiya.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

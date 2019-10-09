@@ -17,4 +17,8 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
         return getSqlSession().selectOne("com.suzumiya.mapper.UserMapper.selectByUid", uid);
     }
 
+    public void insertUser(User user){
+        getSqlSession().insert("com.suzumiya.mapper.UserMapper.insertUser", user);
+    }
+
 }

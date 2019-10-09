@@ -19,7 +19,7 @@
     <select id="selectByUid" resultMap="allUsers">
         select user.*,role.* from user,role where user.role_id=role.id and user.id=#{uid}
     </select>
-    <insert id="addUser">
-        insert into user (username, email, role_id, password) value (#{username}, #{email}, #{role_id}, #{password})
+    <insert id="insertUser">
+        insert into user (username, email, role_id, password) value (#{name}, #{email}, #{role_id}, #{password})
     </insert>
 </mapper>

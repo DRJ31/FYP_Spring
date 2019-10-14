@@ -15,6 +15,7 @@ import java.util.Map;
 public class SyllabusController {
     @RequestMapping(value = "/api/syllabuses", method = {RequestMethod.GET})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView getAllSyllabuses() {
         SyllabusService service = new SyllabusService();
         Map<String, List<Syllabus>> map = service.getSyllabusesMap();
@@ -23,6 +24,7 @@ public class SyllabusController {
 
     @RequestMapping(value = "/api/syllabus", method = {RequestMethod.GET})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView getSyllabusBySid(@RequestParam(value = "id") int id) {
         System.out.println("Syllabus ID: " + id);
         SyllabusService service = new SyllabusService();
@@ -32,6 +34,7 @@ public class SyllabusController {
 
     @RequestMapping(value = "/api/favorite/syllabus", method = {RequestMethod.GET})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView getFavoriteSyllabuses(@RequestParam(value = "user_id") int id) {
         SyllabusService service = new SyllabusService();
         Map<String, List<Syllabus>> map = service.getFavoriteSyllabuses(id);

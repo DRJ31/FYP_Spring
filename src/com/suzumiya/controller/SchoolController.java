@@ -23,6 +23,7 @@ public class SchoolController {
 
     @RequestMapping(value = "/api/school", method = {RequestMethod.GET})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView getSchoolBySid(@RequestParam(value = "id") int id) {
         System.out.println("School ID: " + id);
         SchoolService service = new SchoolService();
@@ -32,6 +33,7 @@ public class SchoolController {
 
     @RequestMapping(value = "/api/favorite/school", method = {RequestMethod.GET})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView getFavoriteSchools(@RequestParam(value = "user_id") int id) {
         SchoolService service = new SchoolService();
         Map<String, List<School>> map = service.getFavoriteSchools(id);
@@ -47,6 +49,7 @@ public class SchoolController {
 
     @RequestMapping(value = "/api/deleteSchool",method = RequestMethod.DELETE)
     @ResponseBody
+    @CrossOrigin
     public void deleteSchool(@RequestParam("id") int id){
         SchoolService service = new SchoolService();
         service.deleteSchool(id);

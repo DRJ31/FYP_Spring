@@ -20,6 +20,7 @@ public class UserController {
 
     @RequestMapping(value = "/api/users", method = {RequestMethod.GET})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView getAllUsers() {
         UserService service = new UserService();
         Map<String, List<User>> map = service.getUsersMap();
@@ -28,6 +29,7 @@ public class UserController {
 
     @RequestMapping(value = "/api/user", method = {RequestMethod.GET})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView getUserByUid(@RequestParam(value = "id") int id) {
         UserService service = new UserService();
         Map<String, User> map = service.getUserMap(id);
@@ -36,6 +38,7 @@ public class UserController {
 
     @RequestMapping(value = "/api/insertUser",method = RequestMethod.POST)
     @ResponseBody
+    @CrossOrigin
     public void insertUser(@RequestBody User user){
         UserService service = new UserService();
         user.encryptPassword();
@@ -44,6 +47,7 @@ public class UserController {
 
     @RequestMapping(value = "/api/deleteUser",method = RequestMethod.DELETE)
     @ResponseBody
+    @CrossOrigin
     public void deleteUser(@RequestParam("id") int id){
         UserService service = new UserService();
         service.deleteUser(id);
@@ -51,29 +55,41 @@ public class UserController {
 
     @RequestMapping(value = "/api/user", method = {RequestMethod.POST})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView userLogin(@RequestBody User user){
+        System.out.println(user.getName());
+        System.out.println(user.getPassword());
         String token = System.currentTimeMillis() + user.getName();
         EncryptController e = new EncryptController();
+        Map<String, String> currentMap = new HashMap<>();
         user.encryptPassword();
         token = e.encrypt(token);
         UserService service = new UserService();
         User u = service.getUserByName(user);
-        Iterator<User> iter = loginMap.values().iterator();
-        while (iter.hasNext()){
-            User user1 = iter.next();
-            if (user1.getName().equals(user.getName())){
-                return new ModelAndView(new MappingJackson2JsonView(), loginMap);
+        try {
+            for (Map.Entry<String, User> entry : loginMap.entrySet()) {
+                if (entry.getValue().getName().equals(user.getName())) {
+                    currentMap.put("token", entry.getKey());
+                    return new ModelAndView(new MappingJackson2JsonView(), currentMap);
+                }
             }
-            else {
-                continue;
-            }
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
         }
-        loginMap.put(token, u);
-        return new ModelAndView(new MappingJackson2JsonView(), loginMap);
+        if (u != null) {
+            loginMap.put(token, u);
+            currentMap.put("token", token);
+        }
+        else {
+            currentMap.put("token", null);
+        }
+
+        return new ModelAndView(new MappingJackson2JsonView(), currentMap);
     }
 
     @RequestMapping(value = "/api/token", method = {RequestMethod.POST})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView userLoginStatus(@RequestBody Token token){
         User user = loginMap.get(token.getToken());
         Map<String, User> map = new HashMap<>();
@@ -83,6 +99,7 @@ public class UserController {
 
     @RequestMapping(value = "/api/logout", method = {RequestMethod.POST})
     @ResponseBody
+    @CrossOrigin
     public String userLogout(@RequestBody Token token){
         String name = null;
         try {

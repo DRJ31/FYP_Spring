@@ -22,4 +22,12 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
     public List<School> selectFavoriteSchools(@Param("uid") int uid) {
         return getSqlSession().selectList("com.suzumiya.mapper.SchoolMapper.selectFavoriteSchools", uid);
     }
+
+    public void insertSchool(School school){
+        getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertSchool", school);
+    }
+
+    public void deleteSchool(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.SchoolMapper.deleteSchool", id);
+    }
 }

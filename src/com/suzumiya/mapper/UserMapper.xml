@@ -22,4 +22,10 @@
     <insert id="insertUser">
         insert into user (username, email, role_id, password) value (#{name}, #{email}, #{role_id}, #{password})
     </insert>
+    <delete id="deleteUser">
+        delete from user where user.id=#{id}
+    </delete>
+    <select id="userLogin" resultMap="allUsers">
+        select user.* from user where username=#{name} and password=#{password}
+    </select>
 </mapper>

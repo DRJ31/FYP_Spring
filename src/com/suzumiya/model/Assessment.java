@@ -1,22 +1,24 @@
 package com.suzumiya.model;
 
+import java.util.List;
+
 public class Assessment {
     private int id;
     private int syllabus_id;
     private String method;
     private int weighting;
     private String description;
-    private Assessment_Cilo assessment_cilo;
+    private List<Assessment_Cilo> assessment_cilos;
 
     public Assessment() {
     }
 
-    public Assessment_Cilo getAssessment_cilo() {
-        return assessment_cilo;
+    public List<Assessment_Cilo> getAssessment_cilos() {
+        return assessment_cilos;
     }
 
-    public void setAssessment_cilo(Assessment_Cilo assessment_cilo) {
-        this.assessment_cilo = assessment_cilo;
+    public void setAssessment_cilos(List<Assessment_Cilo> assessment_cilos) {
+        this.assessment_cilos = assessment_cilos;
     }
 
     public int getId() {

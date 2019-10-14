@@ -49,6 +49,10 @@ public class UserService {
         this.user = userDao.selectById(uid);
     }
 
+    private void setUserByName(User user){
+        this.user = userDao.userLogin(user);
+    }
+
     public Map<String, List<User>> getUsersMap() {
         Map<String, List<User>> result = new HashMap<>();
         result.put("users", users);
@@ -62,7 +66,16 @@ public class UserService {
         return result;
     }
 
+    public User getUserByName(User u){
+        setUserByName(u);
+        return this.user;
+    }
+
     public void insertUser(User user){
         userDao.insertUser(user);
+    }
+
+    public void deleteUser(int id){
+        userDao.deleteUser(id);
     }
 }

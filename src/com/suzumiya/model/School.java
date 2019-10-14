@@ -1,12 +1,23 @@
 package com.suzumiya.model;
 
+import java.util.List;
+
 public class School {
     private int id;
     private String name;
     private String location;
     private String introduction;
+    private List<Syllabus> syllabuses;
 
     public School() {
+    }
+
+    public List<Syllabus> getSyllabuses() {
+        return syllabuses;
+    }
+
+    public void setSyllabuses(List<Syllabus> syllabuses) {
+        this.syllabuses = syllabuses;
     }
 
     public int getId() {

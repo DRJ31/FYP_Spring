@@ -1,5 +1,10 @@
 package com.suzumiya.model;
 
+import com.suzumiya.controller.EncryptController;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class User {
     private int id;
     private String name;
@@ -81,5 +86,11 @@ public class User {
 
     public void setRole_id(int role_id) {
         this.role_id = role_id;
+    }
+
+    public void encryptPassword(){
+        String password = this.password;
+        EncryptController e = new EncryptController();
+        this.password = e.encrypt(password);
     }
 }

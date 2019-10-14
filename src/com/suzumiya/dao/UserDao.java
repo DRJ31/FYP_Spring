@@ -21,4 +21,10 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
         getSqlSession().insert("com.suzumiya.mapper.UserMapper.insertUser", user);
     }
 
+    public void deleteUser(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.UserMapper.deleteUser", id);
+    }
+    public User userLogin(User user){
+        return getSqlSession().selectOne("com.suzumiya.mapper.UserMapper.userLogin", user);
+    }
 }

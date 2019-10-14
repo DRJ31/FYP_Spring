@@ -20,63 +20,113 @@
             <result column="location" property="location" />
             <result column="introduction" property="introduction" />
         </association>
-        <collection property="content" javaType="Content">
-            <id column="id" property="id" />
+        <collection property="contents" ofType="Content" javaType="List">
+            <id column="c_id" property="id" />
             <result column="content_id" property="content_id" />
             <result column="syllabus_id" property="syllabus_id" />
             <result column="title" property="title" />
             <result column="hours" property="hours" />
             <result column="content" property="content" />
         </collection>
-        <collection property="textBook" javaType="TextBook">
-            <id column="id" property="id" />
+        <collection property="textBooks" ofType="TextBook" javaType="List">
+            <id column="textbook_id" property="id" />
             <result column="syllabus_id" property="syllabus_id" />
             <result column="title" property="title" />
             <result column="year" property="year" />
             <result column="author" property="author" />
         </collection>
-        <collection property="assessment" javaType="Assessment">
-            <id column="id" property="id" />
+        <collection property="assessments" ofType="Assessment" javaType="List">
+            <id column="a_id" property="id" />
             <result column="syllabus_id" property="syllabus_id" />
             <result column="method" property="method" />
             <result column="weighting" property="weighting" />
             <result column="description" property="description" />
-            <collection property="assessment_cilo" javaType="Assessment_Cilo">
-                <id column="id" property="id" />
+            <collection property="assessment_cilos" ofType="Assessment_Cilo" javaType="List">
+                <id column="a_c_id" property="id" />
                 <result column="assessment_id" property="assessment_id" />
                 <result column="cilo_id" property="cilo_id" />
             </collection>
         </collection>
-        <collection property="cilo" javaType="Cilo">
-            <id column="id" property="id" />
+        <collection property="cilos" ofType="Cilo" javaType="List">
+            <id column="cid" property="id" />
             <result column="syllabus_id" property="syllabus_id" />
             <result column="cilo_id" property="cilo_id" />
             <result column="content" property="content" />
             <association property="tla" javaType="Tla">
-                <id column="id" property="id" />
+                <id column="t_id" property="id" />
                 <result column="cilo_id" property="cilo_id" />
                 <result column="content" property="content" />
             </association>
         </collection>
-        <collection property="pilo" javaType="Pilo">
-            <id column="id" property="id" />
+        <collection property="pilos" ofType="Pilo" javaType="List">
+            <id column="p_id" property="id" />
             <result column="syllabus_id" property="syllabus_id" />
             <result column="pilo_id" property="pilo_id" />
             <result column="content" property="content" />
-            <collection property="pilo_cilo" javaType="Pilo_Cilo">
-                <id column="id" property="id" />
+            <collection property="pilo_cilos" ofType="Pilo_Cilo" javaType="List">
+                <id column="p_c_id" property="id" />
                 <result column="pilo_id" property="pilo_id" />
                 <result column="cilo_id" property="cilo_id" />
             </collection>
         </collection>
     </resultMap>
     <select id="selectAll" resultMap="syllabus">
-        select syllabus.*,school.*,content.*,textbook.*,assessment.*,assessment_cilo.*,pilo.*,pilo_cilo.*,tla.* from syllabus,school,content,textbook,assessment,assessment_cilo,pilo,pilo_cilo,tla where syllabus.school_id=school.id
+        select syllabus.*,
+            school.id as school_id,school.*,
+            textbook.id as textbook_id,textbook.*,
+            content.id as c_id,content.*,
+            assessment.id as a_id,assessment.*,
+            assessment_cilo.id as a_c_id,assessment_cilo.*,
+            cilo.id as cid,cilo.*,
+            tla.id as t_id,tla.*,
+            pilo.id as p_id,pilo.*,
+            pilo_cilo.id as p_c_id,pilo_cilo.*
+        from syllabus
+        right outer join school on syllabus.school_id = school.id
+        left outer join textbook on syllabus.id = textbook.syllabus_id
+        left outer join content on syllabus.id = content.syllabus_id
+        left outer join (assessment
+            right outer join assessment_cilo on assessment.id = assessment_cilo.assessment_id
+            ) on syllabus.id = assessment.syllabus_id
+        left outer join (cilo
+            right outer join tla on cilo.id = tla.cilo_id
+            )on syllabus.id = cilo.syllabus_id
+        left outer join (pilo
+            right outer join pilo_cilo on pilo.id = pilo_cilo.pilo_id
+            ) on syllabus.id = pilo.syllabus_id
     </select>
     <select id="selectBySyllabusId" resultMap="syllabus">
-        select syllabus.*,school.*,content.*,textbook.*,assessment.*,assessment_cilo.*,pilo.*,pilo_cilo.*,tla.* from syllabus,school,content,textbook,assessment,assessment_cilo,pilo,pilo_cilo,tla where syllabus.id=#{id} and syllabus.school_id=school.id
+        select syllabus.*,
+            school.id as school_id,school.*,
+            textbook.id as textbook_id,textbook.*,
+            content.id as c_id,content.*,
+            assessment.id as a_id,assessment.*,
+            assessment_cilo.id as a_c_id,assessment_cilo.*,
+            cilo.id as cid,cilo.*,
+            tla.id as t_id,tla.*,
+            pilo.id as p_id,pilo.*,
+            pilo_cilo.id as p_c_id,pilo_cilo.*
+        from syllabus
+        right outer join school on syllabus.school_id = school_id
+        left outer join textbook on syllabus.id = textbook.syllabus_id
+        left outer join content on syllabus.id = content.syllabus_id
+        left outer join (assessment
+            right outer join assessment_cilo on assessment.id = assessment_cilo.assessment_id
+            ) on syllabus.id = assessment.syllabus_id
+        left outer join (cilo
+            right outer join tla on cilo.id = tla.cilo_id
+            )on syllabus.id = cilo.syllabus_id
+        left outer join (pilo
+            right outer join pilo_cilo on pilo.id = pilo_cilo.pilo_id
+            ) on syllabus.id = pilo.syllabus_id
+        where syllabus.id=#{id} and syllabus.school_id=school.id
     </select>
     <select id="selectFavoriteSyllabuses" resultMap="syllabus">
-        select syllabus.*,school.*,content.*,textbook.*,assessment.*,assessment_cilo.*,pilo.*,pilo_cilo.*,tla.* from favorite_syllabus,syllabus,school,content,textbook,assessment,assessment_cilo,pilo,pilo_cilo,tla where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id and syllabus.school_id=school.id
+        select syllabus.*,school.*,content.*,textbook.*,assessment.*,assessment_cilo.*,pilo.*,pilo_cilo.*,tla.*
+        from favorite_syllabus,syllabus,school,content,textbook,assessment,assessment_cilo,pilo,pilo_cilo,tla
+        where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id and syllabus.school_id=school.id
     </select>
+    <insert id="insertSyllabus">
+
+    </insert>
 </mapper>

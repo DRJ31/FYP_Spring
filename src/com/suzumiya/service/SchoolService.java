@@ -62,4 +62,12 @@ public class SchoolService {
         result.put("schools", schoolDao.selectFavoriteSchools(uid));
         return result;
     }
+
+    public void insertSchool(School school){
+        schoolDao.insertSchool(school);
+    }
+
+    public void deleteSchool(int id){
+        schoolDao.deleteSchool(id);
+    }
 }

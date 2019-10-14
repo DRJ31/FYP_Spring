@@ -1,5 +1,7 @@
 package com.suzumiya.model;
 
+import java.util.List;
+
 public class Syllabus {
     private int id;
     private String code;
@@ -12,53 +14,53 @@ public class Syllabus {
     private String co_req;
     private String offer_unit;
     private String aim;
-    private TextBook textBook;
-    private Content content;
-    private Assessment assessment;
-    private Cilo cilo;
-    private Pilo pilo;
+    private List<TextBook> textBooks;
+    private List<Content> contents;
+    private List<Assessment> assessments;
+    private List<Cilo> cilos;
+    private List<Pilo> pilos;
 
     public Syllabus() {
     }
 
-    public Pilo getPilo() {
-        return pilo;
+    public void setTextBooks(List<TextBook> textBooks) {
+        this.textBooks = textBooks;
     }
 
-    public void setPilo(Pilo pilo) {
-        this.pilo = pilo;
+    public List<TextBook> getTextBooks() {
+        return textBooks;
     }
 
-    public Cilo getCilo() {
-        return cilo;
+    public List<Content> getContents() {
+        return contents;
     }
 
-    public void setCilo(Cilo cilo) {
-        this.cilo = cilo;
+    public void setContents(List<Content> contents) {
+        this.contents = contents;
     }
 
-    public Assessment getAssessment() {
-        return assessment;
+    public List<Assessment> getAssessments() {
+        return assessments;
     }
 
-    public void setAssessment(Assessment assessment) {
-        this.assessment = assessment;
+    public void setAssessments(List<Assessment> assessments) {
+        this.assessments = assessments;
     }
 
-    public Content getContent() {
-        return content;
+    public List<Cilo> getCilos() {
+        return cilos;
     }
 
-    public void setContent(Content content) {
-        this.content = content;
+    public void setCilos(List<Cilo> cilos) {
+        this.cilos = cilos;
     }
 
-    public TextBook getTextBook() {
-        return textBook;
+    public List<Pilo> getPilos() {
+        return pilos;
     }
 
-    public void setTextBook(TextBook textBook) {
-        this.textBook = textBook;
+    public void setPilos(List<Pilo> pilos) {
+        this.pilos = pilos;
     }
 
     public String getCode() {

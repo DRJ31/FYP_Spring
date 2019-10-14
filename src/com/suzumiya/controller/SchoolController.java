@@ -3,10 +3,7 @@ package com.suzumiya.controller;
 import com.suzumiya.model.School;
 import com.suzumiya.service.SchoolService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -17,6 +14,7 @@ import java.util.Map;
 public class SchoolController {
     @RequestMapping(value = "/api/schools", method = {RequestMethod.GET})
     @ResponseBody
+    @CrossOrigin
     public ModelAndView getAllSchools() {
         SchoolService service = new SchoolService();
         Map<String, List<School>> map = service.getSchoolsMap();
@@ -38,5 +36,19 @@ public class SchoolController {
         SchoolService service = new SchoolService();
         Map<String, List<School>> map = service.getFavoriteSchools(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/insertSchool",method = RequestMethod.POST)
+    @ResponseBody
+    public void insertSchool(@RequestBody School school){
+        SchoolService service = new SchoolService();
+        service.insertSchool(school);
+    }
+
+    @RequestMapping(value = "/api/deleteSchool",method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteSchool(@RequestParam("id") int id){
+        SchoolService service = new SchoolService();
+        service.deleteSchool(id);
     }
 }

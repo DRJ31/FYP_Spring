@@ -8,14 +8,27 @@
         <result column="name" property="name" />
         <result column="location" property="location" />
         <result column="introduction" property="introduction" />
+        <collection property="syllabuses" ofType="Syllabus" javaType="List">
+            <id column="syllabus_id" property="id" />
+            <result column="title" property="title" />
+        </collection>
     </resultMap>
     <select id="selectAll" resultMap="school">
-        select * from school
+        select school.*,syllabus.id as syllabus_id,syllabus.title
+        from syllabus right outer join school on syllabus.school_id = school.id
     </select>
     <select id="selectBySchoolId" resultMap="school">
-        select school.* from school where school.id=#{id}
+        select school.*,syllabus.id as syllabus_id,syllabus.title
+        from syllabus right outer join school on syllabus.school_id = school.id
+        where school.id=#{id}
     </select>
     <select id="selectFavoriteSchools" resultMap="school">
         select school.* from favorite_school,school where favorite_school.user_id=#{uid} and school.id=favorite_school.school_id
     </select>
+    <insert id="insertSchool">
+        insert into school (name, location, introduction) value (#{name}, #{location},#{introduction})
+    </insert>
+    <delete id="deleteSchool">
+        delete from school where school.id=#{id}
+    </delete>
 </mapper>

@@ -36,13 +36,16 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/insertUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/register",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public void insertUser(@RequestBody User user){
+    public ModelAndView insertUser(@RequestBody User user){
         UserService service = new UserService();
         user.encryptPassword();
         service.insertUser(user);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
     @RequestMapping(value = "/api/deleteUser",method = RequestMethod.DELETE)

@@ -48,7 +48,6 @@ public class UserController {
         if (service.checkUserDuplicate(user) != null)
             return new ModelAndView(new MappingJackson2JsonView(), map);
         user.encryptPassword();
-        user.setRole_id(4);
         service.insertUser(user);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
@@ -69,8 +68,6 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView userLogin(@RequestBody User user){
-        System.out.println(user.getName());
-        System.out.println(user.getPassword());
         String token = System.currentTimeMillis() + user.getName();
         EncryptController e = new EncryptController();
         Map<String, String> currentMap = new HashMap<>();

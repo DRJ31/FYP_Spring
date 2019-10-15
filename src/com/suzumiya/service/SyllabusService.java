@@ -62,4 +62,12 @@ public class SyllabusService {
         result.put("syllabuses", syllabusDao.selectFavoriteSyllabuses(uid));
         return result;
     }
+
+    public void insertSyllabus(Syllabus syllabus){
+        syllabusDao.insertSyllabus(syllabus);
+    }
+
+    public void deleteSyllabus(int sid){
+        syllabusDao.deleteSyllabus(sid);
+    }
 }

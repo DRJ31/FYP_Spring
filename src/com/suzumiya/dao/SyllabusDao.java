@@ -20,4 +20,12 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
     public List<Syllabus> selectFavoriteSyllabuses(@Param("uid") int uid) {
         return getSqlSession().selectList("com.suzumiya.mapper.SyllabusMapper.selectFavoriteSyllabuses", uid);
     }
+
+    public void insertSyllabus(Syllabus syllabus){
+        getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertSyllabus", syllabus);
+    }
+
+    public void deleteSyllabus(@Param("sid") int sid){
+        getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteSyllabus", sid);
+    }
 }

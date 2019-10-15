@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,9 +50,12 @@ public class UserController {
     @RequestMapping(value = "/api/deleteUser",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
-    public void deleteUser(@RequestParam("id") int id){
+    public ModelAndView deleteUser(@RequestParam("id") int id){
         UserService service = new UserService();
         service.deleteUser(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
     @RequestMapping(value = "/api/user", method = {RequestMethod.POST})

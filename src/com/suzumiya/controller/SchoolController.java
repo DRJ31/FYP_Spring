@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,16 +43,22 @@ public class SchoolController {
 
     @RequestMapping(value = "/api/insertSchool",method = RequestMethod.POST)
     @ResponseBody
-    public void insertSchool(@RequestBody School school){
+    public ModelAndView insertSchool(@RequestBody School school){
         SchoolService service = new SchoolService();
         service.insertSchool(school);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
     @RequestMapping(value = "/api/deleteSchool",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
-    public void deleteSchool(@RequestParam("id") int id){
+    public ModelAndView deleteSchool(@RequestParam("id") int id){
         SchoolService service = new SchoolService();
         service.deleteSchool(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

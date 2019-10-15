@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,4 +41,26 @@ public class SyllabusController {
         Map<String, List<Syllabus>> map = service.getFavoriteSyllabuses(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
+
+    @RequestMapping(value = "/api/insertSyllabus",method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView insertSyllabus(@RequestBody Syllabus syllabus){
+        SyllabusService service = new SyllabusService();
+        service.insertSyllabus(syllabus);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/deleteSyllabus",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteSyllabus(@RequestParam("id") int id){
+        SyllabusService service = new SyllabusService();
+        service.deleteSyllabus(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
 }

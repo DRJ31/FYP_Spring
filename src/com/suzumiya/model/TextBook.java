@@ -1,13 +1,24 @@
 package com.suzumiya.model;
 
+import java.util.List;
+
 public class TextBook {
     private int id;
-    private int syllabus_id;
     private String title;
     private int year;
     private String author;
+    private List<Syllabus> syllabuses;
+    private int syllabus_id;
 
     public TextBook() {
+    }
+
+    public List<Syllabus> getSyllabuses() {
+        return syllabuses;
+    }
+
+    public void setSyllabuses(List<Syllabus> syllabuses) {
+        this.syllabuses = syllabuses;
     }
 
     public int getId() {

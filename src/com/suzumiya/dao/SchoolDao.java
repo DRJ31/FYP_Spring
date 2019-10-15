@@ -1,8 +1,6 @@
 package com.suzumiya.dao;
 
 import com.suzumiya.model.School;
-import com.suzumiya.model.Syllabus;
-import com.suzumiya.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 

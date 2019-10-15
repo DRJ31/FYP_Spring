@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suzumiya.mapper.TextBookMapper">
+    <resultMap id="textBook" type="TextBook">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="year" property="year" />
+        <result column="author" property="author" />
+        <collection property="syllabuses" ofType="Syllabus" javaType="List">
+            <id column="s_id" property="id" />
+            <result column="s_title" property="title" />
+        </collection>
+    </resultMap>
+    <select id="selectAll" resultMap="textBook">
+        select textbook.*,syllabus.id as s_id,syllabus.title as s_title
+        from syllabus right outer join textbook on syllabus.id = syllabus_id
+    </select>
+    <select id="selectByTextBookId" resultMap="textBook">
+        select textbook.*,syllabus.id as s_id,syllabus.title as s_title
+        from syllabus right outer join textbook on syllabus.id = syllabus_id
+        where textbook.id=#{id}
+    </select>
+    <insert id="insertTextBook">
+        insert into textbook (syllabus_id, title, year, author) value (#{syllabus_id}, #{title}, #{year}, #{author})
+    </insert>
+    <delete id="deleteTextBook">
+        delete from textbook where textbook.id=#{id}
+    </delete>
+</mapper>

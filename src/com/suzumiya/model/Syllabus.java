@@ -19,8 +19,26 @@ public class Syllabus {
     private List<Assessment> assessments;
     private List<Cilo> cilos;
     private List<Pilo> pilos;
+    private int school_id;
+    private int hours;
 
     public Syllabus() {
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public int getSchool_id() {
+        return school_id;
+    }
+
+    public void setSchool_id(int school_id) {
+        this.school_id = school_id;
     }
 
     public void setTextBooks(List<TextBook> textBooks) {

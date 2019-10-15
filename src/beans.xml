@@ -33,4 +33,7 @@
     <bean id="schoolDao" class="com.suzumiya.dao.SchoolDao">
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
+    <bean id="textBookDao" class="com.suzumiya.dao.TextBookDao">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
 </beans>

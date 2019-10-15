@@ -9,8 +9,17 @@ public class Assessment {
     private int weighting;
     private String description;
     private List<Assessment_Cilo> assessment_cilos;
+    private List<Syllabus> syllabuses;
 
     public Assessment() {
+    }
+
+    public List<Syllabus> getSyllabuses() {
+        return syllabuses;
+    }
+
+    public void setSyllabuses(List<Syllabus> syllabuses) {
+        this.syllabuses = syllabuses;
     }
 
     public List<Assessment_Cilo> getAssessment_cilos() {

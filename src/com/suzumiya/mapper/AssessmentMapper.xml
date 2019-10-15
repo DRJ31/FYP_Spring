@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.suzumiya.mapper.AssessmentMapper">
+    <resultMap id="assessment" type="Assessment">
+        <id column="id" property="id" />
+        <result column="syllabus_id" property="syllabus_id" />
+        <result column="method" property="method" />
+        <result column="weighting" property="weighting" />
+        <result column="description" property="description" />
+        <collection property="syllabuses" ofType="Syllabus" javaType="List">
+            <id column="s_id" property="id" />
+            <result column="s_title" property="title" />
+        </collection>
+        <collection property="assessment_cilos" ofType="Assessment_Cilo" javaType="List">
+            <id column="a_c_id" property="id" />
+            <result column="assessment_id" property="assessment_id" />
+            <result column="cilo_id" property="cilo_id" />
+        </collection>
+    </resultMap>
+    <resultMap id="assessment_cilo" type="Assessment_Cilo">
+        <id column="id" property="id"/>
+        <result column="assessment_id" property="assessment_id" />
+        <result column="cilo_id" property="cilo_id" />
+    </resultMap>
+    <select id="selectAll" resultMap="assessment">
+        select assessment.*,
+            syllabus.id as s_id,syllabus.title as s_title,
+            assessment_cilo.id as a_c_id, assessment_cilo.*
+        from assessment
+            left outer join syllabus on assessment.syllabus_id = syllabus.id
+            left outer join assessment_cilo on assessment.id = assessment_cilo.assessment_id
+    </select>
+    <select id="selectByAssessmentId" resultMap="assessment">
+        select assessment.*,
+            syllabus.id as s_id,syllabus.title as s_title,
+            assessment_cilo.id as a_c_id, assessment_cilo.*
+        from assessment
+            left outer join syllabus on assessment.syllabus_id = syllabus.id
+            left outer join assessment_cilo on assessment.id = assessment_cilo.assessment_id
+        where assessment.id=#{id}
+    </select>
+    <insert id="insertAssessment">
+        insert into assessment (syllabus_id, method, weighting, description)
+        value (#{syllabus_id}, #{method}, #{weighting}, #{description})
+    </insert>
+    <delete id="deleteAssessment">
+        delete from assessment where assessment.id=#{id}
+    </delete>
+    <select id="selectAC" resultMap="assessment_cilo">
+        select * from assessment_cilo
+    </select>
+    <select id="selectACById" resultMap="assessment_cilo">
+        select * from assessment_cilo where id = #{id}
+    </select>
+    <insert id="insertAC">
+        insert into assessment_cilo (assessment_id, cilo_id)
+        value (#{assessment_id}, #{cilo_id})
+    </insert>
+    <delete id="deleteAC">
+        delete from assessment_cilo where id = #{id}
+    </delete>
+</mapper>

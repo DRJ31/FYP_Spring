@@ -11,5 +11,6 @@
         <mapper resource="com/suzumiya/mapper/SyllabusMapper.xml" />
         <mapper resource="com/suzumiya/mapper/SchoolMapper.xml" />
         <mapper resource="com/suzumiya/mapper/TextBookMapper.xml" />
+        <mapper resource="com/suzumiya/mapper/AssessmentMapper.xml" />
     </mappers>
 </configuration>

@@ -36,4 +36,7 @@
     <bean id="textBookDao" class="com.suzumiya.dao.TextBookDao">
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
+    <bean id="assessmentDao" class="com.suzumiya.dao.AssessmentDao">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
 </beans>

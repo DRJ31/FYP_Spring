@@ -26,7 +26,6 @@ public class TextBookController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getTextBookByTid(@RequestParam(value = "id") int id) {
-        System.out.println("School ID: " + id);
         TextBookService service = new TextBookService();
         Map<String, TextBook> map = service.getTextBookMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
@@ -34,7 +33,7 @@ public class TextBookController {
 
     @RequestMapping(value = "/api/insertTextBook",method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView insertSchool(@RequestBody TextBook textBook){
+    public ModelAndView insertTextBook(@RequestBody TextBook textBook){
         TextBookService service = new TextBookService();
         service.insertTextBook(textBook);
         Map<String, Boolean> map = new HashMap<>();
@@ -45,7 +44,7 @@ public class TextBookController {
     @RequestMapping(value = "/api/deleteTextBook",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
-    public ModelAndView deleteSchool(@RequestParam("id") int id){
+    public ModelAndView deleteTextBook(@RequestParam("id") int id){
         TextBookService service = new TextBookService();
         service.deleteTextBook(id);
         Map<String, Boolean> map = new HashMap<>();

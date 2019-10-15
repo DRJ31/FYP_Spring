@@ -13,6 +13,10 @@
             <result column="title" property="title" />
         </collection>
     </resultMap>
+    <resultMap id="favorite" type="Favorite">
+        <id column="id" property="id" />
+        <result column="syllabus_id" property="syllabus_id"/>
+    </resultMap>
     <select id="selectAll" resultMap="school">
         select school.*,syllabus.id as syllabus_id,syllabus.title
         from syllabus right outer join school on syllabus.school_id = school.id
@@ -38,4 +42,7 @@
     <delete id="deleteFavoriteSchool">
         delete from favorite_school where user_id = #{user_id} and school_id = #{school_id}
     </delete>
+    <select id="checkFavoriteDuplicate" resultMap="favorite">
+        select * from favorite_school where user_id = #{user_id} and school_id = #{school_id}
+    </select>
 </mapper>

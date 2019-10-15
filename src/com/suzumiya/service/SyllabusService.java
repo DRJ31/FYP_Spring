@@ -79,4 +79,9 @@ public class SyllabusService {
     public void deleteFavoriteSyllabus(Favorite favorite){
         syllabusDao.deleteFavoriteSyllabus(favorite);
     }
+
+    public Favorite checkFavoriteDuplicate(Favorite favorite){
+        return syllabusDao.checkFavoriteDuplicate(favorite);
+    }
+
 }

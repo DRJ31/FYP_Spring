@@ -37,4 +37,8 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
     public void deleteFavoriteSyllabus(Favorite favorite){
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteFavoriteSyllabus", favorite);
     }
+
+    public Favorite checkFavoriteDuplicate(Favorite favorite){
+        return getSqlSession().selectOne("com.suzumiya.mapper.SyllabusMapper.checkFavoriteDuplicate", favorite);
+    }
 }

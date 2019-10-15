@@ -71,6 +71,10 @@
             <result column="pilos_content" property="content" />
         </collection>
     </resultMap>
+    <resultMap id="favorite" type="Favorite">
+        <id column="id" property="id" />
+        <result column="syllabus_id" property="syllabus_id"/>
+    </resultMap>
     <select id="selectAll" resultMap="syllabus">
         select syllabus.*,
             school.id as the_school_id,school.*,
@@ -150,4 +154,7 @@
     <delete id="deleteFavoriteSyllabus">
         delete from favorite_syllabus where user_id = #{user_id} and syllabus_id = #{syllabus_id}
     </delete>
+    <select id="checkFavoriteDuplicate" resultMap="favorite">
+        select * from favorite_syllabus where user_id = #{user_id} and syllabus_id = #{syllabus_id}
+    </select>
 </mapper>

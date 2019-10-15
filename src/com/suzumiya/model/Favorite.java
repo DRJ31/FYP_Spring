@@ -1,12 +1,21 @@
 package com.suzumiya.model;
 
 public class Favorite {
+    private int id;
     private int user_id;
     private int school_id;
     private int syllabus_id;
     private String token;
 
     public Favorite() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getToken() {

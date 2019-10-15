@@ -37,4 +37,8 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
     public void deleteFavoriteSchool(Favorite favorite){
         getSqlSession().delete("com.suzumiya.mapper.SchoolMapper.deleteFavoriteSchool", favorite);
     }
+
+    public Favorite checkFavoriteDuplicate(Favorite favorite){
+        return getSqlSession().selectOne("com.suzumiya.mapper.SyllabusMapper.checkFavoriteDuplicate", favorite);
+    }
 }

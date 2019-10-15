@@ -28,4 +28,7 @@
     <select id="userLogin" resultMap="allUsers">
         select user.* from user where username=#{name} and password=#{password}
     </select>
+    <select id="checkUserDuplicate" resultMap="allUsers">
+        select * from user where username=#{name} or email=#{email}
+    </select>
 </mapper>

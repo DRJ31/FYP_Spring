@@ -1,6 +1,7 @@
 package com.suzumiya.service;
 
 import com.suzumiya.dao.SchoolDao;
+import com.suzumiya.model.Favorite;
 import com.suzumiya.model.School;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -69,5 +70,13 @@ public class SchoolService {
 
     public void deleteSchool(int id){
         schoolDao.deleteSchool(id);
+    }
+
+    public void insertFavoriteSchool(Favorite favorite){
+        schoolDao.insertFavoriteSchool(favorite);
+    }
+
+    public void deleteFavoriteSchool(Favorite favorite){
+        schoolDao.deleteFavoriteSchool(favorite);
     }
 }

@@ -1,5 +1,6 @@
 package com.suzumiya.dao;
 
+import com.suzumiya.model.Favorite;
 import com.suzumiya.model.Syllabus;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -27,5 +28,13 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
 
     public void deleteSyllabus(@Param("sid") int sid){
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteSyllabus", sid);
+    }
+
+    public void insertFavoriteSyllabus(Favorite favorite){
+        getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertFavoriteSyllabus", favorite);
+    }
+
+    public void deleteFavoriteSyllabus(Favorite favorite){
+        getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteFavoriteSyllabus", favorite);
     }
 }

@@ -31,4 +31,11 @@
     <delete id="deleteSchool">
         delete from school where school.id=#{id}
     </delete>
+    <insert id="insertFavoriteSchool">
+        insert into favorite_school (user_id, school_id)
+        value (#{user_id}, #{school_id})
+    </insert>
+    <delete id="deleteFavoriteSchool">
+        delete from favorite_school where user_id = #{user_id} and school_id = #{school_id}
+    </delete>
 </mapper>

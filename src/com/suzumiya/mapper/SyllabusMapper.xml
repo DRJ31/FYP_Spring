@@ -123,9 +123,18 @@
         where syllabus.id=#{id} and syllabus.school_id=school.id
     </select>
     <select id="selectFavoriteSyllabuses" resultMap="syllabus">
-        select syllabus.*,school.*,content.*,textbook.*,assessment.*,assessment_cilo.*,pilo.*,pilo_cilo.*,tla.*
-        from favorite_syllabus,syllabus,school,content,textbook,assessment,assessment_cilo,pilo,pilo_cilo,tla
-        where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id and syllabus.school_id=school.id
+        select syllabus.*,
+            school.id as the_school_id,school.*,
+            textbook.id as textbook_id,textbook.title as textbook_title,textbook.*,
+            content.id as c_id,content.syllabus_id as content_syllabus_id,content.title as content_title,content.hours as content_hours,content.*,
+            assessment.id as a_id,assessment.syllabus_id as a_syllabus_id,assessment.*,
+            assessment_cilo.id as a_c_id,assessment_cilo.*,
+            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.*,
+            tla.id as t_id,tla.content as tla_content, tla.*,
+            pilo.id as p_id,pilo.syllabus_id as p_syllabus_id,pilo.content as pilos_content,pilo.*,
+            pilo_cilo.id as p_c_id,pilo_cilo.*
+        from favorite_syllabus,syllabus,school,content,textbook,assessment,assessment_cilo,cilo,pilo,pilo_cilo,tla
+        where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id
     </select>
     <insert id="insertSyllabus">
         insert into syllabus (code, title, school_id, prepare, review, unit, hours, pre_req, co_req, offer_unit, aim)
@@ -133,5 +142,12 @@
     </insert>
     <delete id="deleteSyllabus">
         delete from syllabus where syllabus.id = #{id}
+    </delete>
+    <insert id="insertFavoriteSyllabus">
+        insert into favorite_syllabus (user_id, syllabus_id)
+        value (#{user_id}, #{syllabus_id})
+    </insert>
+    <delete id="deleteFavoriteSyllabus">
+        delete from favorite_syllabus where user_id = #{user_id} and syllabus_id = #{syllabus_id}
     </delete>
 </mapper>

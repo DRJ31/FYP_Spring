@@ -1,6 +1,7 @@
 package com.suzumiya.service;
 
 import com.suzumiya.dao.SyllabusDao;
+import com.suzumiya.model.Favorite;
 import com.suzumiya.model.Syllabus;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -69,5 +70,13 @@ public class SyllabusService {
 
     public void deleteSyllabus(int sid){
         syllabusDao.deleteSyllabus(sid);
+    }
+
+    public void insertFavoriteSyllabus(Favorite favorite){
+        syllabusDao.insertFavoriteSyllabus(favorite);
+    }
+
+    public void deleteFavoriteSyllabus(Favorite favorite){
+        syllabusDao.deleteFavoriteSyllabus(favorite);
     }
 }

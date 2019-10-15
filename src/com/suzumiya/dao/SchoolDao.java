@@ -1,5 +1,6 @@
 package com.suzumiya.dao;
 
+import com.suzumiya.model.Favorite;
 import com.suzumiya.model.School;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -27,5 +28,13 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
 
     public void deleteSchool(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.SchoolMapper.deleteSchool", id);
+    }
+
+    public void insertFavoriteSchool(Favorite favorite){
+        getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertFavoriteSchool", favorite);
+    }
+
+    public void deleteFavoriteSchool(Favorite favorite){
+        getSqlSession().delete("com.suzumiya.mapper.SchoolMapper.deleteFavoriteSchool", favorite);
     }
 }

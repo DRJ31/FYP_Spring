@@ -1,7 +1,10 @@
 package com.suzumiya.controller;
 
+import com.suzumiya.model.Favorite;
 import com.suzumiya.model.Token;
 import com.suzumiya.model.User;
+import com.suzumiya.service.SchoolService;
+import com.suzumiya.service.SyllabusService;
 import com.suzumiya.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -115,4 +118,43 @@ public class UserController {
         }
         return name;
     }
+
+    @RequestMapping(value = "/api/favorite/insert",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertFavorite(@RequestBody Favorite favorite){
+        SyllabusService syllabusService = new SyllabusService();
+        SchoolService schoolService = new SchoolService();
+        int uid = loginMap.get(favorite.getToken()).getId();
+        favorite.setUser_id(uid);
+        if (favorite.getSyllabus_id() != 0){
+            syllabusService.insertFavoriteSyllabus(favorite);
+        }
+        if (favorite.getSchool_id() != 0){
+            schoolService.insertFavoriteSchool(favorite);
+        }
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/favorite/delete",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteFavorite(@RequestBody Favorite favorite){
+        SyllabusService syllabusService = new SyllabusService();
+        SchoolService schoolService = new SchoolService();
+        int uid = loginMap.get(favorite.getToken()).getId();
+        favorite.setUser_id(uid);
+        if (favorite.getSyllabus_id() != 0){
+            syllabusService.deleteFavoriteSyllabus(favorite);
+        }
+        if (favorite.getSchool_id() != 0){
+            schoolService.deleteFavoriteSchool(favorite);
+        }
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
 }

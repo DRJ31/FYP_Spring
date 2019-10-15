@@ -119,7 +119,7 @@ public class UserController {
         return name;
     }
 
-    @RequestMapping(value = "/api/favorite/insert",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/favorite",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertFavorite(@RequestBody Favorite favorite){
@@ -138,7 +138,7 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/favorite/delete",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/favorite",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteFavorite(@RequestBody Favorite favorite){

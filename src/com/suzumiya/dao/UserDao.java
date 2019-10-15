@@ -27,4 +27,8 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
     public User userLogin(User user){
         return getSqlSession().selectOne("com.suzumiya.mapper.UserMapper.userLogin", user);
     }
+
+    public User checkUserDuplicate(User user){
+        return getSqlSession().selectOne("com.suzumiya.mapper.UserMapper.checkUserDuplicate", user);
+    }
 }

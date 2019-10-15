@@ -78,4 +78,8 @@ public class UserService {
     public void deleteUser(int id){
         userDao.deleteUser(id);
     }
+
+    public User checkUserDuplicate(User user){
+        return userDao.checkUserDuplicate(user);
+    }
 }

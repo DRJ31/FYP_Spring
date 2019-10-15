@@ -157,4 +157,32 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
+    @RequestMapping(value = "/api/check", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView checkUserDuplicate(@RequestBody User user) {
+        UserService service = new UserService();
+        User check = service.checkUserDuplicate(user);
+        Map<String, User> map = new HashMap<>();
+        map.put("user", check);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/favorite/check",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView checkFavoriteDuplicate(@RequestBody Favorite favorite){
+        SyllabusService syllabusService = new SyllabusService();
+        SchoolService schoolService = new SchoolService();
+        int uid = loginMap.get(favorite.getToken()).getId();
+        favorite.setUser_id(uid);
+        Map<String, Favorite> map = new HashMap<>();
+        if (favorite.getSyllabus_id() != 0){
+            map.put("favorite", syllabusService.checkFavoriteDuplicate(favorite));
+        }
+        if (favorite.getSchool_id() != 0){
+            map.put("favorite", schoolService.checkFavoriteDuplicate(favorite));
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }

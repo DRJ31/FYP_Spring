@@ -79,4 +79,8 @@ public class SchoolService {
     public void deleteFavoriteSchool(Favorite favorite){
         schoolDao.deleteFavoriteSchool(favorite);
     }
+
+    public Favorite checkFavoriteDuplicate(Favorite favorite){
+        return schoolDao.checkFavoriteDuplicate(favorite);
+    }
 }

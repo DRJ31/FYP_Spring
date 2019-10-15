@@ -41,7 +41,7 @@ public class SchoolController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/insertSchool",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/school",method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView insertSchool(@RequestBody School school){
         SchoolService service = new SchoolService();
@@ -51,7 +51,7 @@ public class SchoolController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/deleteSchool",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/school",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteSchool(@RequestParam("id") int id){

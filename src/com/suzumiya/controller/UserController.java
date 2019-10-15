@@ -47,7 +47,7 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/deleteUser",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/user",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteUser(@RequestParam("id") int id){

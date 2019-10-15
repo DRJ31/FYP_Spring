@@ -10,6 +10,7 @@ public class Syllabus {
     private String prepare;
     private String review;
     private int unit;
+    private int hours;
     private String pre_req;
     private String co_req;
     private String offer_unit;
@@ -20,7 +21,6 @@ public class Syllabus {
     private List<Cilo> cilos;
     private List<Pilo> pilos;
     private int school_id;
-    private int hours;
 
     public Syllabus() {
     }

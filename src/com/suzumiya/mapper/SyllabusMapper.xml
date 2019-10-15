@@ -10,6 +10,7 @@
         <result column="prepare" property="prepare" />
         <result column="review" property="review" />
         <result column="unit" property="unit" />
+        <result column="hours" property="hours"/>
         <result column="pre_req" property="pre_req" />
         <result column="co_req" property="co_req" />
         <result column="offer_unit" property="offer_unit" />

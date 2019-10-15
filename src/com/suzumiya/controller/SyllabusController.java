@@ -42,7 +42,7 @@ public class SyllabusController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/insertSyllabus",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/syllabus",method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView insertSyllabus(@RequestBody Syllabus syllabus){
         SyllabusService service = new SyllabusService();
@@ -52,7 +52,7 @@ public class SyllabusController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/deleteSyllabus",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/syllabus",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteSyllabus(@RequestParam("id") int id){

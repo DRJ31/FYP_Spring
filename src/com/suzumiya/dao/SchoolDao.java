@@ -39,6 +39,6 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
     }
 
     public Favorite checkFavoriteDuplicate(Favorite favorite){
-        return getSqlSession().selectOne("com.suzumiya.mapper.SyllabusMapper.checkFavoriteDuplicate", favorite);
+        return getSqlSession().selectOne("com.suzumiya.mapper.SchoolMapper.checkFavoriteDuplicate", favorite);
     }
 }

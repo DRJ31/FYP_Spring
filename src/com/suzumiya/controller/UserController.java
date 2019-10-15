@@ -42,10 +42,14 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertUser(@RequestBody User user){
-        UserService service = new UserService();
-        user.encryptPassword();
-        service.insertUser(user);
         Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        UserService service = new UserService();
+        if (service.checkUserDuplicate(user) != null)
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        user.encryptPassword();
+        user.setRole_id(4);
+        service.insertUser(user);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -127,13 +131,18 @@ public class UserController {
         SchoolService schoolService = new SchoolService();
         int uid = loginMap.get(favorite.getToken()).getId();
         favorite.setUser_id(uid);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
         if (favorite.getSyllabus_id() != 0){
+            if (syllabusService.checkFavoriteDuplicate(favorite) != null)
+                return new ModelAndView(new MappingJackson2JsonView(), map);
             syllabusService.insertFavoriteSyllabus(favorite);
         }
         if (favorite.getSchool_id() != 0){
+            if (schoolService.checkFavoriteDuplicate(favorite) != null)
+                return new ModelAndView(new MappingJackson2JsonView(), map);
             schoolService.insertFavoriteSchool(favorite);
         }
-        Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -157,32 +166,32 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/check", method = {RequestMethod.POST})
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView checkUserDuplicate(@RequestBody User user) {
-        UserService service = new UserService();
-        User check = service.checkUserDuplicate(user);
-        Map<String, User> map = new HashMap<>();
-        map.put("user", check);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
+//    @RequestMapping(value = "/api/check", method = {RequestMethod.POST})
+//    @ResponseBody
+//    @CrossOrigin
+//    public ModelAndView checkUserDuplicate(@RequestBody User user) {
+//        UserService service = new UserService();
+//        User check = service.checkUserDuplicate(user);
+//        Map<String, User> map = new HashMap<>();
+//        map.put("user", check);
+//        return new ModelAndView(new MappingJackson2JsonView(), map);
+//    }
 
-    @RequestMapping(value = "/api/favorite/check",method = RequestMethod.POST)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView checkFavoriteDuplicate(@RequestBody Favorite favorite){
-        SyllabusService syllabusService = new SyllabusService();
-        SchoolService schoolService = new SchoolService();
-        int uid = loginMap.get(favorite.getToken()).getId();
-        favorite.setUser_id(uid);
-        Map<String, Favorite> map = new HashMap<>();
-        if (favorite.getSyllabus_id() != 0){
-            map.put("favorite", syllabusService.checkFavoriteDuplicate(favorite));
-        }
-        if (favorite.getSchool_id() != 0){
-            map.put("favorite", schoolService.checkFavoriteDuplicate(favorite));
-        }
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
+//    @RequestMapping(value = "/api/favorite/check",method = RequestMethod.POST)
+//    @ResponseBody
+//    @CrossOrigin
+//    public ModelAndView checkFavoriteDuplicate(@RequestBody Favorite favorite){
+//        SyllabusService syllabusService = new SyllabusService();
+//        SchoolService schoolService = new SchoolService();
+//        int uid = loginMap.get(favorite.getToken()).getId();
+//        favorite.setUser_id(uid);
+//        Map<String, Favorite> map = new HashMap<>();
+//        if (favorite.getSyllabus_id() != 0){
+//            map.put("favorite", syllabusService.checkFavoriteDuplicate(favorite));
+//        }
+//        if (favorite.getSchool_id() != 0){
+//            map.put("favorite", schoolService.checkFavoriteDuplicate(favorite));
+//        }
+//        return new ModelAndView(new MappingJackson2JsonView(), map);
+//    }
 }

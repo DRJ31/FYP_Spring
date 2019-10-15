@@ -57,17 +57,17 @@
                 <result column="cilo_id" property="cilo_id" />
                 <result column="tla_content" property="content" />
             </association>
+            <collection property="pilo_cilos" ofType="Pilo_Cilo" javaType="List">
+                <id column="p_c_id" property="id" />
+                <result column="pilo_id" property="pilo_id" />
+                <result column="cilo_id" property="cilo_id" />
+            </collection>
         </collection>
         <collection property="pilos" ofType="Pilo" javaType="List">
             <id column="p_id" property="id" />
             <result column="p_syllabus_id" property="syllabus_id" />
             <result column="pilo_id" property="pilo_id" />
             <result column="pilos_content" property="content" />
-            <collection property="pilo_cilos" ofType="Pilo_Cilo" javaType="List">
-                <id column="p_c_id" property="id" />
-                <result column="pilo_id" property="pilo_id" />
-                <result column="cilo_id" property="cilo_id" />
-            </collection>
         </collection>
     </resultMap>
     <select id="selectAll" resultMap="syllabus">

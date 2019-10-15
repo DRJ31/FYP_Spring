@@ -1,13 +1,25 @@
 package com.suzumiya.model;
 
+import java.util.List;
+
 public class Cilo {
     private int id;
     private int syllabus_id;
     private int cilo_id;
     private String content;
     private Tla tla;
+    private List<Pilo_Cilo> pilo_cilos;
+
 
     public Cilo() {
+    }
+    
+    public List<Pilo_Cilo> getPilo_cilos() {
+        return pilo_cilos;
+    }
+
+    public void setPilo_cilos(List<Pilo_Cilo> pilo_cilos) {
+        this.pilo_cilos = pilo_cilos;
     }
 
     public Tla getTla() {

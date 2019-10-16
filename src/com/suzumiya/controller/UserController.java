@@ -243,4 +243,27 @@ public class UserController {
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
+
+    @RequestMapping(value = "/api/password", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updatePassword(@RequestBody Token token){
+        UserService userService = new UserService();
+        Map<String, Boolean> map = new HashMap<>();
+        User user = loginMap.get(token.getToken());
+        token.encrypt();
+        System.out.println(user.getPassword());
+        System.out.println(token.getOld_pass());
+        if (user.getPassword().equals(token.getOld_pass())){
+            user.setPassword(token.getNew_pass());
+            loginMap.put(token.getToken(), user);
+            userService.updatePassword(user);
+            map.put("status", true);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+        else {
+            map.put("status", false);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+    }
 }

@@ -42,4 +42,7 @@
     <update id="updateSchoolId">
         update user set user.school_id = #{school_id} where user.id = #{id}
     </update>
+    <update id="updatePassword">
+        update user set user.password = #{password} where user.id = #{id}
+    </update>
 </mapper>

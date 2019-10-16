@@ -41,4 +41,8 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
         getSqlSession().update("com.suzumiya.mapper.UserMapper.updateSchoolId", user);
     }
 
+    public void updatePassword(User user){
+        getSqlSession().update("com.suzumiya.mapper.UserMapper.updatePassword", user);
+    }
+
 }

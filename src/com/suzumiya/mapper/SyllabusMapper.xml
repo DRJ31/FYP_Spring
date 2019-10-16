@@ -69,11 +69,36 @@
             <result column="p_syllabus_id" property="syllabus_id" />
             <result column="pilo_id" property="pilo_id" />
             <result column="pilos_content" property="content" />
+            <collection property="pilo_cilos" ofType="Pilo_Cilo" javaType="List">
+                <id column="p_c_id" property="id" />
+                <result column="pilo_id" property="pilo_id" />
+                <result column="cilo_id" property="cilo_id" />
+            </collection>
         </collection>
     </resultMap>
     <resultMap id="favorite" type="Favorite">
         <id column="id" property="id" />
         <result column="syllabus_id" property="syllabus_id"/>
+    </resultMap>
+    <resultMap id="cilo" type="Cilo">
+        <id column="id" property="id" />
+        <result column="syllabus_id" property="syllabus_id" />
+        <result column="cilo_id" property="cilo_id" />
+        <result column="content" property="content" />
+        <association property="tla" javaType="Tla">
+            <id column="t_id" property="id" />
+            <result column="t_cilo_id" property="cilo_id" />
+            <result column="tla_content" property="content" />
+        </association>
+        <association property="syllabus" javaType="Syllabus">
+            <id column="s_id" property="id" />
+            <result column="title" property="title" />
+        </association>
+        <collection property="pilo_cilos" ofType="Pilo_Cilo" javaType="List">
+            <id column="p_c_id" property="id" />
+            <result column="pilo_id" property="pilo_id" />
+            <result column="p_cilo_id" property="cilo_id" />
+        </collection>
     </resultMap>
     <select id="selectAll" resultMap="syllabus">
         select syllabus.*,
@@ -157,4 +182,32 @@
     <select id="checkFavoriteDuplicate" resultMap="favorite">
         select * from favorite_syllabus where user_id = #{user_id} and syllabus_id = #{syllabus_id}
     </select>
+    <select id="selectAllCilo" resultMap="cilo">
+        select cilo.*,
+            tla.id as t_id,tla.cilo_id as t_cilo_id,tla.content as tla_content, tla.*,
+            syllabus.id as s_id, syllabus.title,
+            pilo_cilo.id as p_c_id,pilo_cilo.cilo_id as p_cilo_id,pilo_cilo.*
+        from cilo
+            left outer join syllabus on cilo.syllabus_id = syllabus.id
+            left outer join tla on cilo.id = tla.cilo_id
+            left outer join pilo_cilo on cilo.id = pilo_cilo.cilo_id
+    </select>
+    <select id="selectCiloById" resultMap="cilo">
+        select cilo.*,
+            tla.id as t_id,tla.cilo_id as t_cilo_id,tla.content as tla_content, tla.*,
+            syllabus.id as s_id, syllabus.title,
+            pilo_cilo.id as p_c_id,pilo_cilo.cilo_id as p_cilo_id,pilo_cilo.*
+        from cilo
+            left outer join syllabus on cilo.syllabus_id = syllabus.id
+            left outer join tla on cilo.id = tla.cilo_id
+            left outer join pilo_cilo on cilo.id = pilo_cilo.cilo_id
+        where cilo.id = #{id}
+    </select>
+    <insert id="insertCilo">
+        insert into cilo (syllabus_id, cilo_id, content)
+        value (#{syllabus_id}, #{cilo_id}, #{content})
+    </insert>
+    <delete id="deleteCilo">
+        delete from cilo where cilo.id = #{id}
+    </delete>
 </mapper>

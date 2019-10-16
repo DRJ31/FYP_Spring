@@ -1,5 +1,6 @@
 package com.suzumiya.dao;
 
+import com.suzumiya.model.Cilo;
 import com.suzumiya.model.Favorite;
 import com.suzumiya.model.Syllabus;
 import org.apache.ibatis.annotations.Param;
@@ -40,5 +41,21 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
 
     public Favorite checkFavoriteDuplicate(Favorite favorite){
         return getSqlSession().selectOne("com.suzumiya.mapper.SyllabusMapper.checkFavoriteDuplicate", favorite);
+    }
+
+    public List<Cilo> selectAllCilo(){
+        return getSqlSession().selectList("com.suzumiya.mapper.SyllabusMapper.selectAllCilo");
+    }
+
+    public Cilo selectCiloById(@Param("id") int id){
+        return getSqlSession().selectOne("com.suzumiya.mapper.SyllabusMapper.selectCiloById", id);
+    }
+
+    public void insertCilo(Cilo cilo){
+        getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertCilo", cilo);
+    }
+
+    public void deleteCilo(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteCilo", id);
     }
 }

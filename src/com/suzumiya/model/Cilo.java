@@ -9,11 +9,19 @@ public class Cilo {
     private String content;
     private Tla tla;
     private List<Pilo_Cilo> pilo_cilos;
-
+    private Syllabus syllabus;
 
     public Cilo() {
     }
-    
+
+    public Syllabus getSyllabus() {
+        return syllabus;
+    }
+
+    public void setSyllabus(Syllabus syllabus) {
+        this.syllabus = syllabus;
+    }
+
     public List<Pilo_Cilo> getPilo_cilos() {
         return pilo_cilos;
     }

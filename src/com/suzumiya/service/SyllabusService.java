@@ -1,6 +1,7 @@
 package com.suzumiya.service;
 
 import com.suzumiya.dao.SyllabusDao;
+import com.suzumiya.model.Cilo;
 import com.suzumiya.model.Favorite;
 import com.suzumiya.model.Syllabus;
 import org.springframework.context.ApplicationContext;
@@ -14,11 +15,30 @@ public class SyllabusService {
     private List<Syllabus> syllabuses;
     private SyllabusDao syllabusDao;
     private Syllabus syllabus;
+    private Cilo cilo;
+    private List<Cilo> cilos;
 
     public SyllabusService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.syllabusDao = (SyllabusDao) ac.getBean("syllabusDao");
         this.setSyllabuses();
+        this.setCilos();
+    }
+
+    public void setCilo(int id) {
+        this.cilo = syllabusDao.selectCiloById(id);
+    }
+
+    public void setCilos() {
+        this.cilos = syllabusDao.selectAllCilo();
+    }
+
+    public Cilo getCilo() {
+        return cilo;
+    }
+
+    public List<Cilo> getCilos() {
+        return cilos;
     }
 
     public List<Syllabus> getSyllabuses() {
@@ -82,6 +102,27 @@ public class SyllabusService {
 
     public Favorite checkFavoriteDuplicate(Favorite favorite){
         return syllabusDao.checkFavoriteDuplicate(favorite);
+    }
+
+    public Map<String, List<Cilo>> selectAllCilo(){
+        Map<String, List<Cilo>> result = new HashMap<>();
+        result.put("cilos", cilos);
+        return result;
+    }
+
+    public Map<String, Cilo> selectCiloById(int id){
+        Map<String, Cilo> result = new HashMap<>();
+        setCilo(id);
+        result.put("cilo", cilo);
+        return result;
+    }
+
+    public void insertCilo(Cilo cilo){
+        syllabusDao.insertCilo(cilo);
+    }
+
+    public void deleteCilo(int id){
+        syllabusDao.deleteCilo(id);
     }
 
 }

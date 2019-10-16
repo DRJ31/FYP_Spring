@@ -7,8 +7,17 @@ public class Pilo {
     private int syllabus_id;
     private int pilo_id;
     private String content;
+    private List<Pilo_Cilo> pilo_cilos;
 
     public Pilo() {
+    }
+
+    public List<Pilo_Cilo> getPilo_cilos() {
+        return pilo_cilos;
+    }
+
+    public void setPilo_cilos(List<Pilo_Cilo> pilo_cilos) {
+        this.pilo_cilos = pilo_cilos;
     }
 
     public int getId() {

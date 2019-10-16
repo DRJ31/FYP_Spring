@@ -1,5 +1,6 @@
 package com.suzumiya.controller;
 
+import com.suzumiya.model.AuditSchool;
 import com.suzumiya.model.School;
 import com.suzumiya.service.SchoolService;
 import org.springframework.stereotype.Controller;
@@ -59,6 +60,25 @@ public class SchoolController {
         service.deleteSchool(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/audits", method = {RequestMethod.GET})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView selectAllAudit() {
+        SchoolService service = new SchoolService();
+        Map<String, List<AuditSchool>> map = service.getAuditSchoolsMap();
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/audit", method = {RequestMethod.GET})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView selectAuditById(@RequestParam(value = "id") int id) {
+        System.out.println("School ID: " + id);
+        SchoolService service = new SchoolService();
+        Map<String, AuditSchool> map = service.getAuditSchoolMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

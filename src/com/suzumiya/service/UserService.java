@@ -82,4 +82,12 @@ public class UserService {
     public User checkUserDuplicate(User user){
         return userDao.checkUserDuplicate(user);
     }
+
+    public void updateSchoolRole(int id){
+        userDao.updateSchoolRole(id);
+    }
+
+    public void updateSchoolId(User user){
+        userDao.updateSchoolId(user);
+    }
 }

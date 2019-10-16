@@ -1,8 +1,6 @@
 package com.suzumiya.controller;
 
-import com.suzumiya.model.Favorite;
-import com.suzumiya.model.Token;
-import com.suzumiya.model.User;
+import com.suzumiya.model.*;
 import com.suzumiya.service.SchoolService;
 import com.suzumiya.service.SyllabusService;
 import com.suzumiya.service.UserService;
@@ -191,4 +189,47 @@ public class UserController {
 //        }
 //        return new ModelAndView(new MappingJackson2JsonView(), map);
 //    }
+
+    @RequestMapping(value = "/api/audit",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertAudit(@RequestBody AuditSchool auditSchool){
+        SchoolService schoolService = new SchoolService();
+        int uid = loginMap.get(auditSchool.getToken()).getId();
+        auditSchool.setUser_id(uid);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        schoolService.insertAudit(auditSchool);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/audit",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteAudit(@RequestParam("id") int id){
+        SchoolService service = new SchoolService();
+        service.deleteAudit(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/audit",method = RequestMethod.PUT)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateRole(@RequestParam("id") int id){
+        SchoolService schoolService = new SchoolService();
+        UserService userService = new UserService();
+        AuditSchool auditSchool = schoolService.getAuditSchoolMap(id).get("audit school");
+        int uid = auditSchool.getUser_id();
+        userService.updateSchoolRole(uid);
+        schoolService.insertAuditSchool(auditSchool);
+        Map<String, Boolean> map = new HashMap<>();
+        schoolService.deleteAudit(id);
+        int school_id = schoolService.getSchoolByName(auditSchool.getSchool_name()).getId();
+        userService.updateSchoolId(new User(uid, school_id));
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }

@@ -2,14 +2,12 @@ package com.suzumiya.model;
 
 import com.suzumiya.controller.EncryptController;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class User {
     private int id;
     private String name;
     private String password;
     private String email;
+    private int school_id;
     private Role role;
     private int role_id;
 
@@ -19,6 +17,11 @@ public class User {
 
     public User(int id){
         this.id = id;
+    }
+
+    public User(int id, int school_id) {
+        this.id = id;
+        this.school_id = school_id;
     }
 
     public User(String name, String password, String email) {
@@ -38,6 +41,14 @@ public class User {
         this.id = id;
         this.name = name;
         this.password = password;
+    }
+
+    public int getSchool_id() {
+        return school_id;
+    }
+
+    public void setSchool_id(int school_id) {
+        this.school_id = school_id;
     }
 
     public int getId() {

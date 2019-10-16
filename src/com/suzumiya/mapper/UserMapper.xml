@@ -8,6 +8,7 @@
         <result column="username" property="name" />
         <result column="password" property="password" />
         <result column="email" property="email" />
+        <result column="school_id" property="school_id"/>
         <association property="role" javaType="Role">
             <id column="role_id" property="id" />
             <result column="name" property="name" />
@@ -31,4 +32,10 @@
     <select id="checkUserDuplicate" resultMap="allUsers">
         select * from user where username=#{name} or email=#{email}
     </select>
+    <update id="updateSchoolRole">
+        update user set user.role_id = 2 where user.id = #{id}
+    </update>
+    <update id="updateSchoolId">
+        update user set user.school_id = #{school_id} where user.id = #{id}
+    </update>
 </mapper>

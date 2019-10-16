@@ -12,6 +12,8 @@ public class User {
     private String email;
     private Role role;
     private int role_id;
+    private School school;
+    private int school_id;
 
     public User() {
         // Empty constructor
@@ -38,6 +40,22 @@ public class User {
         this.id = id;
         this.name = name;
         this.password = password;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
+    }
+
+    public int getSchool_id() {
+        return school_id;
+    }
+
+    public void setSchool_id(int school_id) {
+        this.school_id = school_id;
     }
 
     public int getId() {

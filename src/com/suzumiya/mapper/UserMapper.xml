@@ -12,12 +12,16 @@
             <id column="role_id" property="id" />
             <result column="name" property="name" />
         </association>
+        <association property="school" javaType="School">
+            <id column="school_id" property="id" />
+            <result column="school_name" property="name" />
+        </association>
     </resultMap>
     <select id="selectAll" resultMap="allUsers">
-        select user.*,role.* from user,role where user.role_id=role.id
+        select user.*,role.*,school.id as school_id,school.name as school_name from user,role,school where user.role_id=role.id and user.school_id=school.id
     </select>
     <select id="selectByUid" resultMap="allUsers">
-        select user.*,role.* from user,role where user.role_id=role.id and user.id=#{uid}
+        select user.*,role.*,school.id as school_id,school.name as school_name from user,role,school where user.role_id=role.id and user.id=#{uid} and user.school_id=school.id
     </select>
     <insert id="insertUser">
         insert into user (username, email, role_id, password) value (#{name}, #{email}, #{role_id}, #{password})

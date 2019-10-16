@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,7 +201,11 @@ public class UserController {
         auditSchool.setUser_id(uid);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
-        schoolService.insertAudit(auditSchool);
+        try {
+            schoolService.insertAudit(auditSchool);
+        } catch (Exception e) {
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -221,11 +227,16 @@ public class UserController {
     public ModelAndView updateRole(@RequestParam("id") int id){
         SchoolService schoolService = new SchoolService();
         UserService userService = new UserService();
-        AuditSchool auditSchool = schoolService.getAuditSchoolMap(id).get("audit school");
+        AuditSchool auditSchool = schoolService.getAuditSchoolMap(id).get("audits");
         int uid = auditSchool.getUser_id();
         userService.updateSchoolRole(uid);
-        schoolService.insertAuditSchool(auditSchool);
         Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        try {
+            schoolService.insertAuditSchool(auditSchool);
+        } catch (Exception e) {
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
         schoolService.deleteAudit(id);
         int school_id = schoolService.getSchoolByName(auditSchool.getSchool_name()).getId();
         userService.updateSchoolId(new User(uid, school_id));

@@ -6,7 +6,10 @@ import com.suzumiya.model.Favorite;
 import com.suzumiya.model.School;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +91,7 @@ public class SchoolService {
         schoolDao.insertSchool(school);
     }
 
-    public void insertAuditSchool(AuditSchool auditSchool){
+    public void insertAuditSchool(AuditSchool auditSchool) throws Exception {
         schoolDao.insertAuditSchool(auditSchool);
     }
 
@@ -110,18 +113,18 @@ public class SchoolService {
 
     public Map<String, List<AuditSchool>> getAuditSchoolsMap() {
         Map<String, List<AuditSchool>> result = new HashMap<>();
-        result.put("audit schools", auditSchools);
+        result.put("audits", auditSchools);
         return result;
     }
 
     public Map<String, AuditSchool> getAuditSchoolMap(int id) {
         Map<String, AuditSchool> result = new HashMap<>();
         setAuditSchool(id);
-        result.put("audit school", auditSchool);
+        result.put("audits", auditSchool);
         return result;
     }
 
-    public void insertAudit(AuditSchool auditSchool){
+    public void insertAudit(AuditSchool auditSchool) throws Exception {
         schoolDao.insertAudit(auditSchool);
     }
 

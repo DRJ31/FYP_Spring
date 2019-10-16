@@ -6,6 +6,8 @@ import com.suzumiya.model.School;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
@@ -27,7 +29,7 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
         getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertSchool", school);
     }
 
-    public void insertAuditSchool(AuditSchool auditSchool){
+    public void insertAuditSchool(AuditSchool auditSchool) throws Exception {
         getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertAuditSchool", auditSchool);
     }
 
@@ -55,7 +57,7 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
         return getSqlSession().selectOne("com.suzumiya.mapper.SchoolMapper.selectAuditById", id);
     }
 
-    public void insertAudit(AuditSchool auditSchool){
+    public void insertAudit(AuditSchool auditSchool) throws Exception {
         getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertAudit", auditSchool);
     }
 

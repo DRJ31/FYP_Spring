@@ -90,4 +90,8 @@ public class UserService {
     public void updateSchoolId(User user){
         userDao.updateSchoolId(user);
     }
+
+    public void updatePassword(User user){
+        userDao.updatePassword(user);
+    }
 }

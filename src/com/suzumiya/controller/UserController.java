@@ -223,13 +223,36 @@ public class UserController {
         UserService userService = new UserService();
         AuditSchool auditSchool = schoolService.getAuditSchoolMap(id).get("audit school");
         int uid = auditSchool.getUser_id();
-        userService.updateSchoolRole(uid);
         schoolService.insertAuditSchool(auditSchool);
+        userService.updateSchoolRole(uid);
         Map<String, Boolean> map = new HashMap<>();
         schoolService.deleteAudit(id);
         int school_id = schoolService.getSchoolByName(auditSchool.getSchool_name()).getId();
         userService.updateSchoolId(new User(uid, school_id));
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/password", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updatePassword(@RequestBody Token token){
+        UserService userService = new UserService();
+        Map<String, Boolean> map = new HashMap<>();
+        User user = loginMap.get(token.getToken());
+        token.encrypt();
+        System.out.println(user.getPassword());
+        System.out.println(token.getOld_pass());
+        if (user.getPassword().equals(token.getOld_pass())){
+            user.setPassword(token.getNew_pass());
+            loginMap.put(token.getToken(), user);
+            userService.updatePassword(user);
+            map.put("status", true);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+        else {
+            map.put("status", false);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
     }
 }

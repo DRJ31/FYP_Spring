@@ -1,5 +1,6 @@
 package com.suzumiya.controller;
 
+import com.suzumiya.model.Cilo;
 import com.suzumiya.model.Syllabus;
 import com.suzumiya.service.SyllabusService;
 import org.springframework.stereotype.Controller;
@@ -58,6 +59,46 @@ public class SyllabusController {
     public ModelAndView deleteSyllabus(@RequestParam("id") int id){
         SyllabusService service = new SyllabusService();
         service.deleteSyllabus(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/cilos", method = {RequestMethod.GET})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView selectAllCilo() {
+        SyllabusService service = new SyllabusService();
+        Map<String, List<Cilo>> map = service.selectAllCilo();
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/cilo", method = {RequestMethod.GET})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView selectCiloById(@RequestParam(value = "id") int id) {
+        System.out.println("cilo ID: " + id);
+        SyllabusService service = new SyllabusService();
+        Map<String, Cilo> map = service.selectCiloById(id);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/cilo",method = RequestMethod.POST)
+    @ResponseBody
+    public ModelAndView insertCilo(@RequestBody Cilo cilo){
+        SyllabusService service = new SyllabusService();
+        service.insertCilo(cilo);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/cilo",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteCilo(@RequestParam("id") int id){
+        SyllabusService service = new SyllabusService();
+        service.deleteCilo(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);

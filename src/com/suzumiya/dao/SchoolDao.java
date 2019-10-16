@@ -1,5 +1,6 @@
 package com.suzumiya.dao;
 
+import com.suzumiya.model.AuditSchool;
 import com.suzumiya.model.Favorite;
 import com.suzumiya.model.School;
 import org.apache.ibatis.annotations.Param;
@@ -18,12 +19,16 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
         return getSqlSession().selectOne("com.suzumiya.mapper.SchoolMapper.selectBySchoolId", id);
     }
 
-    public List<School> selectFavoriteSchools(@Param("uid") int uid) {
-        return getSqlSession().selectList("com.suzumiya.mapper.SchoolMapper.selectFavoriteSchools", uid);
+    public List<School> selectFavoriteSchools(@Param("uid") int id) {
+        return getSqlSession().selectList("com.suzumiya.mapper.SchoolMapper.selectFavoriteSchools", id);
     }
 
     public void insertSchool(School school){
         getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertSchool", school);
+    }
+
+    public void insertAuditSchool(AuditSchool auditSchool){
+        getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertAuditSchool", auditSchool);
     }
 
     public void deleteSchool(@Param("id") int id){
@@ -40,5 +45,25 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
 
     public Favorite checkFavoriteDuplicate(Favorite favorite){
         return getSqlSession().selectOne("com.suzumiya.mapper.SchoolMapper.checkFavoriteDuplicate", favorite);
+    }
+
+    public List<AuditSchool> selectAllAudit() {
+        return getSqlSession().selectList("com.suzumiya.mapper.SchoolMapper.selectAllAudit");
+    }
+
+    public AuditSchool selectAuditById(@Param("id") int id){
+        return getSqlSession().selectOne("com.suzumiya.mapper.SchoolMapper.selectAuditById", id);
+    }
+
+    public void insertAudit(AuditSchool auditSchool){
+        getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertAudit", auditSchool);
+    }
+
+    public void deleteAudit(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.SchoolMapper.deleteAudit", id);
+    }
+
+    public School getSchoolByName(@Param("name") String name){
+        return getSqlSession().selectOne("com.suzumiya.mapper.SchoolMapper.getSchoolByName", name);
     }
 }

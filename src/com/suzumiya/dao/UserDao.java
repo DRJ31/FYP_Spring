@@ -1,5 +1,6 @@
 package com.suzumiya.dao;
 
+import com.suzumiya.model.School;
 import com.suzumiya.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -31,4 +32,13 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
     public User checkUserDuplicate(User user){
         return getSqlSession().selectOne("com.suzumiya.mapper.UserMapper.checkUserDuplicate", user);
     }
+
+    public void updateSchoolRole(@Param("id") int id){
+        getSqlSession().update("com.suzumiya.mapper.UserMapper.updateSchoolRole", id);
+    }
+
+    public void updateSchoolId(User user){
+        getSqlSession().update("com.suzumiya.mapper.UserMapper.updateSchoolId", user);
+    }
+
 }

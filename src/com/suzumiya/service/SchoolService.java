@@ -1,6 +1,7 @@
 package com.suzumiya.service;
 
 import com.suzumiya.dao.SchoolDao;
+import com.suzumiya.model.AuditSchool;
 import com.suzumiya.model.Favorite;
 import com.suzumiya.model.School;
 import org.springframework.context.ApplicationContext;
@@ -14,11 +15,30 @@ public class SchoolService {
     private List<School> schools;
     private SchoolDao schoolDao;
     private School school;
+    private AuditSchool auditSchool;
+    private List<AuditSchool> auditSchools;
 
     public SchoolService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.schoolDao = (SchoolDao) ac.getBean("schoolDao");
         this.setSchools();
+        this.setAuditSchools();
+    }
+
+    public AuditSchool getAuditSchool() {
+        return auditSchool;
+    }
+
+    public void setAuditSchool(int id) {
+        this.auditSchool = schoolDao.selectAuditById(id);
+    }
+
+    public List<AuditSchool> getAuditSchools() {
+        return auditSchools;
+    }
+
+    public void setAuditSchools() {
+        this.auditSchools = schoolDao.selectAllAudit();
     }
 
     public List<School> getSchools() {
@@ -51,21 +71,25 @@ public class SchoolService {
         return result;
     }
 
-    public Map<String, School> getSchoolMap(int uid) {
+    public Map<String, School> getSchoolMap(int id) {
         Map<String, School> result = new HashMap<>();
-        setSchool(uid);
+        setSchool(id);
         result.put("school", school);
         return result;
     }
 
-    public Map<String, List<School>> getFavoriteSchools(int uid) {
+    public Map<String, List<School>> getFavoriteSchools(int id) {
         Map<String, List<School>> result = new HashMap<>();
-        result.put("schools", schoolDao.selectFavoriteSchools(uid));
+        result.put("schools", schoolDao.selectFavoriteSchools(id));
         return result;
     }
 
     public void insertSchool(School school){
         schoolDao.insertSchool(school);
+    }
+
+    public void insertAuditSchool(AuditSchool auditSchool){
+        schoolDao.insertAuditSchool(auditSchool);
     }
 
     public void deleteSchool(int id){
@@ -82,5 +106,30 @@ public class SchoolService {
 
     public Favorite checkFavoriteDuplicate(Favorite favorite){
         return schoolDao.checkFavoriteDuplicate(favorite);
+    }
+
+    public Map<String, List<AuditSchool>> getAuditSchoolsMap() {
+        Map<String, List<AuditSchool>> result = new HashMap<>();
+        result.put("audit schools", auditSchools);
+        return result;
+    }
+
+    public Map<String, AuditSchool> getAuditSchoolMap(int id) {
+        Map<String, AuditSchool> result = new HashMap<>();
+        setAuditSchool(id);
+        result.put("audit school", auditSchool);
+        return result;
+    }
+
+    public void insertAudit(AuditSchool auditSchool){
+        schoolDao.insertAudit(auditSchool);
+    }
+
+    public void deleteAudit(int id){
+        schoolDao.deleteAudit(id);
+    }
+
+    public School getSchoolByName(String name){
+        return schoolDao.getSchoolByName(name);
     }
 }

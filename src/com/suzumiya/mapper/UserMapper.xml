@@ -31,7 +31,7 @@
         delete from user where user.id=#{id}
     </delete>
     <select id="userLogin" resultMap="allUsers">
-        select user.* from user where username=#{name} and password=#{password}
+        select user.*,school.id as school_id,school.name as school_name from user,school where username=#{name} and password=#{password} and school.id=user.school_id
     </select>
     <select id="checkUserDuplicate" resultMap="allUsers">
         select * from user where username=#{name} or email=#{email}

@@ -84,6 +84,10 @@ public class SyllabusService {
         return result;
     }
 
+    public Syllabus getInsertedSyllabus(Syllabus syllabus) {
+        return syllabusDao.selectByInfo(syllabus);
+    }
+
     public void insertSyllabus(Syllabus syllabus){
         syllabusDao.insertSyllabus(syllabus);
     }

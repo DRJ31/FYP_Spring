@@ -19,6 +19,10 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
         return getSqlSession().selectOne("com.suzumiya.mapper.SyllabusMapper.selectBySyllabusId", id);
     }
 
+    public Syllabus selectByInfo(Syllabus syllabus) {
+        return getSqlSession().selectOne("com.suzumiya.mapper.SyllabusMapper.selectByInfo", syllabus);
+    }
+
     public List<Syllabus> selectFavoriteSyllabuses(@Param("uid") int uid) {
         return getSqlSession().selectList("com.suzumiya.mapper.SyllabusMapper.selectFavoriteSyllabuses", uid);
     }

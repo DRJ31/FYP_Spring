@@ -151,6 +151,9 @@
             ) on syllabus.id = pilo.syllabus_id
         where syllabus.id=#{id} and syllabus.school_id=school.id
     </select>
+    <select id="selectByInfo" resultMap="syllabus">
+        select syllabus.* from syllabus where school_id=#{school_id} and title=#{title}
+    </select>
     <select id="selectFavoriteSyllabuses" resultMap="syllabus">
         select syllabus.*,
             school.id as the_school_id,school.*,

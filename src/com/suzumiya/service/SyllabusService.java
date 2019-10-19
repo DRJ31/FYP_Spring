@@ -128,40 +128,40 @@ public class SyllabusService {
         return result;
     }
 
-    public void insertCilo(Cilo cilo){
-        syllabusDao.insertCilo(cilo);
+    public int insertCilo(Cilo cilo){
+        return syllabusDao.insertCilo(cilo);
     }
 
     public void deleteCilo(int id){
         syllabusDao.deleteCilo(id);
     }
 
-    public void insertPilo(Pilo pilo){
-        syllabusDao.insertPilo(pilo);
+    public int insertPilo(Pilo pilo){
+        return syllabusDao.insertPilo(pilo);
     }
 
     public void deletePilo(int id){
         syllabusDao.deletePilo(id);
     }
 
-    public void insertPC(Pilo_Cilo pilo_cilo){
-        syllabusDao.insertPC(pilo_cilo);
+    public int insertPC(Pilo_Cilo pilo_cilo){
+        return syllabusDao.insertPC(pilo_cilo);
     }
 
     public void deletePC(int id){
         syllabusDao.deletePC(id);
     }
 
-    public void insertTla(Tla tla){
-        syllabusDao.insertTla(tla);
+    public int insertTla(Tla tla){
+        return syllabusDao.insertTla(tla);
     }
 
     public void deleteTla(int id){
         syllabusDao.deleteTla(id);
     }
 
-    public void insertContent(Content content){
-        syllabusDao.insertContent(content);
+    public int insertContent(Content content){
+         return syllabusDao.insertContent(content);
     }
 
     public void deleteContent(int id){
@@ -171,7 +171,7 @@ public class SyllabusService {
     public Map<String, List<Syllabus>> selectSyllabuses_S(int id) {
         Map<String, List<Syllabus>> result = new HashMap<>();
         setSyllabuses_S(id);
-        result.put("syllabus", syllabuses_S);
+        result.put("syllabuses", syllabuses_S);
         return result;
     }
 }

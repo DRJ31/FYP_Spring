@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,9 +87,9 @@ public class SyllabusController {
     @CrossOrigin
     public ModelAndView insertCilo(@RequestBody Cilo cilo){
         SyllabusService service = new SyllabusService();
-        service.insertCilo(cilo);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
+        int id = service.insertCilo(cilo);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -110,9 +109,9 @@ public class SyllabusController {
     @CrossOrigin
     public ModelAndView insertPilo(@RequestBody Pilo pilo){
         SyllabusService service = new SyllabusService();
-        service.insertPilo(pilo);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
+        int id = service.insertPilo(pilo);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -132,9 +131,9 @@ public class SyllabusController {
     @CrossOrigin
     public ModelAndView insertPC(@RequestBody Pilo_Cilo pilo_cilo){
         SyllabusService service = new SyllabusService();
-        service.insertPC(pilo_cilo);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
+        int id = service.insertPC(pilo_cilo);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -154,9 +153,9 @@ public class SyllabusController {
     @CrossOrigin
     public ModelAndView insertTla(@RequestBody Tla tla){
         SyllabusService service = new SyllabusService();
-        service.insertTla(tla);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
+        int id = service.insertTla(tla);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -176,9 +175,9 @@ public class SyllabusController {
     @CrossOrigin
     public ModelAndView insertContent(@RequestBody Content content){
         SyllabusService service = new SyllabusService();
-        service.insertContent(content);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
+        int id = service.insertContent(content);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

@@ -53,40 +53,45 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
         return getSqlSession().selectOne("com.suzumiya.mapper.SyllabusMapper.selectCiloById", id);
     }
 
-    public void insertCilo(Cilo cilo){
+    public int insertCilo(Cilo cilo){
         getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertCilo", cilo);
+        return cilo.getId();
     }
 
     public void deleteCilo(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteCilo", id);
     }
 
-    public void insertPilo(Pilo pilo){
+    public int insertPilo(Pilo pilo){
         getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertPilo", pilo);
+        return pilo.getId();
     }
 
     public void deletePilo(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deletePilo", id);
     }
 
-    public void insertPC(Pilo_Cilo pilo_cilo){
+    public int insertPC(Pilo_Cilo pilo_cilo){
         getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertPC", pilo_cilo);
+        return pilo_cilo.getId();
     }
 
     public void deletePC(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deletePC", id);
     }
 
-    public void insertTla(Tla tla){
+    public int insertTla(Tla tla){
         getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertTla", tla);
+        return tla.getId();
     }
 
     public void deleteTla(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteTla", id);
     }
 
-    public void insertContent(Content content){
+    public int insertContent(Content content){
         getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertContent", content);
+        return content.getId();
     }
 
     public void deleteContent(@Param("id") int id){

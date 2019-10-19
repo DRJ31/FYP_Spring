@@ -31,8 +31,9 @@ public class TextBookController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/insertTextBook",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/textBook",method = RequestMethod.POST)
     @ResponseBody
+    @CrossOrigin
     public ModelAndView insertTextBook(@RequestBody TextBook textBook){
         TextBookService service = new TextBookService();
         service.insertTextBook(textBook);
@@ -41,7 +42,7 @@ public class TextBookController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/deleteTextBook",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/textBook",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteTextBook(@RequestParam("id") int id){

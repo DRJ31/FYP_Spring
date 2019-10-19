@@ -45,11 +45,12 @@ public class SyllabusController {
 
     @RequestMapping(value = "/api/syllabus",method = RequestMethod.POST)
     @ResponseBody
+    @CrossOrigin
     public ModelAndView insertSyllabus(@RequestBody Syllabus syllabus){
         SyllabusService service = new SyllabusService();
         service.insertSyllabus(syllabus);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
+        Map<String, Syllabus> map = new HashMap<>();
+        map.put("syllabus", service.getInsertedSyllabus(syllabus));
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -85,6 +86,7 @@ public class SyllabusController {
 
     @RequestMapping(value = "/api/cilo",method = RequestMethod.POST)
     @ResponseBody
+    @CrossOrigin
     public ModelAndView insertCilo(@RequestBody Cilo cilo){
         SyllabusService service = new SyllabusService();
         service.insertCilo(cilo);

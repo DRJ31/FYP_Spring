@@ -32,7 +32,7 @@ public class AssessmentController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/insertAssessment",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/assessment",method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView insertAssessment(@RequestBody Assessment assessment){
         AssessmentService service = new AssessmentService();
@@ -42,7 +42,7 @@ public class AssessmentController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/deleteAssessment",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/assessment",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteAssessment(@RequestParam("id") int id){
@@ -71,8 +71,9 @@ public class AssessmentController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/insertAC",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/ac",method = RequestMethod.POST)
     @ResponseBody
+    @CrossOrigin
     public ModelAndView insertAC(@RequestBody Assessment_Cilo assessment_cilo){
         AssessmentService service = new AssessmentService();
         service.insertAC(assessment_cilo);
@@ -81,7 +82,7 @@ public class AssessmentController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/deleteAC",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/ac",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteAC(@RequestParam("id") int id){

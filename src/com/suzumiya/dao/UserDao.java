@@ -1,6 +1,5 @@
 package com.suzumiya.dao;
 
-import com.suzumiya.model.School;
 import com.suzumiya.model.User;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -43,6 +42,10 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
 
     public void updatePassword(User user){
         getSqlSession().update("com.suzumiya.mapper.UserMapper.updatePassword", user);
+    }
+
+    public List<User> selectUser_S(@Param("s_id") int s_id){
+        return getSqlSession().selectList("com.suzumiya.mapper.UserMapper.selectUser_S", s_id);
     }
 
 }

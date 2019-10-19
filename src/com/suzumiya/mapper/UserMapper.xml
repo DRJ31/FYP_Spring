@@ -19,10 +19,14 @@
         </association>
     </resultMap>
     <select id="selectAll" resultMap="allUsers">
-        select user.*,role.*,school.id as school_id,school.name as school_name from user left outer join school on user.school_id = school.id,role where user.role_id=role.id
+        select user.*,role.*,school.id as school_id,school.name as school_name
+        from user left outer join school on user.school_id = school.id,role
+        where user.role_id=role.id
     </select>
     <select id="selectByUid" resultMap="allUsers">
-        select user.*,role.*,school.id as school_id,school.name as school_name from user left outer join school on user.school_id = school.id,role where user.role_id=role.id and user.id=#{uid}
+        select user.*,role.*,school.id as school_id,school.name as school_name
+        from user left outer join school on user.school_id = school.id,role
+        where user.role_id=role.id and user.id=#{uid}
     </select>
     <insert id="insertUser">
         insert into user (username, email, role_id, password) value (#{name}, #{email}, #{role_id}, #{password})
@@ -31,7 +35,9 @@
         delete from user where user.id=#{id}
     </delete>
     <select id="userLogin" resultMap="allUsers">
-        select user.*,school.id as school_id,school.name as school_name from user left outer join school on user.school_id = school.id where username=#{name} and password=#{password}
+        select user.*,school.id as school_id,school.name as school_name
+        from user left outer join school on user.school_id = school.id
+        where username=#{name} and password=#{password}
     </select>
     <select id="checkUserDuplicate" resultMap="allUsers">
         select * from user where username=#{name} or email=#{email}
@@ -45,4 +51,9 @@
     <update id="updatePassword">
         update user set user.password = #{password} where user.id = #{id}
     </update>
+    <select id="selectUser_S" resultMap="allUsers">
+        select user.*,role.*,school.id as school_id,school.name as school_name
+        from user left outer join school on user.school_id = school.id,role
+        where user.role_id=role.id and user.school_id = #{s_id} and user.role_id != 1 and user.role_id != 4
+    </select>
 </mapper>

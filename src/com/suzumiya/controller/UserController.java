@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +18,19 @@ public class UserController {
 
     private Map<String, User> loginMap = new HashMap<>();
 
-    @RequestMapping(value = "/api/users", method = {RequestMethod.GET})
+    @RequestMapping(value = "/api/users", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
-    public ModelAndView getAllUsers() {
+    public ModelAndView getAllUsers(@RequestBody Token token) {
         UserService service = new UserService();
-        Map<String, List<User>> map = service.getUsersMap();
+        User user = loginMap.get(token.getToken());
+        Map<String, List<User>> map = new HashMap<>();
+        if (user.getRole().getId() == 1) {
+            map = service.getUsersMap();
+        }
+        else {
+            map = service.selectUser_S(user.getSchool_id());
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

@@ -1,11 +1,6 @@
 package com.suzumiya.service;
 
-import com.suzumiya.dao.SchoolDao;
-import com.suzumiya.dao.SyllabusDao;
 import com.suzumiya.dao.UserDao;
-import com.suzumiya.model.Role;
-import com.suzumiya.model.School;
-import com.suzumiya.model.Syllabus;
 import com.suzumiya.model.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -18,11 +13,20 @@ public class UserService {
     private List<User> users;
     private UserDao userDao;
     private User user;
+    private List<User> user_S;
 
     public UserService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.userDao = (UserDao) ac.getBean("userDao");
         this.setUsers();
+    }
+
+    public List<User> getUser_S() {
+        return user_S;
+    }
+
+    public void setUser_S(int s_id) {
+        this.user_S = userDao.selectUser_S(s_id);
     }
 
     public UserDao getUserDao() {
@@ -93,5 +97,12 @@ public class UserService {
 
     public void updatePassword(User user){
         userDao.updatePassword(user);
+    }
+
+    public Map<String, List<User>> selectUser_S(int s_id) {
+        Map<String, List<User>> result = new HashMap<>();
+        setUser_S(s_id);
+        result.put("users", user_S);
+        return result;
     }
 }

@@ -92,4 +92,8 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
     public void deleteContent(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteContent", id);
     }
+
+    public List<Syllabus> selectAll_S(@Param("id") int id){
+        return getSqlSession().selectList("com.suzumiya.mapper.SyllabusMapper.selectAll_S", id);
+    }
 }

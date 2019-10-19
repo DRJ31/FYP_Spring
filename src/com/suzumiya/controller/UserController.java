@@ -26,13 +26,30 @@ public class UserController {
         this.loginMap = loginMap;
     }
 
+    @RequestMapping(value = "/api/syllabuses", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView getAllSyllabuses(@RequestBody Token token) {
+        SyllabusService service = new SyllabusService();
+        User user = loginMap.get(token.getToken());
+        Map<String, List<Syllabus>> map;
+        if (user.getRole().getId() == 1){
+            map = service.getSyllabusesMap();
+        }
+        else {
+            map = service.selectSyllabuses_S(user.getSchool_id());
+        }
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+
     @RequestMapping(value = "/api/users", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllUsers(@RequestBody Token token) {
         UserService service = new UserService();
         User user = loginMap.get(token.getToken());
-        Map<String, List<User>> map = new HashMap<>();
+        Map<String, List<User>> map;
         if (user.getRole().getId() == 1) {
             map = service.getUsersMap();
         }

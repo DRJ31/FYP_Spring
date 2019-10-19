@@ -14,14 +14,6 @@ import java.util.Map;
 
 @Controller
 public class SyllabusController {
-    @RequestMapping(value = "/api/syllabuses", method = {RequestMethod.GET})
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView getAllSyllabuses() {
-        SyllabusService service = new SyllabusService();
-        Map<String, List<Syllabus>> map = service.getSyllabusesMap();
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
 
     @RequestMapping(value = "/api/syllabus", method = {RequestMethod.GET})
     @ResponseBody

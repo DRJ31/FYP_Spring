@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class SyllabusService {
     private List<Syllabus> syllabuses;
+    private List<Syllabus> syllabuses_S;
     private SyllabusDao syllabusDao;
     private Syllabus syllabus;
     private Cilo cilo;
@@ -24,11 +25,19 @@ public class SyllabusService {
         this.setCilos();
     }
 
-    public void setCilo(int id) {
+    public List<Syllabus> getSyllabuses_S() {
+        return syllabuses_S;
+    }
+
+    private void setSyllabuses_S(int id) {
+        this.syllabuses_S = syllabusDao.selectAll_S(id);
+    }
+
+    private void setCilo(int id) {
         this.cilo = syllabusDao.selectCiloById(id);
     }
 
-    public void setCilos() {
+    private void setCilos() {
         this.cilos = syllabusDao.selectAllCilo();
     }
 
@@ -158,5 +167,12 @@ public class SyllabusService {
 
     public void deleteContent(int id){
         syllabusDao.deleteContent(id);
+    }
+
+    public Map<String, List<Syllabus>> selectSyllabuses_S(int id) {
+        Map<String, List<Syllabus>> result = new HashMap<>();
+        setSyllabuses_S(id);
+        result.put("syllabus", syllabuses_S);
+        return result;
     }
 }

@@ -241,4 +241,30 @@
     <delete id="deleteContent">
         delete from content where content.id = #{id}
     </delete>
+    <select id="selectAll_S" resultMap="syllabus">
+        select syllabus.*,
+            school.id as the_school_id,school.*,
+            textbook.id as textbook_id,textbook.title as textbook_title,textbook.*,
+            content.id as c_id,content.syllabus_id as content_syllabus_id,content.title as content_title,content.hours as content_hours,content.*,
+            assessment.id as a_id,assessment.syllabus_id as a_syllabus_id,assessment.*,
+            assessment_cilo.id as a_c_id,assessment_cilo.*,
+            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.*,
+            tla.id as t_id,tla.content as tla_content, tla.*,
+            pilo.id as p_id,pilo.syllabus_id as p_syllabus_id,pilo.content as pilos_content,pilo.*,
+            pilo_cilo.id as p_c_id,pilo_cilo.*
+        from syllabus
+        left outer join school on syllabus.school_id = school.id
+        left outer join textbook on syllabus.id = textbook.syllabus_id
+        left outer join content on syllabus.id = content.syllabus_id
+        left outer join (assessment
+            right outer join assessment_cilo on assessment.id = assessment_cilo.assessment_id
+            ) on syllabus.id = assessment.syllabus_id
+        left outer join (cilo
+            right outer join tla on cilo.id = tla.cilo_id
+            )on syllabus.id = cilo.syllabus_id
+        left outer join (pilo
+            right outer join pilo_cilo on pilo.id = pilo_cilo.pilo_id
+            ) on syllabus.id = pilo.syllabus_id
+        where syllabus.school_id = #{id}
+    </select>
 </mapper>

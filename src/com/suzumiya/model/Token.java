@@ -6,8 +6,17 @@ public class Token {
     private String token;
     private String old_pass;
     private String new_pass;
+    private String email;
 
     public Token() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getToken() {

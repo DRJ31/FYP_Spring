@@ -268,6 +268,25 @@ public class UserController {
         }
     }
 
+    @RequestMapping(value = "/api/email", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateEmail(@RequestBody Token token){
+        UserService userService = new UserService();
+        Map<String, Boolean> map = new HashMap<>();
+        User user = loginMap.get(token.getToken());
+        map.put("status", false);
+        user.setEmail(token.getEmail());
+        try {
+            userService.updateEmail(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        loginMap.put(token.getToken(), user);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
     @RequestMapping(value = "/api/auditTeacher",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin

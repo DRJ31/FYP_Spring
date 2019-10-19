@@ -109,4 +109,8 @@ public class UserService {
         result.put("users", user_S);
         return result;
     }
+
+    public void updateEmail(User user)throws Exception{
+        userDao.updateEmail(user);
+    }
 }

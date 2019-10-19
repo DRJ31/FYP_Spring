@@ -193,35 +193,6 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-//    @RequestMapping(value = "/api/check", method = {RequestMethod.POST})
-//    @ResponseBody
-//    @CrossOrigin
-//    public ModelAndView checkUserDuplicate(@RequestBody User user) {
-//        UserService service = new UserService();
-//        User check = service.checkUserDuplicate(user);
-//        Map<String, User> map = new HashMap<>();
-//        map.put("user", check);
-//        return new ModelAndView(new MappingJackson2JsonView(), map);
-//    }
-
-//    @RequestMapping(value = "/api/favorite/check",method = RequestMethod.POST)
-//    @ResponseBody
-//    @CrossOrigin
-//    public ModelAndView checkFavoriteDuplicate(@RequestBody Favorite favorite){
-//        SyllabusService syllabusService = new SyllabusService();
-//        SchoolService schoolService = new SchoolService();
-//        int uid = loginMap.get(favorite.getToken()).getId();
-//        favorite.setUser_id(uid);
-//        Map<String, Favorite> map = new HashMap<>();
-//        if (favorite.getSyllabus_id() != 0){
-//            map.put("favorite", syllabusService.checkFavoriteDuplicate(favorite));
-//        }
-//        if (favorite.getSchool_id() != 0){
-//            map.put("favorite", schoolService.checkFavoriteDuplicate(favorite));
-//        }
-//        return new ModelAndView(new MappingJackson2JsonView(), map);
-//    }
-
     @RequestMapping(value = "/api/audit",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
@@ -295,5 +266,62 @@ public class UserController {
             map.put("status", false);
             return new ModelAndView(new MappingJackson2JsonView(), map);
         }
+    }
+
+    @RequestMapping(value = "/api/auditTeacher",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertAuditTeacher(@RequestBody AuditTeacher auditTeacher){
+        SchoolService schoolService = new SchoolService();
+        int uid = loginMap.get(auditTeacher.getToken()).getId();
+        auditTeacher.setUser_id(uid);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        try {
+            schoolService.insertAuditTeacher(auditTeacher);
+        } catch (Exception e) {
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/auditTeacher",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteAuditTeacher(@RequestParam("id") int id){
+        SchoolService service = new SchoolService();
+        service.deleteAuditTeacher(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/auditTeacher",method = RequestMethod.PUT)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateTeacherRole(@RequestParam("id") int id){
+        SchoolService schoolService = new SchoolService();
+        UserService userService = new UserService();
+        AuditTeacher auditTeacher = schoolService.getAuditTeacherMap(id).get("audit teacher");
+        int uid = auditTeacher.getUser_id();
+        userService.updateTeacherRole(uid);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        schoolService.deleteAuditTeacher(id);
+        int school_id = schoolService.getSchoolByName(auditTeacher.getSchool_name()).getId();
+        userService.updateSchoolId(new User(uid, school_id));
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/auditTeachers", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView selectAllAuditSchoolTeacher(@RequestBody Token token) {
+        SchoolService service = new SchoolService();
+        User user = loginMap.get(token.getToken());
+        Map<String, List<AuditTeacher>> map = service.getAuditSchoolTeachersMap(user.getSchool_id());
+        return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

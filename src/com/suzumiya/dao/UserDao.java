@@ -48,4 +48,8 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
         return getSqlSession().selectList("com.suzumiya.mapper.UserMapper.selectUser_S", s_id);
     }
 
+    public void updateTeacherRole(@Param("id") int id){
+        getSqlSession().update("com.suzumiya.mapper.UserMapper.updateTeacherRole", id);
+    }
+
 }

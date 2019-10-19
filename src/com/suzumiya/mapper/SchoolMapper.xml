@@ -23,6 +23,13 @@
         <result column="user_id" property="user_id"/>
         <result column="location" property="location" />
         <result column="introduction" property="introduction" />
+        <result column="description" property="description" />
+    </resultMap>
+    <resultMap id="auditTeacher" type="AuditTeacher">
+        <id column="id" property="id" />
+        <result column="school_name" property="school_name" />
+        <result column="user_id" property="user_id"/>
+        <result column="description" property="description" />
     </resultMap>
     <select id="selectAll" resultMap="school">
         select school.*,syllabus.id as syllabus_id,syllabus.title
@@ -71,4 +78,20 @@
     <select id="getSchoolByName" resultMap="school">
         select * from school where school.name = #{name}
     </select>
+    <select id="selectAllAuditTeacher" resultMap="auditTeacher">
+        select * from audit_teacher
+    </select>
+    <select id="selectAllAuditSchoolTeacher" resultMap="auditTeacher">
+        select * from audit_teacher where school_name = #{name}
+    </select>
+    <select id="selectAuditTeacherById" resultMap="auditTeacher">
+        select * from audit_teacher where audit_teacher.id = #{id}
+    </select>
+    <insert id="insertAuditTeacher">
+        insert into audit_teacher (school_name,user_id, description)
+        value (#{school_name}, #{user_id}, #{description})
+    </insert>
+    <delete id="deleteAuditTeacher">
+        delete from audit_teacher where audit_teacher.id = #{id}
+    </delete>
 </mapper>

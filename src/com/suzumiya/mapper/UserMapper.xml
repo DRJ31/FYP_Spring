@@ -42,9 +42,7 @@
     <select id="checkUserDuplicate" resultMap="allUsers">
         select * from user where username=#{name} or email=#{email}
     </select>
-    <update id="updateSchoolRole">
-        update user set user.role_id = 2 where user.id = #{id}
-    </update>
+
     <update id="updateSchoolId">
         update user set user.school_id = #{school_id} where user.id = #{id}
     </update>
@@ -56,4 +54,7 @@
         from user left outer join school on user.school_id = school.id,role
         where user.role_id=role.id and user.school_id = #{s_id} and user.role_id != 1 and user.role_id != 4
     </select>
+    <update id="updateTeacherRole">
+        update user set user.role_id = 3 where user.id = #{id}
+    </update>
 </mapper>

@@ -1,6 +1,7 @@
 package com.suzumiya.dao;
 
 import com.suzumiya.model.AuditSchool;
+import com.suzumiya.model.AuditTeacher;
 import com.suzumiya.model.Favorite;
 import com.suzumiya.model.School;
 import org.apache.ibatis.annotations.Param;
@@ -67,5 +68,26 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
 
     public School getSchoolByName(@Param("name") String name){
         return getSqlSession().selectOne("com.suzumiya.mapper.SchoolMapper.getSchoolByName", name);
+    }
+
+    public List<AuditTeacher> selectAllAuditTeacher() {
+        return getSqlSession().selectList("com.suzumiya.mapper.SchoolMapper.selectAllAuditTeacher");
+    }
+
+    public AuditTeacher selectAuditTeacherById(@Param("id") int id){
+        return getSqlSession().selectOne("com.suzumiya.mapper.SchoolMapper.selectAuditTeacherById", id);
+    }
+
+    public void insertAuditTeacher(AuditTeacher auditTeacher) throws Exception {
+        getSqlSession().insert("com.suzumiya.mapper.SchoolMapper.insertAuditTeacher", auditTeacher);
+    }
+
+    public void deleteAuditTeacher(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.SchoolMapper.deleteAuditTeacher", id);
+    }
+
+    public List<AuditTeacher> selectAllAuditSchoolTeacher(@Param("id") int id){
+        School school = this.selectById(id);
+        return getSqlSession().selectList("com.suzumiya.mapper.SchoolMapper.selectAllAuditSchoolTeacher", school);
     }
 }

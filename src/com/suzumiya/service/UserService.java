@@ -91,6 +91,10 @@ public class UserService {
         userDao.updateSchoolRole(id);
     }
 
+    public void updateTeacherRole(int id){
+        userDao.updateTeacherRole(id);
+    }
+
     public void updateSchoolId(User user){
         userDao.updateSchoolId(user);
     }

@@ -2,7 +2,6 @@ package com.suzumiya.service;
 
 import com.suzumiya.dao.SyllabusDao;
 import com.suzumiya.model.*;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

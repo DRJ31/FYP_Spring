@@ -1,6 +1,7 @@
 package com.suzumiya.controller;
 
 import com.suzumiya.model.TextBook;
+import com.suzumiya.model.TextBookList;
 import com.suzumiya.service.TextBookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,11 @@ public class TextBookController {
     @RequestMapping(value = "/api/textBook",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public ModelAndView insertTextBook(@RequestBody TextBook textBook){
+    public ModelAndView insertTextBook(@RequestBody TextBookList textBooks){
         TextBookService service = new TextBookService();
-        service.insertTextBook(textBook);
+        for (TextBook textBook : textBooks.getTextBooks()) {
+            service.insertTextBook(textBook);
+        }
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);

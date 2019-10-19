@@ -18,6 +18,14 @@ public class UserController {
 
     private Map<String, User> loginMap = new HashMap<>();
 
+    public Map<String, User> getLoginMap() {
+        return loginMap;
+    }
+
+    public void setLoginMap(Map<String, User> loginMap) {
+        this.loginMap = loginMap;
+    }
+
     @RequestMapping(value = "/api/users", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin

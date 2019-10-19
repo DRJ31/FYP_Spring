@@ -1,9 +1,8 @@
 package com.suzumiya.service;
 
 import com.suzumiya.dao.SyllabusDao;
-import com.suzumiya.model.Cilo;
-import com.suzumiya.model.Favorite;
-import com.suzumiya.model.Syllabus;
+import com.suzumiya.model.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -129,4 +128,35 @@ public class SyllabusService {
         syllabusDao.deleteCilo(id);
     }
 
+    public void insertPilo(Pilo pilo){
+        syllabusDao.insertPilo(pilo);
+    }
+
+    public void deletePilo(int id){
+        syllabusDao.deletePilo(id);
+    }
+
+    public void insertPC(Pilo_Cilo pilo_cilo){
+        syllabusDao.insertPC(pilo_cilo);
+    }
+
+    public void deletePC(int id){
+        syllabusDao.deletePC(id);
+    }
+
+    public void insertTla(Tla tla){
+        syllabusDao.insertTla(tla);
+    }
+
+    public void deleteTla(int id){
+        syllabusDao.deleteTla(id);
+    }
+
+    public void insertContent(Content content){
+        syllabusDao.insertContent(content);
+    }
+
+    public void deleteContent(int id){
+        syllabusDao.deleteContent(id);
+    }
 }

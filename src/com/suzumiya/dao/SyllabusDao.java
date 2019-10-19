@@ -1,8 +1,6 @@
 package com.suzumiya.dao;
 
-import com.suzumiya.model.Cilo;
-import com.suzumiya.model.Favorite;
-import com.suzumiya.model.Syllabus;
+import com.suzumiya.model.*;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
@@ -61,5 +59,37 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
 
     public void deleteCilo(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteCilo", id);
+    }
+
+    public void insertPilo(Pilo pilo){
+        getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertPilo", pilo);
+    }
+
+    public void deletePilo(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deletePilo", id);
+    }
+
+    public void insertPC(Pilo_Cilo pilo_cilo){
+        getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertPC", pilo_cilo);
+    }
+
+    public void deletePC(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deletePC", id);
+    }
+
+    public void insertTla(Tla tla){
+        getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertTla", tla);
+    }
+
+    public void deleteTla(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteTla", id);
+    }
+
+    public void insertContent(Content content){
+        getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertContent", content);
+    }
+
+    public void deleteContent(@Param("id") int id){
+        getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deleteContent", id);
     }
 }

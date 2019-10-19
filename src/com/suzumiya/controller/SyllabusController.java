@@ -1,7 +1,6 @@
 package com.suzumiya.controller;
 
-import com.suzumiya.model.Cilo;
-import com.suzumiya.model.Syllabus;
+import com.suzumiya.model.*;
 import com.suzumiya.service.SyllabusService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -106,4 +105,91 @@ public class SyllabusController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
+    @RequestMapping(value = "/api/pilo",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertPilo(@RequestBody Pilo pilo){
+        SyllabusService service = new SyllabusService();
+        service.insertPilo(pilo);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/pilo",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deletePilo(@RequestParam("id") int id){
+        SyllabusService service = new SyllabusService();
+        service.deletePilo(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/pc",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertPC(@RequestBody Pilo_Cilo pilo_cilo){
+        SyllabusService service = new SyllabusService();
+        service.insertPC(pilo_cilo);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/pc",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deletePC(@RequestParam("id") int id){
+        SyllabusService service = new SyllabusService();
+        service.deletePC(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/tla",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertTla(@RequestBody Tla tla){
+        SyllabusService service = new SyllabusService();
+        service.insertTla(tla);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/tla",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteTla(@RequestParam("id") int id){
+        SyllabusService service = new SyllabusService();
+        service.deleteTla(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/content",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertContent(@RequestBody Content content){
+        SyllabusService service = new SyllabusService();
+        service.insertContent(content);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/content",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteContent(@RequestParam("id") int id){
+        SyllabusService service = new SyllabusService();
+        service.deleteContent(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }

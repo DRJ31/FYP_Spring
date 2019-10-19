@@ -213,4 +213,32 @@
     <delete id="deleteCilo">
         delete from cilo where cilo.id = #{id}
     </delete>
+    <insert id="insertPilo">
+        insert into pilo (syllabus_id, pilo_id, content)
+        value (#{syllabus_id}, #{cilo_id}, #{content})
+    </insert>
+    <delete id="deletePilo">
+        delete from pilo where pilo.id = #{id}
+    </delete>
+    <insert id="insertPC">
+        insert into pilo_cilo (pilo_id, cilo_id)
+        value (#{pilo_id}, #{cilo_id})
+    </insert>
+    <delete id="deletePC">
+        delete from pilo_cilo where pilo_cilo.id = #{id}
+    </delete>
+    <insert id="insertTla">
+        insert into tla (cilo_id, content)
+        value (#{cilo_id}, #{content})
+    </insert>
+    <delete id="deleteTla">
+        delete from tla where tla.id = #{id}
+    </delete>
+    <insert id="insertContent">
+        insert into content (content_id, syllabus_id, title, hours, content)
+        value (#{content_id}, #{syllabus_id}, #{title}, #{hours}, #{content})
+    </insert>
+    <delete id="deleteContent">
+        delete from content where content.id = #{id}
+    </delete>
 </mapper>

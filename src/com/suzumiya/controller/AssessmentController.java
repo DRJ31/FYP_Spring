@@ -36,9 +36,9 @@ public class AssessmentController {
     @ResponseBody
     public ModelAndView insertAssessment(@RequestBody Assessment assessment){
         AssessmentService service = new AssessmentService();
-        service.insertAssessment(assessment);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
+        int id = service.insertAssessment(assessment);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -76,9 +76,9 @@ public class AssessmentController {
     @CrossOrigin
     public ModelAndView insertAC(@RequestBody Assessment_Cilo assessment_cilo){
         AssessmentService service = new AssessmentService();
-        service.insertAC(assessment_cilo);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
+        int id = service.insertAC(assessment_cilo);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

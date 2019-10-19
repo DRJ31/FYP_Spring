@@ -77,8 +77,8 @@ public class AssessmentService {
         return result;
     }
 
-    public void insertAssessment(Assessment assessment){
-        assessmentDao.insertAssessment(assessment);
+    public int insertAssessment(Assessment assessment){
+        return assessmentDao.insertAssessment(assessment);
     }
 
     public void deleteAssessment(int id){
@@ -98,8 +98,8 @@ public class AssessmentService {
         return result;
     }
 
-    public void insertAC(Assessment_Cilo assessment_cilo){
-        assessmentDao.insertAC(assessment_cilo);
+    public int insertAC(Assessment_Cilo assessment_cilo){
+        return assessmentDao.insertAC(assessment_cilo);
     }
 
     public void deleteAC(int id){

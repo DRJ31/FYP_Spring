@@ -41,7 +41,7 @@
             left outer join assessment_cilo on assessment.id = assessment_cilo.assessment_id
         where assessment.id=#{id}
     </select>
-    <insert id="insertAssessment">
+    <insert id="insertAssessment" useGeneratedKeys="true" keyProperty="id" parameterType="Assessment">
         insert into assessment (syllabus_id, method, weighting, description)
         value (#{syllabus_id}, #{method}, #{weighting}, #{description})
     </insert>
@@ -54,7 +54,7 @@
     <select id="selectACById" resultMap="assessment_cilo">
         select * from assessment_cilo where id = #{id}
     </select>
-    <insert id="insertAC">
+    <insert id="insertAC" useGeneratedKeys="true" keyProperty="id" parameterType="Assessment_Cilo">
         insert into assessment_cilo (assessment_id, cilo_id)
         value (#{assessment_id}, #{cilo_id})
     </insert>

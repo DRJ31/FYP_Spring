@@ -18,8 +18,9 @@ public class AssessmentDao extends SqlSessionDaoSupport implements Dao<Assessmen
         return getSqlSession().selectOne("com.suzumiya.mapper.AssessmentMapper.selectByAssessmentId", id);
     }
 
-    public void insertAssessment(Assessment assessment){
+    public int insertAssessment(Assessment assessment){
         getSqlSession().insert("com.suzumiya.mapper.AssessmentMapper.insertAssessment", assessment);
+        return assessment.getId();
     }
 
     public void deleteAssessment(@Param("id") int id){
@@ -34,8 +35,9 @@ public class AssessmentDao extends SqlSessionDaoSupport implements Dao<Assessmen
         return getSqlSession().selectOne("com.suzumiya.mapper.AssessmentMapper.selectACById", id);
     }
 
-    public void insertAC(Assessment_Cilo assessment_cilo){
+    public int insertAC(Assessment_Cilo assessment_cilo){
         getSqlSession().insert("com.suzumiya.mapper.AssessmentMapper.insertAC", assessment_cilo);
+        return assessment_cilo.getId();
     }
 
     public void deleteAC(@Param("id") int id){

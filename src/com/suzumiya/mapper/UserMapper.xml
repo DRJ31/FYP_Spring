@@ -57,4 +57,7 @@
     <update id="updateTeacherRole">
         update user set user.role_id = 3 where user.id = #{id}
     </update>
+    <update id="updateSchoolRole">
+        update user set user.role_id = 2 where user.id = #{id}
+    </update>
 </mapper>

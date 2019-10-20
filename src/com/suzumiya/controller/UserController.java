@@ -228,7 +228,7 @@ public class UserController {
     public ModelAndView updateRole(@RequestParam("id") int id){
         SchoolService schoolService = new SchoolService();
         UserService userService = new UserService();
-        AuditSchool auditSchool = schoolService.getAuditSchoolMap(id).get("audits");
+        AuditSchool auditSchool = schoolService.getAuditSchoolMap(id).get("audit");
         int uid = auditSchool.getUser_id();
         userService.updateSchoolRole(uid);
         Map<String, Boolean> map = new HashMap<>();
@@ -322,7 +322,7 @@ public class UserController {
     public ModelAndView updateTeacherRole(@RequestParam("id") int id){
         SchoolService schoolService = new SchoolService();
         UserService userService = new UserService();
-        AuditTeacher auditTeacher = schoolService.getAuditTeacherMap(id).get("audit teacher");
+        AuditTeacher auditTeacher = schoolService.getAuditTeacherMap(id).get("audit");
         int uid = auditTeacher.getUser_id();
         userService.updateTeacherRole(uid);
         Map<String, Boolean> map = new HashMap<>();

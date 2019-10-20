@@ -6,12 +6,21 @@ public class AuditTeacher {
     private String school_name;
     private String token;
     private String description;
+    private User user;
 
     public AuditTeacher() {
     }
 
     public int getId() {
         return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setId(int id) {

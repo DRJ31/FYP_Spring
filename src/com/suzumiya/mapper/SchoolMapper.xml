@@ -24,12 +24,17 @@
         <result column="location" property="location" />
         <result column="introduction" property="introduction" />
         <result column="description" property="description" />
+        <result column="username" property="user_name" />
     </resultMap>
     <resultMap id="auditTeacher" type="AuditTeacher">
         <id column="id" property="id" />
         <result column="school_name" property="school_name" />
         <result column="user_id" property="user_id"/>
         <result column="description" property="description" />
+        <association property="user" javaType="User">
+            <id column="uid" property="id" />
+            <result column="username" property="name" />
+        </association>
     </resultMap>
     <select id="selectAll" resultMap="school">
         select school.*,syllabus.id as syllabus_id,syllabus.title
@@ -63,10 +68,10 @@
         select * from favorite_school where user_id = #{user_id} and school_id = #{school_id}
     </select>
     <select id="selectAllAudit" resultMap="audit">
-        select * from audit
+        select audit.*,user.username from audit,user where audit.user_id=user.id
     </select>
     <select id="selectAuditById" resultMap="audit">
-        select * from audit where audit.id = #{id}
+        select audit.*,user.username from audit,user where audit.id = #{id} and audit.user_id=user.id
     </select>
     <insert id="insertAudit">
         insert into audit (school_name, user_id, introduction, description, location)
@@ -79,13 +84,13 @@
         select * from school where school.name = #{name}
     </select>
     <select id="selectAllAuditTeacher" resultMap="auditTeacher">
-        select * from audit_teacher
+        select audit_teacher.*,user.id as uid,user.username from audit_teacher,user where audit_teacher.user_id = user.id
     </select>
     <select id="selectAllAuditSchoolTeacher" resultMap="auditTeacher">
-        select * from audit_teacher where school_name = #{name}
+        select audit_teacher.*,user.username from audit_teacher,user where school_name = #{name} and audit_teacher.user_id=user.id
     </select>
     <select id="selectAuditTeacherById" resultMap="auditTeacher">
-        select * from audit_teacher where audit_teacher.id = #{id}
+        select audit_teacher.*,user.username from audit_teacher,user where audit_teacher.id = #{id} and audit_teacher.user_id=user.id
     </select>
     <insert id="insertAuditTeacher">
         insert into audit_teacher (school_name,user_id, description)

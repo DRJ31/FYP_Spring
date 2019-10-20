@@ -287,7 +287,7 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/auditTeacher",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/audit/teacher",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertAuditTeacher(@RequestBody AuditTeacher auditTeacher){
@@ -305,7 +305,7 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/auditTeacher",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/audit/teacher",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteAuditTeacher(@RequestParam("id") int id){
@@ -316,7 +316,7 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/auditTeacher",method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/audit/teacher",method = RequestMethod.PUT)
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateTeacherRole(@RequestParam("id") int id){
@@ -334,7 +334,7 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/auditTeachers", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/audit/teachers", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView selectAllAuditSchoolTeacher(@RequestBody Token token) {

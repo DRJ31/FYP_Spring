@@ -142,7 +142,7 @@ public class SchoolService {
     public Map<String, AuditSchool> getAuditSchoolMap(int id) {
         Map<String, AuditSchool> result = new HashMap<>();
         setAuditSchool(id);
-        result.put("audits", auditSchool);
+        result.put("audit", auditSchool);
         return result;
     }
 
@@ -160,14 +160,14 @@ public class SchoolService {
 
     public Map<String, List<AuditTeacher>> getAuditTeachersMap() {
         Map<String, List<AuditTeacher>> result = new HashMap<>();
-        result.put("audit teachers", auditTeachers);
+        result.put("audits", auditTeachers);
         return result;
     }
 
     public Map<String, AuditTeacher> getAuditTeacherMap(int id) {
         Map<String, AuditTeacher> result = new HashMap<>();
         setAuditTeacher(id);
-        result.put("audit teacher", auditTeacher);
+        result.put("audit", auditTeacher);
         return result;
     }
 
@@ -182,7 +182,7 @@ public class SchoolService {
     public Map<String, List<AuditTeacher>> getAuditSchoolTeachersMap(int id) {
         Map<String, List<AuditTeacher>> result = new HashMap<>();
         setAuditTeacher_S(id);
-        result.put("audit teachers", auditTeacher_S);
+        result.put("audits", auditTeacher_S);
         return result;
     }
 }

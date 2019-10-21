@@ -10,10 +10,19 @@ public class Assessment {
     private String method;
     private int weighting;
     private String description;
+    private List<Integer> cilo_ids;
     private List<AssessmentCilo> assessment_cilos;
     private List<Syllabus> syllabuses;
 
     public Assessment() {
+    }
+
+    public List<Integer> getCilo_ids() {
+        return cilo_ids;
+    }
+
+    public void setCilo_ids(List<Integer> cilo_ids) {
+        this.cilo_ids = cilo_ids;
     }
 
     public List<Syllabus> getSyllabuses() {

@@ -10,10 +10,19 @@ public class Cilo {
     private int cilo_id;
     private String content;
     private Tla tla;
+    private List<Integer> pilo_ids;
     private List<PiloCilo> pilo_cilos;
     private Syllabus syllabus;
 
     public Cilo() {
+    }
+
+    public List<Integer> getPilo_ids() {
+        return pilo_ids;
+    }
+
+    public void setPilo_ids(List<Integer> pilo_ids) {
+        this.pilo_ids = pilo_ids;
     }
 
     public Syllabus getSyllabus() {

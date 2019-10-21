@@ -37,6 +37,7 @@ public class AssessmentController {
 
     @RequestMapping(value = "/api/assessment",method = RequestMethod.POST)
     @ResponseBody
+    @CrossOrigin
     public ModelAndView insertAssessment(@RequestBody AssessmentList assessments){
         AssessmentService service = new AssessmentService();
         List<Integer> id = new ArrayList<>();

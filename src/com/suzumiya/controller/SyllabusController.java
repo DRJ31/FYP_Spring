@@ -212,7 +212,7 @@ public class SyllabusController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/updateSyllabus", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/syllabus/update", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateEmail(@RequestBody Syllabus syllabus){

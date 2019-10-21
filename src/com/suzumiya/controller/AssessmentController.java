@@ -1,16 +1,15 @@
 package com.suzumiya.controller;
 
 import com.suzumiya.model.Assessment;
-import com.suzumiya.model.AssessmentList;
-import com.suzumiya.model.Assessment_Cilo;
-import com.suzumiya.model.Assessment_CiloList;
+import com.suzumiya.model.list.AssessmentList;
+import com.suzumiya.model.relationship.AssessmentCilo;
+import com.suzumiya.model.relationship.list.AssessmentCiloList;
 import com.suzumiya.service.AssessmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,10 +37,10 @@ public class AssessmentController {
 
     @RequestMapping(value = "/api/assessment",method = RequestMethod.POST)
     @ResponseBody
-    public ModelAndView insertAssessment(@RequestBody AssessmentList assessmentList){
+    public ModelAndView insertAssessment(@RequestBody AssessmentList assessments){
         AssessmentService service = new AssessmentService();
         List<Integer> id = new ArrayList<>();
-        for (Assessment assessment : assessmentList.getAssessments()) {
+        for (Assessment assessment : assessments.getAssessments()) {
             id.add(service.insertAssessment(assessment));
         }
         Map<String, List<Integer>> map = new HashMap<>();
@@ -65,7 +64,7 @@ public class AssessmentController {
     @CrossOrigin
     public ModelAndView getAllACs() {
         AssessmentService service = new AssessmentService();
-        Map<String, List<Assessment_Cilo>> map = service.getACsMap();
+        Map<String, List<AssessmentCilo>> map = service.getACsMap();
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -74,21 +73,21 @@ public class AssessmentController {
     @CrossOrigin
     public ModelAndView getACById(@RequestParam(value = "id") int id) {
         AssessmentService service = new AssessmentService();
-        Map<String, Assessment_Cilo> map = service.getACMap(id);
+        Map<String, AssessmentCilo> map = service.getACMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
     @RequestMapping(value = "/api/ac",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public ModelAndView insertAC(@RequestBody Assessment_CiloList assessment_ciloList){
+    public ModelAndView insertAC(@RequestBody AssessmentCiloList assessmentCilos){
         AssessmentService service = new AssessmentService();
         List<Integer> id = new ArrayList<>();
-        for (Assessment_Cilo assessment_cilo : assessment_ciloList.getAssessment_cilos()) {
-            id.add(service.insertAC(assessment_cilo));
+        for (AssessmentCilo assessment_cilo : assessmentCilos.getAssessmentCilos()) {
+            service.insertAC(assessment_cilo);
         }
-        Map<String, List<Integer>> map = new HashMap<>();
-        map.put("ID", id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 

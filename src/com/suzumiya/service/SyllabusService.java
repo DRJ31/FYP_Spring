@@ -2,6 +2,7 @@ package com.suzumiya.service;
 
 import com.suzumiya.dao.SyllabusDao;
 import com.suzumiya.model.*;
+import com.suzumiya.model.relationship.PiloCilo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -144,7 +145,7 @@ public class SyllabusService {
         syllabusDao.deletePilo(id);
     }
 
-    public int insertPC(Pilo_Cilo pilo_cilo){
+    public int insertPC(PiloCilo pilo_cilo){
         return syllabusDao.insertPC(pilo_cilo);
     }
 

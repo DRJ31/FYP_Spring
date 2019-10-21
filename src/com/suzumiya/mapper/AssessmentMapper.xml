@@ -13,13 +13,13 @@
             <id column="s_id" property="id" />
             <result column="s_title" property="title" />
         </collection>
-        <collection property="assessment_cilos" ofType="Assessment_Cilo" javaType="List">
+        <collection property="assessment_cilos" ofType="AssessmentCilo" javaType="List">
             <id column="a_c_id" property="id" />
             <result column="assessment_id" property="assessment_id" />
             <result column="cilo_id" property="cilo_id" />
         </collection>
     </resultMap>
-    <resultMap id="assessment_cilo" type="Assessment_Cilo">
+    <resultMap id="assessment_cilo" type="AssessmentCilo">
         <id column="id" property="id"/>
         <result column="assessment_id" property="assessment_id" />
         <result column="cilo_id" property="cilo_id" />
@@ -54,7 +54,7 @@
     <select id="selectACById" resultMap="assessment_cilo">
         select * from assessment_cilo where id = #{id}
     </select>
-    <insert id="insertAC" useGeneratedKeys="true" keyProperty="id" parameterType="Assessment_Cilo">
+    <insert id="insertAC" useGeneratedKeys="true" keyProperty="id" parameterType="AssessmentCilo">
         insert into assessment_cilo (assessment_id, cilo_id)
         value (#{assessment_id}, #{cilo_id})
     </insert>

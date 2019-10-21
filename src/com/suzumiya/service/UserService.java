@@ -1,7 +1,7 @@
 package com.suzumiya.service;
 
 import com.suzumiya.dao.UserDao;
-import com.suzumiya.model.User;
+import com.suzumiya.model.user.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

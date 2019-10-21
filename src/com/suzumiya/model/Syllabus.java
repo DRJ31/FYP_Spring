@@ -1,5 +1,7 @@
 package com.suzumiya.model;
 
+import com.suzumiya.model.user.School;
+
 import java.util.List;
 
 public class Syllabus {

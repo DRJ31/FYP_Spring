@@ -1,6 +1,7 @@
 package com.suzumiya.dao;
 
 import com.suzumiya.model.*;
+import com.suzumiya.model.relationship.PiloCilo;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
@@ -71,7 +72,7 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
         getSqlSession().delete("com.suzumiya.mapper.SyllabusMapper.deletePilo", id);
     }
 
-    public int insertPC(Pilo_Cilo pilo_cilo){
+    public int insertPC(PiloCilo pilo_cilo){
         getSqlSession().insert("com.suzumiya.mapper.SyllabusMapper.insertPC", pilo_cilo);
         return pilo_cilo.getId();
     }

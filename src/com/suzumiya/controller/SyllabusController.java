@@ -1,12 +1,19 @@
 package com.suzumiya.controller;
 
 import com.suzumiya.model.*;
+import com.suzumiya.model.list.CiloList;
+import com.suzumiya.model.list.ContentList;
+import com.suzumiya.model.list.PiloList;
+import com.suzumiya.model.list.TlaList;
+import com.suzumiya.model.relationship.PiloCilo;
+import com.suzumiya.model.relationship.list.PiloCiloList;
 import com.suzumiya.service.SyllabusService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,10 +92,13 @@ public class SyllabusController {
     @RequestMapping(value = "/api/cilo",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public ModelAndView insertCilo(@RequestBody Cilo cilo){
+    public ModelAndView insertCilo(@RequestBody CiloList cilos){
         SyllabusService service = new SyllabusService();
-        int id = service.insertCilo(cilo);
-        Map<String, Integer> map = new HashMap<>();
+        List<Integer> id = new ArrayList<>();
+        for (Cilo cilo : cilos.getCilos()) {
+            id.add(service.insertCilo(cilo));
+        }
+        Map<String, List<Integer>> map = new HashMap<>();
         map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -107,10 +117,13 @@ public class SyllabusController {
     @RequestMapping(value = "/api/pilo",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public ModelAndView insertPilo(@RequestBody Pilo pilo){
+    public ModelAndView insertPilo(@RequestBody PiloList pilos){
         SyllabusService service = new SyllabusService();
-        int id = service.insertPilo(pilo);
-        Map<String, Integer> map = new HashMap<>();
+        List<Integer> id = new ArrayList<>();
+        for (Pilo pilo : pilos.getPilos()) {
+            id.add(service.insertPilo(pilo));
+        }
+        Map<String, List<Integer>> map = new HashMap<>();
         map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -129,11 +142,13 @@ public class SyllabusController {
     @RequestMapping(value = "/api/pc",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public ModelAndView insertPC(@RequestBody Pilo_Cilo pilo_cilo){
+    public ModelAndView insertPC(@RequestBody PiloCiloList piloCilos){
         SyllabusService service = new SyllabusService();
-        int id = service.insertPC(pilo_cilo);
-        Map<String, Integer> map = new HashMap<>();
-        map.put("ID", id);
+        for (PiloCilo pilo_cilo : piloCilos.getPiloCilos()) {
+            service.insertPC(pilo_cilo);
+        }
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -151,11 +166,13 @@ public class SyllabusController {
     @RequestMapping(value = "/api/tla",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public ModelAndView insertTla(@RequestBody Tla tla){
+    public ModelAndView insertTla(@RequestBody TlaList tlas){
         SyllabusService service = new SyllabusService();
-        int id = service.insertTla(tla);
-        Map<String, Integer> map = new HashMap<>();
-        map.put("ID", id);
+        for (Tla tla : tlas.getTlas()) {
+            service.insertTla(tla);
+        }
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -173,10 +190,13 @@ public class SyllabusController {
     @RequestMapping(value = "/api/content",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
-    public ModelAndView insertContent(@RequestBody Content content){
+    public ModelAndView insertContent(@RequestBody ContentList contents){
         SyllabusService service = new SyllabusService();
-        int id = service.insertContent(content);
-        Map<String, Integer> map = new HashMap<>();
+        List<Integer> id = new ArrayList<>();
+        for (Content content : contents.getContents()) {
+            id.add(service.insertContent(content));
+        }
+        Map<String, List<Integer>> map = new HashMap<>();
         map.put("ID", id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }

@@ -1,4 +1,4 @@
-package com.suzumiya.model;
+package com.suzumiya.model.audit;
 
 public class AuditSchool {
     private int id;

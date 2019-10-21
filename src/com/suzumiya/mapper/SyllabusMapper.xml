@@ -42,7 +42,7 @@
             <result column="method" property="method" />
             <result column="weighting" property="weighting" />
             <result column="description" property="description" />
-            <collection property="assessment_cilos" ofType="Assessment_Cilo" javaType="List">
+            <collection property="assessment_cilos" ofType="AssessmentCilo" javaType="List">
                 <id column="a_c_id" property="id" />
                 <result column="assessment_id" property="assessment_id" />
                 <result column="cilo_id" property="cilo_id" />
@@ -58,7 +58,7 @@
                 <result column="cilo_id" property="cilo_id" />
                 <result column="tla_content" property="content" />
             </association>
-            <collection property="pilo_cilos" ofType="Pilo_Cilo" javaType="List">
+            <collection property="pilo_cilos" ofType="PiloCilo" javaType="List">
                 <id column="p_c_id" property="id" />
                 <result column="pilo_id" property="pilo_id" />
                 <result column="cilo_id" property="cilo_id" />
@@ -69,7 +69,7 @@
             <result column="p_syllabus_id" property="syllabus_id" />
             <result column="pilo_id" property="pilo_id" />
             <result column="pilos_content" property="content" />
-            <collection property="pilo_cilos" ofType="Pilo_Cilo" javaType="List">
+            <collection property="pilo_cilos" ofType="PiloCilo" javaType="List">
                 <id column="p_c_id" property="id" />
                 <result column="pilo_id" property="pilo_id" />
                 <result column="cilo_id" property="cilo_id" />
@@ -94,7 +94,7 @@
             <id column="s_id" property="id" />
             <result column="title" property="title" />
         </association>
-        <collection property="pilo_cilos" ofType="Pilo_Cilo" javaType="List">
+        <collection property="pilo_cilos" ofType="PiloCilo" javaType="List">
             <id column="p_c_id" property="id" />
             <result column="pilo_id" property="pilo_id" />
             <result column="p_cilo_id" property="cilo_id" />
@@ -215,12 +215,12 @@
     </delete>
     <insert id="insertPilo" useGeneratedKeys="true" keyProperty="id" parameterType="Pilo">
         insert into pilo (syllabus_id, pilo_id, content)
-        value (#{syllabus_id}, #{cilo_id}, #{content})
+        value (#{syllabus_id}, #{pilo_id}, #{content})
     </insert>
     <delete id="deletePilo">
         delete from pilo where pilo.id = #{id}
     </delete>
-    <insert id="insertPC"  useGeneratedKeys="true" keyProperty="id" parameterType="Pilo_Cilo">
+    <insert id="insertPC"  useGeneratedKeys="true" keyProperty="id" parameterType="PiloCilo">
         insert into pilo_cilo (pilo_id, cilo_id)
         value (#{pilo_id}, #{cilo_id})
     </insert>

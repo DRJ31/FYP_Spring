@@ -1,6 +1,11 @@
 package com.suzumiya.controller;
 
-import com.suzumiya.model.*;
+import com.suzumiya.model.audit.AuditSchool;
+import com.suzumiya.model.audit.AuditTeacher;
+import com.suzumiya.model.Favorite;
+import com.suzumiya.model.Syllabus;
+import com.suzumiya.model.user.Token;
+import com.suzumiya.model.user.User;
 import com.suzumiya.service.SchoolService;
 import com.suzumiya.service.SyllabusService;
 import com.suzumiya.service.UserService;

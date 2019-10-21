@@ -1,4 +1,6 @@
-package com.suzumiya.model;
+package com.suzumiya.model.audit;
+
+import com.suzumiya.model.user.User;
 
 public class AuditTeacher {
     private int id;

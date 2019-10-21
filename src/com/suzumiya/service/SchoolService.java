@@ -1,10 +1,10 @@
 package com.suzumiya.service;
 
 import com.suzumiya.dao.SchoolDao;
-import com.suzumiya.model.AuditSchool;
-import com.suzumiya.model.AuditTeacher;
+import com.suzumiya.model.audit.AuditSchool;
+import com.suzumiya.model.audit.AuditTeacher;
 import com.suzumiya.model.Favorite;
-import com.suzumiya.model.School;
+import com.suzumiya.model.user.School;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 

@@ -2,7 +2,7 @@ package com.suzumiya.service;
 
 import com.suzumiya.dao.AssessmentDao;
 import com.suzumiya.model.Assessment;
-import com.suzumiya.model.Assessment_Cilo;
+import com.suzumiya.model.relationship.AssessmentCilo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -14,8 +14,8 @@ public class AssessmentService {
     private List<Assessment> assessments;
     private AssessmentDao assessmentDao;
     private Assessment assessment;
-    private List<Assessment_Cilo> assessment_Cilos;
-    private Assessment_Cilo assessment_cilo;
+    private List<AssessmentCilo> assessment_Cilos;
+    private AssessmentCilo assessment_cilo;
 
     public AssessmentService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
@@ -32,11 +32,11 @@ public class AssessmentService {
         this.assessment_cilo = assessmentDao.selectACById(id);
     }
 
-    public List<Assessment_Cilo> getAssessment_Cilos() {
+    public List<AssessmentCilo> getAssessment_Cilos() {
         return assessment_Cilos;
     }
 
-    public Assessment_Cilo getAssessment_cilo() {
+    public AssessmentCilo getAssessment_cilo() {
         return assessment_cilo;
     }
 
@@ -85,20 +85,20 @@ public class AssessmentService {
         assessmentDao.deleteAssessment(id);
     }
 
-    public Map<String, List<Assessment_Cilo>> getACsMap() {
-        Map<String, List<Assessment_Cilo>> result = new HashMap<>();
+    public Map<String, List<AssessmentCilo>> getACsMap() {
+        Map<String, List<AssessmentCilo>> result = new HashMap<>();
         result.put("assessment_Cilos", assessment_Cilos);
         return result;
     }
 
-    public Map<String, Assessment_Cilo> getACMap(int id) {
-        Map<String, Assessment_Cilo> result = new HashMap<>();
+    public Map<String, AssessmentCilo> getACMap(int id) {
+        Map<String, AssessmentCilo> result = new HashMap<>();
         setAssessment_cilo(id);
         result.put("assessment_Cilo", assessment_cilo);
         return result;
     }
 
-    public int insertAC(Assessment_Cilo assessment_cilo){
+    public int insertAC(AssessmentCilo assessment_cilo){
         return assessmentDao.insertAC(assessment_cilo);
     }
 

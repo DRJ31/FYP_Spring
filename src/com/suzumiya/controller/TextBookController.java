@@ -1,7 +1,7 @@
 package com.suzumiya.controller;
 
 import com.suzumiya.model.TextBook;
-import com.suzumiya.model.TextBookList;
+import com.suzumiya.model.list.TextBookList;
 import com.suzumiya.service.TextBookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

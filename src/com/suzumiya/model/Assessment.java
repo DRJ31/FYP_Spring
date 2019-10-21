@@ -1,5 +1,7 @@
 package com.suzumiya.model;
 
+import com.suzumiya.model.relationship.AssessmentCilo;
+
 import java.util.List;
 
 public class Assessment {
@@ -8,7 +10,7 @@ public class Assessment {
     private String method;
     private int weighting;
     private String description;
-    private List<Assessment_Cilo> assessment_cilos;
+    private List<AssessmentCilo> assessment_cilos;
     private List<Syllabus> syllabuses;
 
     public Assessment() {
@@ -22,11 +24,11 @@ public class Assessment {
         this.syllabuses = syllabuses;
     }
 
-    public List<Assessment_Cilo> getAssessment_cilos() {
+    public List<AssessmentCilo> getAssessment_cilos() {
         return assessment_cilos;
     }
 
-    public void setAssessment_cilos(List<Assessment_Cilo> assessment_cilos) {
+    public void setAssessment_cilos(List<AssessmentCilo> assessment_cilos) {
         this.assessment_cilos = assessment_cilos;
     }
 

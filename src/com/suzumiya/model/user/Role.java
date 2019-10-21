@@ -1,4 +1,4 @@
-package com.suzumiya.model;
+package com.suzumiya.model.user;
 
 public class Role {
     private int id;

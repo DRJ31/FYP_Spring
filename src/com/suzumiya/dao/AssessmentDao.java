@@ -1,7 +1,7 @@
 package com.suzumiya.dao;
 
 import com.suzumiya.model.Assessment;
-import com.suzumiya.model.Assessment_Cilo;
+import com.suzumiya.model.relationship.AssessmentCilo;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
@@ -27,15 +27,15 @@ public class AssessmentDao extends SqlSessionDaoSupport implements Dao<Assessmen
         getSqlSession().delete("com.suzumiya.mapper.AssessmentMapper.deleteAssessment", id);
     }
 
-    public List<Assessment_Cilo> selectAC() {
+    public List<AssessmentCilo> selectAC() {
         return getSqlSession().selectList("com.suzumiya.mapper.AssessmentMapper.selectAC");
     }
 
-    public Assessment_Cilo selectACById(@Param("id") int id){
+    public AssessmentCilo selectACById(@Param("id") int id){
         return getSqlSession().selectOne("com.suzumiya.mapper.AssessmentMapper.selectACById", id);
     }
 
-    public int insertAC(Assessment_Cilo assessment_cilo){
+    public int insertAC(AssessmentCilo assessment_cilo){
         getSqlSession().insert("com.suzumiya.mapper.AssessmentMapper.insertAC", assessment_cilo);
         return assessment_cilo.getId();
     }

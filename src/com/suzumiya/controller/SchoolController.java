@@ -1,8 +1,8 @@
 package com.suzumiya.controller;
 
-import com.suzumiya.model.AuditSchool;
-import com.suzumiya.model.AuditTeacher;
-import com.suzumiya.model.School;
+import com.suzumiya.model.audit.AuditSchool;
+import com.suzumiya.model.audit.AuditTeacher;
+import com.suzumiya.model.user.School;
 import com.suzumiya.service.SchoolService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

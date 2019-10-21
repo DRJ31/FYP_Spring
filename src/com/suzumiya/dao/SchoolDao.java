@@ -1,14 +1,12 @@
 package com.suzumiya.dao;
 
-import com.suzumiya.model.AuditSchool;
-import com.suzumiya.model.AuditTeacher;
+import com.suzumiya.model.audit.AuditSchool;
+import com.suzumiya.model.audit.AuditTeacher;
 import com.suzumiya.model.Favorite;
-import com.suzumiya.model.School;
+import com.suzumiya.model.user.School;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
 
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {

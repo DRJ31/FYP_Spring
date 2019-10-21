@@ -1,4 +1,6 @@
-package com.suzumiya.model;
+package com.suzumiya.model.list;
+
+import com.suzumiya.model.TextBook;
 
 import java.util.List;
 

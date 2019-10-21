@@ -83,7 +83,6 @@ public class AssessmentController {
     @CrossOrigin
     public ModelAndView insertAC(@RequestBody AssessmentCiloList assessmentCilos){
         AssessmentService service = new AssessmentService();
-        List<Integer> id = new ArrayList<>();
         for (AssessmentCilo assessment_cilo : assessmentCilos.getAssessmentCilos()) {
             service.insertAC(assessment_cilo);
         }

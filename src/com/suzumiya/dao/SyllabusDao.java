@@ -101,4 +101,8 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
     public List<Syllabus> selectAll_S(@Param("id") int id){
         return getSqlSession().selectList("com.suzumiya.mapper.SyllabusMapper.selectAll_S", id);
     }
+
+    public void updateSyllabus(Syllabus syllabus){
+        getSqlSession().update("com.suzumiya.mapper.SyllabusMapper.updateSyllabus", syllabus);
+    }
 }

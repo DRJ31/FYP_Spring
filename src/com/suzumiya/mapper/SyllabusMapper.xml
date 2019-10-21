@@ -267,4 +267,10 @@
             ) on syllabus.id = pilo.syllabus_id
         where syllabus.school_id = #{id}
     </select>
+    <update id="updateSyllabus">
+        update syllabus set code = #{code}, title = #{title}, school_id = #{school_id},
+                            prepare = #{prepare}, review = #{review}, unit = #{unit},
+                            hours = #{hours}, prepare = #{co_req}, offer_unit = #{offer_unit}, aim = #{aim}
+                        where id = #{id}
+    </update>
 </mapper>

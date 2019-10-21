@@ -191,4 +191,16 @@ public class SyllabusController {
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
+
+    @RequestMapping(value = "/api/updateSyllabus", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateEmail(@RequestBody Syllabus syllabus){
+        SyllabusService syllabusService = new SyllabusService();
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        syllabusService.updateSyllabus(syllabus);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }

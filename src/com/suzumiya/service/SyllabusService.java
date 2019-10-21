@@ -174,4 +174,8 @@ public class SyllabusService {
         result.put("syllabuses", syllabuses_S);
         return result;
     }
+
+    public void updateSyllabus(Syllabus syllabus){
+        syllabusDao.updateSyllabus(syllabus);
+    }
 }

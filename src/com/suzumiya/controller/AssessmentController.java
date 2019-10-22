@@ -114,7 +114,7 @@ public class AssessmentController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/AC/update", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/ac/update", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateAC(@RequestBody AssessmentCilo assessmentCilo){

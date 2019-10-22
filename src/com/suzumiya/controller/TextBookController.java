@@ -56,7 +56,7 @@ public class TextBookController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/textBook/update",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/textBook/update",method = RequestMethod.POST)
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteTextBook(@RequestBody TextBook textBook){

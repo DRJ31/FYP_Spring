@@ -28,4 +28,8 @@
     <delete id="deleteTextBook">
         delete from textbook where textbook.id=#{id}
     </delete>
+    <update id="updateTextBook">
+        update textbook set syllabus_id = #{syllabus_id}, title = #{title}, year = #{year}, author = #{author}
+        where textbook.id = #{id}
+    </update>
 </mapper>

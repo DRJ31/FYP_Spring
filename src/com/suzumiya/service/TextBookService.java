@@ -64,4 +64,9 @@ public class TextBookService {
     public void deleteTextBook(int id){
         textBookDao.deleteTextBook(id);
     }
+
+    public void updateTextBook(TextBook textBook){
+        textBookDao.updateTextBook(textBook);
+    }
+
 }

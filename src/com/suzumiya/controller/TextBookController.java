@@ -55,4 +55,15 @@ public class TextBookController {
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
+
+    @RequestMapping(value = "/api/textBook/update",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteTextBook(@RequestBody TextBook textBook){
+        TextBookService service = new TextBookService();
+        service.updateTextBook(textBook);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }

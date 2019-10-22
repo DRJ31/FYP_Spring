@@ -24,4 +24,8 @@ public class TextBookDao extends SqlSessionDaoSupport implements Dao<TextBook> {
     public void deleteTextBook(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.TextBookMapper.deleteTextBook", id);
     }
+
+    public void updateTextBook(TextBook textBook){
+        getSqlSession().update("com.suzumiya.mapper.TextBookMapper.updateTextBook", textBook);
+    }
 }

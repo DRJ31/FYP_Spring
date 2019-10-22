@@ -101,4 +101,28 @@ public class AssessmentController {
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
+
+    @RequestMapping(value = "/api/assessment/update", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateAssessment(@RequestBody Assessment assessment){
+        AssessmentService assessmentService = new AssessmentService();
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        assessmentService.updateAssessment(assessment);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/AC/update", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateAC(@RequestBody AssessmentCilo assessmentCilo){
+        Map<String, Boolean> map = new HashMap<>();
+        AssessmentService assessmentService = new AssessmentService();
+        map.put("status", false);
+        assessmentService.updateAC(assessmentCilo);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }

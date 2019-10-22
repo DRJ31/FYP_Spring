@@ -88,4 +88,8 @@ public class SchoolDao extends SqlSessionDaoSupport implements Dao<School> {
         School school = this.selectById(id);
         return getSqlSession().selectList("com.suzumiya.mapper.SchoolMapper.selectAllAuditSchoolTeacher", school);
     }
+
+    public void updateSchool(School school){
+        getSqlSession().update("com.suzumiya.mapper.SchoolMapper.updateSchool", school);
+    }
 }

@@ -43,4 +43,12 @@ public class AssessmentDao extends SqlSessionDaoSupport implements Dao<Assessmen
     public void deleteAC(@Param("id") int id){
         getSqlSession().delete("com.suzumiya.mapper.AssessmentMapper.deleteAC", id);
     }
+
+    public void updateAssessment(Assessment assessment){
+        getSqlSession().update("com.suzumiya.mapper.AssessmentMapper.updateAssessment", assessment);
+    }
+
+    public void updateAC(AssessmentCilo assessmentCilo){
+        getSqlSession().update("com.suzumiya.mapper.AssessmentMapper.updateAC", assessmentCilo);
+    }
 }

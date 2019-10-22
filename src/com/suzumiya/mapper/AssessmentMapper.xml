@@ -61,4 +61,13 @@
     <delete id="deleteAC">
         delete from assessment_cilo where id = #{id}
     </delete>
+    <update id="updateAssessment">
+        update assessment set syllabus_id = #{syllabus_id}, method = #{method},
+                              weighting = #{weighting}, description = #{description}
+        where assessment.id = #{id}
+    </update>
+    <update id="updateAC">
+        update assessment_cilo set assessment_id = #{assessment_id}, cilo_id = #{cilo_id}
+        where assessment_cilo.id = #{id}
+    </update>
 </mapper>

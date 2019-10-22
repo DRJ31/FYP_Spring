@@ -99,4 +99,16 @@ public class SchoolController {
         Map<String, AuditTeacher> map = service.getAuditTeacherMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
+
+    @RequestMapping(value = "/api/school/update", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateSchool(@RequestBody School school){
+        SchoolService schoolService = new SchoolService();
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        schoolService.updateSchool(school);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }

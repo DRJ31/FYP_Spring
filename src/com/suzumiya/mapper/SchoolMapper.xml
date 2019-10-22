@@ -46,13 +46,16 @@
         where school.id=#{id}
     </select>
     <select id="selectFavoriteSchools" resultMap="school">
-        select school.* from favorite_school,school where favorite_school.user_id=#{uid} and school.id=favorite_school.school_id
+        select school.* from favorite_school,school
+        where favorite_school.user_id=#{uid} and school.id=favorite_school.school_id
     </select>
     <insert id="insertSchool">
-        insert into school (name, location, introduction) value (#{name}, #{location}, #{introduction})
+        insert into school (name, location, introduction)
+        value (#{name}, #{location}, #{introduction})
     </insert>
     <insert id="insertAuditSchool">
-        insert into school (name, location, introduction) value (#{school_name}, #{location}, #{introduction})
+        insert into school (name, location, introduction)
+        value (#{school_name}, #{location}, #{introduction})
     </insert>
     <delete id="deleteSchool">
         delete from school where school.id=#{id}
@@ -84,13 +87,16 @@
         select * from school where school.name = #{name}
     </select>
     <select id="selectAllAuditTeacher" resultMap="auditTeacher">
-        select audit_teacher.*,user.id as uid,user.username from audit_teacher,user where audit_teacher.user_id = user.id
+        select audit_teacher.*,user.id as uid, user.username from audit_teacher,user
+        where audit_teacher.user_id = user.id
     </select>
     <select id="selectAllAuditSchoolTeacher" resultMap="auditTeacher">
-        select audit_teacher.*,user.username from audit_teacher,user where school_name = #{name} and audit_teacher.user_id=user.id
+        select audit_teacher.*,user.username from audit_teacher,user
+        where school_name = #{name} and audit_teacher.user_id=user.id
     </select>
     <select id="selectAuditTeacherById" resultMap="auditTeacher">
-        select audit_teacher.*,user.username from audit_teacher,user where audit_teacher.id = #{id} and audit_teacher.user_id=user.id
+        select audit_teacher.*,user.username from audit_teacher,user
+        where audit_teacher.id = #{id} and audit_teacher.user_id=user.id
     </select>
     <insert id="insertAuditTeacher">
         insert into audit_teacher (school_name,user_id, description)
@@ -99,4 +105,8 @@
     <delete id="deleteAuditTeacher">
         delete from audit_teacher where audit_teacher.id = #{id}
     </delete>
+    <update id="updateSchool">
+        update school set name = #{name}, location = #{location}, introduction = #{introduction}
+        where school.introduction = #{id}
+    </update>
 </mapper>

@@ -215,11 +215,71 @@ public class SyllabusController {
     @RequestMapping(value = "/api/syllabus/update", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
-    public ModelAndView updateEmail(@RequestBody Syllabus syllabus){
+    public ModelAndView updateSyllabus(@RequestBody Syllabus syllabus){
         SyllabusService syllabusService = new SyllabusService();
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
         syllabusService.updateSyllabus(syllabus);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/content/update", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateContent(@RequestBody Content content){
+        Map<String, Boolean> map = new HashMap<>();
+        SyllabusService syllabusService = new SyllabusService();
+        map.put("status", false);
+        syllabusService.updateContent(content);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/cilo/update", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateCilo(@RequestBody Cilo cilo){
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        SyllabusService syllabusService = new SyllabusService();
+        syllabusService.updateCilo(cilo);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/pilo/update", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updatePilo(@RequestBody Pilo pilo){
+        SyllabusService syllabusService = new SyllabusService();
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        syllabusService.updatePilo(pilo);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/pc/update", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updatePC(@RequestBody PiloCilo piloCilo){
+        SyllabusService syllabusService = new SyllabusService();
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        syllabusService.updatePC(piloCilo);
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/tla/update", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateTla(@RequestBody Tla tla){
+        SyllabusService syllabusService = new SyllabusService();
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        syllabusService.updateTla(tla);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }

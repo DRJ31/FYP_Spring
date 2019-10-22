@@ -105,4 +105,12 @@ public class AssessmentService {
     public void deleteAC(int id){
         assessmentDao.deleteAC(id);
     }
+
+    public void updateAssessment(Assessment assessment){
+        assessmentDao.updateAssessment(assessment);
+    }
+
+    public void updateAC(AssessmentCilo assessmentCilo){
+        assessmentDao.updateAC(assessmentCilo);
+    }
 }

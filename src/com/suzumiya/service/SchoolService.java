@@ -185,4 +185,8 @@ public class SchoolService {
         result.put("audits", auditTeacher_S);
         return result;
     }
+
+    public void updateSchool(School school){
+        schoolDao.updateSchool(school);
+    }
 }

@@ -106,4 +106,24 @@ public class SyllabusDao extends SqlSessionDaoSupport implements Dao<Syllabus> {
     public void updateSyllabus(Syllabus syllabus){
         getSqlSession().update("com.suzumiya.mapper.SyllabusMapper.updateSyllabus", syllabus);
     }
+
+    public void updateCilo(Cilo cilo){
+        getSqlSession().update("com.suzumiya.mapper.SyllabusMapper.updateCilo", cilo);
+    }
+
+    public void updatePilo(Pilo pilo){
+        getSqlSession().update("com.suzumiya.mapper.SyllabusMapper.updatePilo", pilo);
+    }
+
+    public void updatePC(PiloCilo piloCilo){
+        getSqlSession().update("com.suzumiya.mapper.SyllabusMapper.updatePC", piloCilo);
+    }
+
+    public void updateTla(Tla tla){
+        getSqlSession().update("com.suzumiya.mapper.SyllabusMapper.updateTla", tla);
+    }
+
+    public void updateContent(Content content){
+        getSqlSession().update("com.suzumiya.mapper.SyllabusMapper.updateContent", content);
+    }
 }

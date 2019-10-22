@@ -179,4 +179,24 @@ public class SyllabusService {
     public void updateSyllabus(Syllabus syllabus){
         syllabusDao.updateSyllabus(syllabus);
     }
+
+    public void updateCilo(Cilo cilo){
+        syllabusDao.updateCilo(cilo);
+    }
+
+    public void updatePilo(Pilo pilo){
+        syllabusDao.updatePilo(pilo);
+    }
+
+    public void updatePC(PiloCilo piloCilo){
+        syllabusDao.updatePC(piloCilo);
+    }
+
+    public void updateTla(Tla tla){
+        syllabusDao.updateTla(tla);
+    }
+
+    public void updateContent(Content content){
+        syllabusDao.updateContent(content);
+    }
 }

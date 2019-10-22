@@ -270,7 +270,29 @@
     <update id="updateSyllabus">
         update syllabus set code = #{code}, title = #{title}, school_id = #{school_id},
                             prepare = #{prepare}, review = #{review}, unit = #{unit},
-                            hours = #{hours}, prepare = #{co_req}, offer_unit = #{offer_unit}, aim = #{aim}
+                            hours = #{hours}, prepare = #{co_req}, offer_unit = #{offer_unit},
+                            aim = #{aim}
                         where id = #{id}
+    </update>
+    <update id="updateCilo">
+        update cilo set syllabus_id = #{syllabus_id}, cilo_id = #{cilo_id}, content = #{content}
+        where cilo.id = #{id}
+    </update>
+    <update id="updatePilo">
+        update pilo set syllabus_id = #{syllabus_id}, pilo_id = #{pilo_id}, content = #{content}
+        where pilo.id = #{id}
+    </update>
+    <update id="updatePC">
+        update pilo_cilo set pilo_id = #{pilo_id}, cilo_id = #{cilo_id}
+        where pilo_cilo.id = #{id}
+    </update>
+    <update id="updateTla">
+        update tla set cilo_id = #{cilo_id}, content = #{content}
+        where tla.id = #{id}
+    </update>
+    <update id="updateContent">
+        update content set content_id = #{content_id}, syllabus_id = #{syllabus_id},
+                           title = #{title}, hours = #{hours}, content = #{content}
+        where content.id = #{id}
     </update>
 </mapper>

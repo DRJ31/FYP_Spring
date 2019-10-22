@@ -9,11 +9,20 @@ import com.suzumiya.model.user.User;
 import com.suzumiya.service.SchoolService;
 import com.suzumiya.service.SyllabusService;
 import com.suzumiya.service.UserService;
+import org.apache.commons.io.FileUtils;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +31,8 @@ import java.util.Map;
 public class UserController {
 
     private Map<String, User> loginMap = new HashMap<>();
+    private String rootPath = "../web/static/";
+    String filePath = rootPath + "application/";
 
     public Map<String, User> getLoginMap() {
         return loginMap;
@@ -198,24 +209,6 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/audit",method = RequestMethod.POST)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView insertAudit(@RequestBody AuditSchool auditSchool){
-        SchoolService schoolService = new SchoolService();
-        int uid = loginMap.get(auditSchool.getToken()).getId();
-        auditSchool.setUser_id(uid);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", false);
-        try {
-            schoolService.insertAudit(auditSchool);
-        } catch (Exception e) {
-            return new ModelAndView(new MappingJackson2JsonView(), map);
-        }
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
     @RequestMapping(value = "/api/audit",method = RequestMethod.DELETE)
     @ResponseBody
     @CrossOrigin
@@ -346,6 +339,53 @@ public class UserController {
         SchoolService service = new SchoolService();
         User user = loginMap.get(token.getToken());
         Map<String, List<AuditTeacher>> map = service.getAuditSchoolTeachersMap(user.getSchool_id());
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/school/upload", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public String uploadFile(@RequestParam("file") MultipartFile partFile) throws IllegalStateException, IOException {
+        if(partFile != null && partFile.getOriginalFilename() != null && partFile.getOriginalFilename().length()>0){
+            File dir=new File(filePath);
+            if(!dir.isDirectory()) {
+                dir.mkdir();
+            }
+            String fileName = partFile.getOriginalFilename();
+            File file = new File(filePath + fileName);
+            partFile.transferTo(file);
+            String fullPath = filePath + fileName;
+            return fullPath;
+        }
+        else
+            return null;
+    }
+
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> downloadFile(@Param("filename") String filename) throws Exception {
+        File file = new File(filePath + filename);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", filename);
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        return new ResponseEntity (FileUtils.readFileToByteArray(file),
+                headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/audit",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertAudit(@RequestBody AuditSchool auditSchool){
+        int uid = loginMap.get(auditSchool.getToken()).getId();
+        auditSchool.setUser_id(uid);
+        Map<String, Boolean> map = new HashMap<>();
+        SchoolService schoolService = new SchoolService();
+        map.put("status", false);
+        try {
+            schoolService.insertAudit(auditSchool);
+        } catch (Exception e) {
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+        map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 }

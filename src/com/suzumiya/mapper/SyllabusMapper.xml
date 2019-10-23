@@ -51,7 +51,7 @@
         <collection property="cilos" ofType="Cilo" javaType="List">
             <id column="cid" property="id" />
             <result column="c_syllabus_id" property="syllabus_id" />
-            <result column="cilo_id" property="cilo_id" />
+            <result column="ci_id" property="cilo_id" />
             <result column="cilos_content" property="content" />
             <association property="tla" javaType="Tla">
                 <id column="t_id" property="id" />
@@ -60,7 +60,7 @@
             </association>
             <collection property="pilo_cilos" ofType="PiloCilo" javaType="List">
                 <id column="p_c_id" property="id" />
-                <result column="pilo_id" property="pilo_id" />
+                <result column="pi_id" property="pilo_id" />
                 <result column="cilo_id" property="cilo_id" />
             </collection>
         </collection>
@@ -107,10 +107,10 @@
             content.id as c_id,content.syllabus_id as content_syllabus_id,content.title as content_title,content.hours as content_hours,content.*,
             assessment.id as a_id,assessment.syllabus_id as a_syllabus_id,assessment.*,
             assessment_cilo.id as a_c_id,assessment_cilo.*,
-            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.*,
+            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.cilo_id as ci_id, cilo.*,
             tla.id as t_id,tla.content as tla_content, tla.*,
             pilo.id as p_id,pilo.syllabus_id as p_syllabus_id,pilo.content as pilos_content,pilo.*,
-            pilo_cilo.id as p_c_id,pilo_cilo.*
+            pilo_cilo.id as p_c_id,pilo_cilo.pilo_id as pi_id, pilo_cilo.*
         from syllabus
         left outer join school on syllabus.school_id = school.id
         left outer join textbook on syllabus.id = textbook.syllabus_id
@@ -132,10 +132,10 @@
             content.id as c_id,content.syllabus_id as content_syllabus_id,content.title as content_title,content.hours as content_hours,content.*,
             assessment.id as a_id,assessment.syllabus_id as a_syllabus_id,assessment.*,
             assessment_cilo.id as a_c_id,assessment_cilo.*,
-            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.*,
+            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.cilo_id as ci_id, cilo.*,
             tla.id as t_id,tla.content as tla_content, tla.*,
             pilo.id as p_id,pilo.syllabus_id as p_syllabus_id,pilo.content as pilos_content,pilo.*,
-            pilo_cilo.id as p_c_id,pilo_cilo.*
+            pilo_cilo.id as p_c_id,pilo_cilo.pilo_id as pi_id, pilo_cilo.*
         from syllabus
         left outer join school on syllabus.school_id = school.id
         left outer join textbook on syllabus.id = textbook.syllabus_id
@@ -161,10 +161,10 @@
             content.id as c_id,content.syllabus_id as content_syllabus_id,content.title as content_title,content.hours as content_hours,content.*,
             assessment.id as a_id,assessment.syllabus_id as a_syllabus_id,assessment.*,
             assessment_cilo.id as a_c_id,assessment_cilo.*,
-            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.*,
+            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.cilo_id as ci_id, cilo.*,
             tla.id as t_id,tla.content as tla_content, tla.*,
             pilo.id as p_id,pilo.syllabus_id as p_syllabus_id,pilo.content as pilos_content,pilo.*,
-            pilo_cilo.id as p_c_id,pilo_cilo.*
+            pilo_cilo.id as p_c_id,pilo_cilo.pilo_id as pi_id, pilo_cilo.*
         from favorite_syllabus,syllabus,school,content,textbook,assessment,assessment_cilo,cilo,pilo,pilo_cilo,tla
         where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id and syllabus.school_id=school.id
     </select>

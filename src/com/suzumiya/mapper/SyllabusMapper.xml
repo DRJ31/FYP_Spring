@@ -248,10 +248,10 @@
             content.id as c_id,content.syllabus_id as content_syllabus_id,content.title as content_title,content.hours as content_hours,content.*,
             assessment.id as a_id,assessment.syllabus_id as a_syllabus_id,assessment.*,
             assessment_cilo.id as a_c_id,assessment_cilo.*,
-            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.*,
+            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.cilo_id as ci_id, cilo.*,
             tla.id as t_id,tla.content as tla_content, tla.*,
             pilo.id as p_id,pilo.syllabus_id as p_syllabus_id,pilo.content as pilos_content,pilo.*,
-            pilo_cilo.id as p_c_id,pilo_cilo.*
+            pilo_cilo.id as p_c_id,pilo_cilo.pilo_id as pi_id, pilo_cilo.*
         from syllabus
         left outer join school on syllabus.school_id = school.id
         left outer join textbook on syllabus.id = textbook.syllabus_id

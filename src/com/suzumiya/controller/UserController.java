@@ -42,7 +42,7 @@ public class UserController {
         this.loginMap = loginMap;
     }
 
-    @RequestMapping(value = "/api/syllabusesT", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/syllabuses", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllSyllabuses(@RequestBody Token token) {

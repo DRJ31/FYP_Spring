@@ -31,7 +31,7 @@ import java.util.Map;
 public class UserController {
 
     private Map<String, User> loginMap = new HashMap<>();
-    private String rootPath = "/var/www/html/";
+    private String rootPath = "/var/www/syllabus/static/";
     String filePath = rootPath + "application/";
 
     public Map<String, User> getLoginMap() {

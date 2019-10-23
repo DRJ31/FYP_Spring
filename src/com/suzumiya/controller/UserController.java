@@ -31,7 +31,7 @@ import java.util.Map;
 public class UserController {
 
     private Map<String, User> loginMap = new HashMap<>();
-    private String rootPath = "../web/static/";
+    private String rootPath = "/var/www/html/";
     String filePath = rootPath + "application/";
 
     public Map<String, User> getLoginMap() {
@@ -357,6 +357,7 @@ public class UserController {
             Map<String, String> response = new HashMap<>();
             response.put("status", "done");
             response.put("name", fileName);
+            response.put("url", "https://syllabus.drjchn.com/static/application/" + fileName);
             return new ModelAndView(new MappingJackson2JsonView(), response);
         }
         else

@@ -345,19 +345,19 @@ public class UserController {
     @RequestMapping(value = "/api/school/upload", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
-    public ModelAndView uploadFile(@RequestParam("file") MultipartFile partFile) throws IllegalStateException, IOException {
+    public ModelAndView uploadFile(@RequestParam("file") MultipartFile partFile, @RequestParam("user") String user, @RequestParam("category") String category) throws IllegalStateException, IOException {
         if(partFile != null && partFile.getOriginalFilename() != null && partFile.getOriginalFilename().length()>0){
             File dir=new File(filePath);
             if(!dir.isDirectory()) {
                 dir.mkdir();
             }
             String fileName = partFile.getOriginalFilename();
-            File file = new File(filePath + fileName);
+            File file = new File(filePath + user + category + fileName);
             partFile.transferTo(file);
             Map<String, String> response = new HashMap<>();
             response.put("status", "done");
-            response.put("name", fileName);
-            response.put("url", "https://syllabus.drjchn.com/static/application/" + fileName);
+            response.put("name", user + category + fileName);
+            response.put("url", "https://syllabus.drjchn.com/static/application/" + user + category + fileName);
             return new ModelAndView(new MappingJackson2JsonView(), response);
         }
         else

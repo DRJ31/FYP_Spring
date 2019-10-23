@@ -42,18 +42,27 @@ public class UserController {
         this.loginMap = loginMap;
     }
 
-    @RequestMapping(value = "/api/syllabuses", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/syllabusesT", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllSyllabuses(@RequestBody Token token) {
         SyllabusService service = new SyllabusService();
         User user = loginMap.get(token.getToken());
-        Map<String, List<Syllabus>> map;
-        if (user.getRole().getId() == 1){
-            map = service.getSyllabusesMap();
-        }
-        else {
-            map = service.selectSyllabuses_S(user.getSchool_id());
+        Map<String, List<Syllabus>> map = new HashMap<>();
+        int role = user.getRole().getId();
+        switch (role){
+            case 1:
+                map = service.getSyllabusesMap();
+                break;
+            case 2:
+                map = service.selectSyllabuses_S(user.getSchool_id());
+                break;
+            case 3:
+                map = service.selectSyllabuses_T(user.getId());
+                break;
+            default:
+                map.put("syllabuses", null);
+                return null;
         }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }

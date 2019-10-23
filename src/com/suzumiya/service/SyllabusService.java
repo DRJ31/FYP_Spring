@@ -13,6 +13,7 @@ import java.util.Map;
 public class SyllabusService {
     private List<Syllabus> syllabuses;
     private List<Syllabus> syllabuses_S;
+    private List<Syllabus> syllabuses_T;
     private SyllabusDao syllabusDao;
     private Syllabus syllabus;
     private Cilo cilo;
@@ -23,6 +24,14 @@ public class SyllabusService {
         this.syllabusDao = (SyllabusDao) ac.getBean("syllabusDao");
         this.setSyllabuses();
         this.setCilos();
+    }
+
+    public List<Syllabus> getSyllabuses_T() {
+        return syllabuses_T;
+    }
+
+    private void setSyllabuses_T(int id) {
+        this.syllabuses_T = syllabusDao.selectAll_T(id);
     }
 
     public List<Syllabus> getSyllabuses_S() {
@@ -198,5 +207,12 @@ public class SyllabusService {
 
     public void updateContent(Content content){
         syllabusDao.updateContent(content);
+    }
+
+    public Map<String, List<Syllabus>> selectSyllabuses_T(int id) {
+        Map<String, List<Syllabus>> result = new HashMap<>();
+        setSyllabuses_T(id);
+        result.put("syllabuses", syllabuses_T);
+        return result;
     }
 }

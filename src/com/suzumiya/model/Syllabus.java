@@ -23,8 +23,17 @@ public class Syllabus {
     private List<Cilo> cilos;
     private List<Pilo> pilos;
     private int school_id;
+    private int editor_id;
 
     public Syllabus() {
+    }
+
+    public int getEditor_id() {
+        return editor_id;
+    }
+
+    public void setEditor_id(int editor_id) {
+        this.editor_id = editor_id;
     }
 
     public int getHours() {

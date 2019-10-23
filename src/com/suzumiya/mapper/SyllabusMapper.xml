@@ -270,8 +270,8 @@
     <update id="updateSyllabus">
         update syllabus set code = #{code}, title = #{title}, school_id = #{school_id},
                             prepare = #{prepare}, review = #{review}, unit = #{unit},
-                            hours = #{hours}, prepare = #{co_req}, offer_unit = #{offer_unit},
-                            aim = #{aim}
+                            hours = #{hours}, co_req = #{co_req}, offer_unit = #{offer_unit},
+                            aim = #{aim}, pre_req = #{pre_req}
                         where id = #{id}
     </update>
     <update id="updateCilo">

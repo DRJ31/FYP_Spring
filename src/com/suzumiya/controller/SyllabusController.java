@@ -121,6 +121,8 @@ public class SyllabusController {
         SyllabusService service = new SyllabusService();
         List<Integer> id = new ArrayList<>();
         for (Pilo pilo : pilos.getPilos()) {
+            System.out.println(pilo.getSyllabus_id());
+            System.out.println(pilo.getContent());
             id.add(service.insertPilo(pilo));
         }
         Map<String, List<Integer>> map = new HashMap<>();

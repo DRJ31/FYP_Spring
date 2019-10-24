@@ -407,7 +407,7 @@ public class UserController {
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
-    @RequestMapping(value = "/api/user/avatar", method = {RequestMethod.GET})
+    @RequestMapping(value = "/api/user/avatar", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public String getAvatar(@RequestBody Token token){
@@ -430,7 +430,7 @@ public class UserController {
             User user = loginMap.get(token);
             String originalFileName = partFile.getOriginalFilename();
             String suffix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
-            String newFileName = user.getName() + user.getEmail() + suffix;
+            String newFileName = user.getName() + user.getEmail() + "." + suffix;
             File file = new File(avatarPath + newFileName);
             partFile.transferTo(file);
             UserService service = new UserService();
@@ -444,14 +444,14 @@ public class UserController {
             Map<String, String> response = new HashMap<>();
             response.put("status", "done");
             response.put("name", newFileName);
-            response.put("url", "https://syllabus.drjchn.com/static/application/" + newFileName);
+            response.put("url", "https://syllabus.drjchn.com/static/avatar/" + newFileName);
             return new ModelAndView(new MappingJackson2JsonView(), response);
         }
         else
             return null;
     }
 
-    @RequestMapping(value = "/api/user/updateTeacher", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/user/update/teacher", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateTeacher(@RequestBody User user){

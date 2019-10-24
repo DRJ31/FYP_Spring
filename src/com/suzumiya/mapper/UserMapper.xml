@@ -73,7 +73,7 @@
     <update id="updateAvatar">
         update avatar set filename = #{filename} where user_id = #{user_id}
     </update>
-    <insert id="avatar">
+    <insert id="insertAvatar">
         insert into avatar (user_id, filename) VALUE (#{user_id}, #{filename})
     </insert>
 </mapper>

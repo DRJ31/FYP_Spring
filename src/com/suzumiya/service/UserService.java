@@ -1,6 +1,7 @@
 package com.suzumiya.service;
 
 import com.suzumiya.dao.UserDao;
+import com.suzumiya.model.user.Avatar;
 import com.suzumiya.model.user.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -110,7 +111,19 @@ public class UserService {
         return result;
     }
 
-    public void updateEmail(User user)throws Exception{
-        userDao.updateEmail(user);
+    public void updateUser(User user) throws Exception{
+        userDao.updateUser(user);
+    }
+
+    public Avatar selectAvatar(int id){
+        return userDao.selectAvatar(id);
+    }
+
+    public void insertAvatar(Avatar avatar) throws Exception{
+        userDao.insertAvatar(avatar);
+    }
+
+    public void updateAvatar(Avatar avatar) {
+        userDao.updateAvatar(avatar);
     }
 }

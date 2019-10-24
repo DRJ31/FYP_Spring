@@ -1,9 +1,11 @@
 package com.suzumiya.controller;
 
+import com.suzumiya.model.TextBook;
 import com.suzumiya.model.audit.AuditSchool;
 import com.suzumiya.model.audit.AuditTeacher;
 import com.suzumiya.model.Favorite;
 import com.suzumiya.model.Syllabus;
+import com.suzumiya.model.user.Avatar;
 import com.suzumiya.model.user.Token;
 import com.suzumiya.model.user.User;
 import com.suzumiya.service.SchoolService;
@@ -33,6 +35,7 @@ public class UserController {
     private Map<String, User> loginMap = new HashMap<>();
     private String rootPath = "/var/www/syllabus/static/";
     String filePath = rootPath + "application/";
+    String avatarPath = rootPath +"avatar/";
 
     public Map<String, User> getLoginMap() {
         return loginMap;
@@ -275,17 +278,20 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/api/email", method = {RequestMethod.POST})
+    @RequestMapping(value = "/api/user/update", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
-    public ModelAndView updateEmail(@RequestBody Token token){
+    public ModelAndView updateUser(@RequestBody Token token){
         UserService userService = new UserService();
         Map<String, Boolean> map = new HashMap<>();
         User user = loginMap.get(token.getToken());
         map.put("status", false);
         user.setEmail(token.getEmail());
+        System.out.println(token.getEmail());
+        user.setRole_id(token.getRole_id());
+        System.out.println(token.getRole_id());
         try {
-            userService.updateEmail(user);
+            userService.updateUser(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -400,4 +406,49 @@ public class UserController {
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
+
+    @RequestMapping(value = "/api/user/avatar", method = {RequestMethod.GET})
+    @ResponseBody
+    @CrossOrigin
+    public String getAvatar(@RequestBody Token token){
+        User user = loginMap.get(token.getToken());
+        UserService userService = new UserService();
+        Avatar avatar = userService.selectAvatar(user.getId());
+        return avatar.getFilename();
+    }
+
+    @RequestMapping(value = "/api/user/avatar/upload", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView uploadAvatar(@RequestParam("file") MultipartFile partFile, @RequestParam("token") String token)
+            throws IllegalStateException, IOException {
+        if(partFile != null && partFile.getOriginalFilename() != null && partFile.getOriginalFilename().length()>0){
+            File dir=new File(avatarPath);
+            if(!dir.isDirectory()) {
+                dir.mkdir();
+            }
+            User user = loginMap.get(token);
+            String originalFileName = partFile.getOriginalFilename();
+            String suffix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
+            String newFileName = user.getName() + user.getEmail() + suffix;
+            File file = new File(avatarPath + newFileName);
+            partFile.transferTo(file);
+            UserService service = new UserService();
+            Avatar avatar = new Avatar(user.getId(), newFileName);
+            try {
+                service.insertAvatar(avatar);
+            } catch (Exception e){
+                e.printStackTrace();
+                service.updateAvatar(avatar);
+            }
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "done");
+            response.put("name", newFileName);
+            response.put("url", "https://syllabus.drjchn.com/static/application/" + newFileName);
+            return new ModelAndView(new MappingJackson2JsonView(), response);
+        }
+        else
+            return null;
+    }
+
 }

@@ -7,8 +7,17 @@ public class Token {
     private String old_pass;
     private String new_pass;
     private String email;
+    private int role_id;
 
     public Token() {
+    }
+
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
     }
 
     public String getEmail() {

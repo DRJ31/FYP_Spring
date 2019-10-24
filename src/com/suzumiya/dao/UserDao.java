@@ -1,5 +1,6 @@
 package com.suzumiya.dao;
 
+import com.suzumiya.model.user.Avatar;
 import com.suzumiya.model.user.User;
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.support.SqlSessionDaoSupport;
@@ -52,8 +53,19 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
         getSqlSession().update("com.suzumiya.mapper.UserMapper.updateTeacherRole", id);
     }
 
-    public void updateEmail(User user) throws Exception{
-        getSqlSession().update("com.suzumiya.mapper.UserMapper.updateEmail", user);
+    public void updateUser(User user) throws Exception{
+        getSqlSession().update("com.suzumiya.mapper.UserMapper.updateUser", user);
     }
 
+    public Avatar selectAvatar(@Param("id") int id){
+        return getSqlSession().selectOne("com.suzumiya.mapper.UserMapper.selectAvatar", id);
+    }
+
+    public void updateAvatar(Avatar avatar) {
+        getSqlSession().update("com.suzumiya.mapper.UserMapper.updateAvatar", avatar);
+    }
+
+    public void insertAvatar(Avatar avatar) throws Exception{
+        getSqlSession().update("com.suzumiya.mapper.UserMapper.insertAvatar", avatar);
+    }
 }

@@ -107,6 +107,6 @@
     </delete>
     <update id="updateSchool">
         update school set name = #{name}, location = #{location}, introduction = #{introduction}
-        where school.introduction = #{id}
+        where school.id = #{id}
     </update>
 </mapper>

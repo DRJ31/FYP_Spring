@@ -157,16 +157,8 @@
     </select>
     <select id="selectFavoriteSyllabuses" resultMap="syllabus">
         select syllabus.*,
-            school.id as the_school_id,school.*,
-            textbook.id as textbook_id,textbook.title as textbook_title,textbook.*,
-            content.id as c_id,content.syllabus_id as content_syllabus_id,content.title as content_title,content.hours as content_hours,content.*,
-            assessment.id as a_id,assessment.syllabus_id as a_syllabus_id,assessment.*,
-            assessment_cilo.id as a_c_id,assessment_cilo.*,
-            cilo.id as cid,cilo.syllabus_id as c_syllabus_id,cilo.content as cilos_content,cilo.cilo_id as ci_id, cilo.*,
-            tla.id as t_id,tla.content as tla_content, tla.*,
-            pilo.id as p_id,pilo.syllabus_id as p_syllabus_id,pilo.content as pilos_content,pilo.*,
-            pilo_cilo.id as p_c_id,pilo_cilo.pilo_id as pi_id, pilo_cilo.*
-        from favorite_syllabus,syllabus,school,content,textbook,assessment,assessment_cilo,cilo,pilo,pilo_cilo,tla
+            school.id as the_school_id,school.*
+        from favorite_syllabus,syllabus,school
         where favorite_syllabus.user_id=#{uid} and syllabus.id=favorite_syllabus.syllabus_id and syllabus.school_id=school.id
     </select>
     <insert id="insertSyllabus">

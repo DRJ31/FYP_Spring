@@ -450,4 +450,19 @@ public class UserController {
             return null;
     }
 
+    @RequestMapping(value = "/api/user/updateTeacher", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView updateTeacher(@RequestBody User user){
+        UserService userService = new UserService();
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        try {
+            userService.updateUser(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
 }

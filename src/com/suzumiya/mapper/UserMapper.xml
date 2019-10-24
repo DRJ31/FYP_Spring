@@ -18,6 +18,11 @@
             <result column="school_name" property="name" />
         </association>
     </resultMap>
+    <resultMap id="avatar" type="Avatar">
+        <id column="id" property="id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="filename" property="filename"/>
+    </resultMap>
     <select id="selectAll" resultMap="allUsers">
         select user.*,role.*,school.id as school_id,school.name as school_name
         from user left outer join school on user.school_id = school.id,role
@@ -42,7 +47,6 @@
     <select id="checkUserDuplicate" resultMap="allUsers">
         select * from user where username=#{name} or email=#{email}
     </select>
-
     <update id="updateSchoolId">
         update user set user.school_id = #{school_id} where user.id = #{id}
     </update>
@@ -60,7 +64,16 @@
     <update id="updateSchoolRole">
         update user set user.role_id = 2 where user.id = #{id}
     </update>
-    <update id="updateEmail">
-        update user set user.email = #{email} where user.id = #{id}
+    <update id="updateUser">
+        update user set user.email = #{email}, user.role_id = #{role_id} where user.id = #{id}
     </update>
+    <select id="selectAvatar" resultMap="avatar">
+        select * from avatar where user_id = #{id}
+    </select>
+    <update id="updateAvatar">
+        update avatar set filename = #{filename} where user_id = #{user_id}
+    </update>
+    <insert id="avatar">
+        insert into avatar (user_id, filename) VALUE (#{user_id}, #{filename})
+    </insert>
 </mapper>

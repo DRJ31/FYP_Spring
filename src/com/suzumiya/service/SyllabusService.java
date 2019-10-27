@@ -156,9 +156,9 @@ public class SyllabusService {
         syllabusDao.deleteFavoriteSyllabus(favorite);
         String favJson = redisDao.get("fav_syllabus_" + favorite.getUser_id());
         List<Syllabus> favorites = JSONObject.parseArray(favJson, Syllabus.class);
-        for (Syllabus syllabus : favorites) {
-            if (syllabus.getId() == favorite.getSyllabus_id())
-                favorites.remove(syllabus);
+        for (int i = 0; i < favorites.size(); i++) {
+            if (favorites.get(i).getId() == favorite.getSyllabus_id())
+                favorites.remove(favorites.get(i));
         }
         redisDao.set("fav_syllabus_" + favorite.getUser_id(), JSONObject.toJSONString(favorites));
     }

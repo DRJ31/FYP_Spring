@@ -162,9 +162,9 @@ public class SchoolService {
         schoolDao.deleteFavoriteSchool(favorite);
         String favJson = redisDao.get("fav_school_" + favorite.getUser_id());
         List<School> favorites = JSONObject.parseArray(favJson, School.class);
-        for (School school : favorites) {
-            if (school.getId() == favorite.getSchool_id())
-                favorites.remove(school);
+        for (int i = 0; i < favorites.size(); i++) {
+            if (favorites.get(i).getId() == favorite.getSchool_id())
+                favorites.remove(favorites.get(i));
         }
         redisDao.set("fav_school_" + favorite.getUser_id(), JSONObject.toJSONString(favorites));
     }

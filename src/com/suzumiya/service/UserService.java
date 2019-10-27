@@ -154,14 +154,27 @@ public class UserService {
     }
 
     public Avatar selectAvatar(int id){
-        return userDao.selectAvatar(id);
+        String avatarJson = redisDao.get("avatar_" + id);
+        Avatar avatar;
+        if (StringUtils.isEmpty(avatarJson)) {
+            avatar = userDao.selectAvatar(id);
+            if (avatar != null) {
+                redisDao.set("avatar_" + id, JSONObject.toJSONString(avatar));
+            }
+        }
+        else {
+            avatar = JSONObject.parseObject(avatarJson, Avatar.class);
+        }
+        return avatar;
     }
 
     public void insertAvatar(Avatar avatar) throws Exception{
         userDao.insertAvatar(avatar);
+        redisDao.set("avatar_" + avatar.getUser_id(), JSONObject.toJSONString(avatar));
     }
 
     public void updateAvatar(Avatar avatar) {
         userDao.updateAvatar(avatar);
+        redisDao.set("avatar_" + avatar.getUser_id(), JSONObject.toJSONString(avatar));
     }
 }

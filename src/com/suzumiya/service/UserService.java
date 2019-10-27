@@ -1,10 +1,14 @@
 package com.suzumiya.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.suzumiya.dao.RedisDao;
 import com.suzumiya.dao.UserDao;
 import com.suzumiya.model.user.Avatar;
 import com.suzumiya.model.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +19,12 @@ public class UserService {
     private UserDao userDao;
     private User user;
     private List<User> user_S;
+    private RedisDao redisDao;
 
     public UserService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.userDao = (UserDao) ac.getBean("userDao");
+        this.redisDao = (RedisDao) ac.getBean("redisDao");
         this.setUsers();
     }
 
@@ -55,7 +61,18 @@ public class UserService {
     }
 
     private void setUserByName(User user){
-        this.user = userDao.userLogin(user);
+        String userJson = redisDao.get("user_" + user.getName());
+        if (StringUtils.isEmpty(userJson)) {
+            this.user = userDao.userLogin(user);
+            if (this.user != null) {
+                redisDao.set("user_" + this.user.getName(), JSONObject.toJSONString(this.user));
+                redisDao.set("user_id_" + this.user.getId(), JSONObject.toJSONString(this.user));
+            }
+        }
+        else {
+            User realUser = JSONObject.parseObject(userJson, User.class);
+            this.user = realUser.getPassword().equals(user.getPassword()) ? realUser : null;
+        }
     }
 
     public Map<String, List<User>> getUsersMap() {
@@ -82,6 +99,12 @@ public class UserService {
 
     public void deleteUser(int id){
         userDao.deleteUser(id);
+        String userJson = redisDao.get("user_id_" + id);
+        if (!StringUtils.isEmpty(userJson)) {
+            User deleted = JSONObject.parseObject(userJson, User.class);
+            redisDao.del("user_" + deleted.getName());
+            redisDao.del("user_id_" + id);
+        }
     }
 
     public User checkUserDuplicate(User user){
@@ -94,6 +117,13 @@ public class UserService {
 
     public void updateTeacherRole(int id){
         userDao.updateTeacherRole(id);
+        String userJson = redisDao.get("user_id_" + id);
+        if (!StringUtils.isEmpty(userJson)) {
+            User modified = JSONObject.parseObject(userJson, User.class);
+            modified.setRole_id(3);
+            redisDao.set("user_id_" + id, JSONObject.toJSONString(modified));
+            redisDao.set("user_" + modified.getName(), JSONObject.toJSONString(modified));
+        }
     }
 
     public void updateSchoolId(User user){
@@ -102,6 +132,11 @@ public class UserService {
 
     public void updatePassword(User user){
         userDao.updatePassword(user);
+        String userJson = redisDao.get("user_" + user.getName());
+        if (!StringUtils.isEmpty(userJson)) {
+            redisDao.set("user_id_" + user.getId(), JSONObject.toJSONString(user));
+            redisDao.set("user_" + user.getName(), JSONObject.toJSONString(user));
+        }
     }
 
     public Map<String, List<User>> selectUser_S(int s_id) {
@@ -113,6 +148,9 @@ public class UserService {
 
     public void updateUser(User user) throws Exception{
         userDao.updateUser(user);
+        String jsonString = JSONObject.toJSONString(user);
+        redisDao.set("user_" + user.getName(), jsonString);
+        redisDao.set("user_id_" + user.getId(), jsonString);
     }
 
     public Avatar selectAvatar(int id){

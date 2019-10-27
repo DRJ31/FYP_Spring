@@ -1,11 +1,16 @@
 package com.suzumiya.service;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.suzumiya.dao.RedisDao;
 import com.suzumiya.dao.SyllabusDao;
 import com.suzumiya.model.*;
 import com.suzumiya.model.relationship.PiloCilo;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +23,12 @@ public class SyllabusService {
     private Syllabus syllabus;
     private Cilo cilo;
     private List<Cilo> cilos;
+    private RedisDao redisDao;
 
     public SyllabusService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.syllabusDao = (SyllabusDao) ac.getBean("syllabusDao");
+        this.redisDao = (RedisDao) ac.getBean("redisDao");
         this.setSyllabuses();
         this.setCilos();
     }
@@ -79,7 +86,16 @@ public class SyllabusService {
     }
 
     private void setSyllabus(int s_id) {
-        this.syllabus = syllabusDao.selectById(s_id);
+        String syllabusJson = redisDao.get("syllabus_" + s_id);
+        if (StringUtils.isEmpty(syllabusJson)) {
+            this.syllabus = syllabusDao.selectById(s_id);
+            if (this.syllabus != null) {
+                redisDao.set("syllabus_" + s_id, JSONObject.toJSONString(this.syllabus));
+            }
+        }
+        else {
+            this.syllabus = JSONObject.parseObject(syllabusJson, Syllabus.class);
+        }
     }
 
     public Map<String, List<Syllabus>> getSyllabusesMap() {
@@ -97,7 +113,18 @@ public class SyllabusService {
 
     public Map<String, List<Syllabus>> getFavoriteSyllabuses(int uid) {
         Map<String, List<Syllabus>> result = new HashMap<>();
-        result.put("syllabuses", syllabusDao.selectFavoriteSyllabuses(uid));
+        String favJson = redisDao.get("fav_syllabus_" + uid);
+        List<Syllabus> syllabuses;
+        if (StringUtils.isEmpty(favJson)) {
+            syllabuses = syllabusDao.selectFavoriteSyllabuses(uid);
+            if (syllabuses != null) {
+                redisDao.set("fav_syllabus_" + uid, JSONObject.toJSONString(syllabuses));
+            }
+        }
+        else {
+            syllabuses = JSONObject.parseArray(favJson, Syllabus.class);
+        }
+        result.put("syllabuses", syllabuses);
         return result;
     }
 
@@ -111,14 +138,29 @@ public class SyllabusService {
 
     public void deleteSyllabus(int sid){
         syllabusDao.deleteSyllabus(sid);
+        String userJson = redisDao.get("syllabus_" + sid);
+        if (!StringUtils.isEmpty(userJson)) {
+            redisDao.del("syllabus_" + sid);
+        }
     }
 
     public void insertFavoriteSyllabus(Favorite favorite){
         syllabusDao.insertFavoriteSyllabus(favorite);
+        String favJson = redisDao.get("fav_syllabus_" + favorite.getUser_id());
+        List<Syllabus> favorites = JSONObject.parseArray(favJson, Syllabus.class);
+        favorites.add(syllabusDao.selectById(favorite.getSyllabus_id()));
+        redisDao.set("fav_syllabus_" + favorite.getUser_id(), JSONObject.toJSONString(favorites));
     }
 
     public void deleteFavoriteSyllabus(Favorite favorite){
         syllabusDao.deleteFavoriteSyllabus(favorite);
+        String favJson = redisDao.get("fav_syllabus_" + favorite.getUser_id());
+        List<Syllabus> favorites = JSONObject.parseArray(favJson, Syllabus.class);
+        for (Syllabus syllabus : favorites) {
+            if (syllabus.getId() == favorite.getSyllabus_id())
+                favorites.remove(syllabus);
+        }
+        redisDao.set("fav_syllabus_" + favorite.getUser_id(), JSONObject.toJSONString(favorites));
     }
 
     public Favorite checkFavoriteDuplicate(Favorite favorite){
@@ -187,6 +229,10 @@ public class SyllabusService {
 
     public void updateSyllabus(Syllabus syllabus){
         syllabusDao.updateSyllabus(syllabus);
+        String userJson = redisDao.get("syllabus_" + syllabus.getId());
+        if (!StringUtils.isEmpty(userJson)) {
+            redisDao.del("syllabus_" + syllabus.getId());
+        }
     }
 
     public void updateCilo(Cilo cilo){

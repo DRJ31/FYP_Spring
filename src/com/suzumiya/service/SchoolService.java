@@ -1,5 +1,7 @@
 package com.suzumiya.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.suzumiya.dao.RedisDao;
 import com.suzumiya.dao.SchoolDao;
 import com.suzumiya.model.audit.AuditSchool;
 import com.suzumiya.model.audit.AuditTeacher;
@@ -7,6 +9,7 @@ import com.suzumiya.model.Favorite;
 import com.suzumiya.model.user.School;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +24,12 @@ public class SchoolService {
     private List<AuditSchool> auditSchools;
     private List<AuditTeacher> auditTeachers;
     private List<AuditTeacher> auditTeacher_S;
+    private RedisDao redisDao;
 
     public SchoolService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.schoolDao = (SchoolDao) ac.getBean("schoolDao");
+        this.redisDao = (RedisDao) ac.getBean("redisDao");
         this.setSchools();
         this.setAuditSchools();
         this.setAuditTeachers();
@@ -87,7 +92,16 @@ public class SchoolService {
     }
 
     public void setSchool(int sid) {
-        this.school = schoolDao.selectById(sid);
+        String schoolJson = redisDao.get("school_" + sid);
+        if (StringUtils.isEmpty(schoolJson)) {
+            this.school = schoolDao.selectById(sid);
+            if (this.school != null) {
+                redisDao.set("school_" + sid, JSONObject.toJSONString(this.school));
+            }
+        }
+        else {
+            this.school = JSONObject.parseObject(schoolJson, School.class);
+        }
     }
 
     public Map<String, List<School>> getSchoolsMap() {
@@ -105,7 +119,18 @@ public class SchoolService {
 
     public Map<String, List<School>> getFavoriteSchools(int id) {
         Map<String, List<School>> result = new HashMap<>();
-        result.put("schools", schoolDao.selectFavoriteSchools(id));
+        String favJson = redisDao.get("fav_school_" + id);
+        List<School> syllabuses;
+        if (StringUtils.isEmpty(favJson)) {
+            syllabuses = schoolDao.selectFavoriteSchools(id);
+            if (syllabuses != null) {
+                redisDao.set("fav_school_" + id, JSONObject.toJSONString(syllabuses));
+            }
+        }
+        else {
+            syllabuses = JSONObject.parseArray(favJson, School.class);
+        }
+        result.put("schools", syllabuses);
         return result;
     }
 
@@ -119,14 +144,29 @@ public class SchoolService {
 
     public void deleteSchool(int id){
         schoolDao.deleteSchool(id);
+        String userJson = redisDao.get("school_" + id);
+        if (!StringUtils.isEmpty(userJson)) {
+            redisDao.del("school_" + id);
+        }
     }
 
     public void insertFavoriteSchool(Favorite favorite){
         schoolDao.insertFavoriteSchool(favorite);
+        String favJson = redisDao.get("fav_school_" + favorite.getUser_id());
+        List<School> favorites = JSONObject.parseArray(favJson, School.class);
+        favorites.add(schoolDao.selectById(favorite.getSchool_id()));
+        redisDao.set("fav_school_" + favorite.getUser_id(), JSONObject.toJSONString(favorites));
     }
 
     public void deleteFavoriteSchool(Favorite favorite){
         schoolDao.deleteFavoriteSchool(favorite);
+        String favJson = redisDao.get("fav_school_" + favorite.getUser_id());
+        List<School> favorites = JSONObject.parseArray(favJson, School.class);
+        for (School school : favorites) {
+            if (school.getId() == favorite.getSchool_id())
+                favorites.remove(school);
+        }
+        redisDao.set("fav_school_" + favorite.getUser_id(), JSONObject.toJSONString(favorites));
     }
 
     public Favorite checkFavoriteDuplicate(Favorite favorite){
@@ -188,5 +228,10 @@ public class SchoolService {
 
     public void updateSchool(School school){
         schoolDao.updateSchool(school);
+        String schoolJson = redisDao.get("school_" + school.getId());
+        if (!StringUtils.isEmpty(schoolJson)) {
+            String jsonString = JSONObject.toJSONString(school);
+            redisDao.set("school_" + school.getId(), jsonString);
+        }
     }
 }

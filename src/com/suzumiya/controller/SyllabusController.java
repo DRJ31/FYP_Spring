@@ -1,5 +1,7 @@
 package com.suzumiya.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.suzumiya.dao.RedisDao;
 import com.suzumiya.model.*;
 import com.suzumiya.model.list.CiloList;
 import com.suzumiya.model.list.ContentList;
@@ -7,7 +9,13 @@ import com.suzumiya.model.list.PiloList;
 import com.suzumiya.model.list.TlaList;
 import com.suzumiya.model.relationship.PiloCilo;
 import com.suzumiya.model.relationship.list.PiloCiloList;
+import com.suzumiya.model.user.School;
+import com.suzumiya.model.user.Token;
+import com.suzumiya.model.user.User;
+import com.suzumiya.service.SchoolService;
 import com.suzumiya.service.SyllabusService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,11 +28,20 @@ import java.util.Map;
 
 @Controller
 public class SyllabusController {
+    private SyllabusService service = new SyllabusService();
+    private SchoolService schoolService = new SchoolService();
+    private ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
+    private RedisDao redisDao = (RedisDao) ac.getBean("redisDao");
+
+    private User getUser(String token) {
+        redisDao.expire("token_" + token, 1800);
+        return JSONObject.parseObject(redisDao.get("token_" + token), User.class);
+    }
+
     @RequestMapping(value = "/api/syllabuses", method = {RequestMethod.GET})
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllSyllabuses() {
-        SyllabusService service = new SyllabusService();
         Map<String, List<Syllabus>> map = service.getSyllabusesMap();
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -33,8 +50,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getSyllabusBySid(@RequestParam(value = "id") int id) {
-        System.out.println("Syllabus ID: " + id);
-        SyllabusService service = new SyllabusService();
         Map<String, Syllabus> map = service.getSyllabusMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -43,8 +58,33 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getFavoriteSyllabuses(@RequestParam(value = "user_id") int id) {
-        SyllabusService service = new SyllabusService();
         Map<String, List<Syllabus>> map = service.getFavoriteSyllabuses(id);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+
+    @RequestMapping(value = "/api/syllabuses", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView getAllSyllabuses(@RequestBody Token token) {
+        SyllabusService service = new SyllabusService();
+        User user = getUser(token.getToken());
+        Map<String, List<Syllabus>> map = new HashMap<>();
+        int role = user.getRole().getId();
+        switch (role){
+            case 1:
+                map = service.getSyllabusesMap();
+                break;
+            case 2:
+                map = service.selectSyllabuses_S(user.getSchool_id());
+                break;
+            case 3:
+                map = service.selectSyllabuses_T(user.getId());
+                break;
+            default:
+                map.put("syllabuses", null);
+                return null;
+        }
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -52,7 +92,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertSyllabus(@RequestBody Syllabus syllabus){
-        SyllabusService service = new SyllabusService();
         service.insertSyllabus(syllabus);
         Map<String, Syllabus> map = new HashMap<>();
         map.put("syllabus", service.getInsertedSyllabus(syllabus));
@@ -63,8 +102,47 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteSyllabus(@RequestParam("id") int id){
-        SyllabusService service = new SyllabusService();
         service.deleteSyllabus(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+
+    @RequestMapping(value = "/api/favorite",method = RequestMethod.POST)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView insertFavorite(@RequestBody Favorite favorite){
+        int uid = getUser(favorite.getToken()).getId();
+        favorite.setUser_id(uid);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("status", false);
+        if (favorite.getSyllabus_id() != 0){
+            if (service.checkFavoriteDuplicate(favorite) != null)
+                return new ModelAndView(new MappingJackson2JsonView(), map);
+            service.insertFavoriteSyllabus(favorite);
+        }
+        if (favorite.getSchool_id() != 0){
+            if (schoolService.checkFavoriteDuplicate(favorite) != null)
+                return new ModelAndView(new MappingJackson2JsonView(), map);
+            schoolService.insertFavoriteSchool(favorite);
+        }
+        map.put("status", true);
+        return new ModelAndView(new MappingJackson2JsonView(), map);
+    }
+
+    @RequestMapping(value = "/api/favorite",method = RequestMethod.DELETE)
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView deleteFavorite(@RequestBody Favorite favorite){
+        int uid = getUser(favorite.getToken()).getId();
+        favorite.setUser_id(uid);
+        if (favorite.getSyllabus_id() != 0){
+            service.deleteFavoriteSyllabus(favorite);
+        }
+        if (favorite.getSchool_id() != 0){
+            schoolService.deleteFavoriteSchool(favorite);
+        }
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
@@ -74,7 +152,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView selectAllCilo() {
-        SyllabusService service = new SyllabusService();
         Map<String, List<Cilo>> map = service.selectAllCilo();
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -83,8 +160,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView selectCiloById(@RequestParam(value = "id") int id) {
-        System.out.println("cilo ID: " + id);
-        SyllabusService service = new SyllabusService();
         Map<String, Cilo> map = service.selectCiloById(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -93,7 +168,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertCilo(@RequestBody CiloList cilos){
-        SyllabusService service = new SyllabusService();
         List<Integer> id = new ArrayList<>();
         for (Cilo cilo : cilos.getCilos()) {
             id.add(service.insertCilo(cilo));
@@ -107,7 +181,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteCilo(@RequestParam("id") int id){
-        SyllabusService service = new SyllabusService();
         service.deleteCilo(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -118,11 +191,8 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertPilo(@RequestBody PiloList pilos){
-        SyllabusService service = new SyllabusService();
         List<Integer> id = new ArrayList<>();
         for (Pilo pilo : pilos.getPilos()) {
-            System.out.println(pilo.getSyllabus_id());
-            System.out.println(pilo.getContent());
             id.add(service.insertPilo(pilo));
         }
         Map<String, List<Integer>> map = new HashMap<>();
@@ -134,7 +204,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deletePilo(@RequestParam("id") int id){
-        SyllabusService service = new SyllabusService();
         service.deletePilo(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -145,7 +214,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertPC(@RequestBody PiloCiloList piloCilos){
-        SyllabusService service = new SyllabusService();
         for (PiloCilo pilo_cilo : piloCilos.getPiloCilos()) {
             service.insertPC(pilo_cilo);
         }
@@ -158,7 +226,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deletePC(@RequestParam("id") int id){
-        SyllabusService service = new SyllabusService();
         service.deletePC(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -169,7 +236,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertTla(@RequestBody TlaList tlas){
-        SyllabusService service = new SyllabusService();
         for (Tla tla : tlas.getTlas()) {
             service.insertTla(tla);
         }
@@ -182,7 +248,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteTla(@RequestParam("id") int id){
-        SyllabusService service = new SyllabusService();
         service.deleteTla(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -193,7 +258,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertContent(@RequestBody ContentList contents){
-        SyllabusService service = new SyllabusService();
         List<Integer> id = new ArrayList<>();
         for (Content content : contents.getContents()) {
             id.add(service.insertContent(content));
@@ -207,7 +271,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteContent(@RequestParam("id") int id){
-        SyllabusService service = new SyllabusService();
         service.deleteContent(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -218,10 +281,9 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateSyllabus(@RequestBody Syllabus syllabus){
-        SyllabusService syllabusService = new SyllabusService();
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
-        syllabusService.updateSyllabus(syllabus);
+        service.updateSyllabus(syllabus);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -231,9 +293,8 @@ public class SyllabusController {
     @CrossOrigin
     public ModelAndView updateContent(@RequestBody Content content){
         Map<String, Boolean> map = new HashMap<>();
-        SyllabusService syllabusService = new SyllabusService();
         map.put("status", false);
-        syllabusService.updateContent(content);
+        service.updateContent(content);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -244,8 +305,7 @@ public class SyllabusController {
     public ModelAndView updateCilo(@RequestBody Cilo cilo){
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
-        SyllabusService syllabusService = new SyllabusService();
-        syllabusService.updateCilo(cilo);
+        service.updateCilo(cilo);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -254,10 +314,9 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView updatePilo(@RequestBody Pilo pilo){
-        SyllabusService syllabusService = new SyllabusService();
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
-        syllabusService.updatePilo(pilo);
+        service.updatePilo(pilo);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -266,10 +325,9 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView updatePC(@RequestBody PiloCilo piloCilo){
-        SyllabusService syllabusService = new SyllabusService();
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
-        syllabusService.updatePC(piloCilo);
+        service.updatePC(piloCilo);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -278,10 +336,9 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateTla(@RequestBody Tla tla){
-        SyllabusService syllabusService = new SyllabusService();
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
-        syllabusService.updateTla(tla);
+        service.updateTla(tla);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }

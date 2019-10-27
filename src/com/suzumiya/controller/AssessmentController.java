@@ -17,11 +17,12 @@ import java.util.Map;
 
 @Controller
 public class AssessmentController {
+    private AssessmentService service = new AssessmentService();
+
     @RequestMapping(value = "/api/assessments", method = {RequestMethod.GET})
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllAssessments() {
-        AssessmentService service = new AssessmentService();
         Map<String, List<Assessment>> map = service.getAssessmentsMap();
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -30,7 +31,6 @@ public class AssessmentController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAssessmentById(@RequestParam(value = "id") int id) {
-        AssessmentService service = new AssessmentService();
         Map<String, Assessment> map = service.getAssessmentMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -39,7 +39,6 @@ public class AssessmentController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertAssessment(@RequestBody AssessmentList assessments){
-        AssessmentService service = new AssessmentService();
         List<Integer> id = new ArrayList<>();
         for (Assessment assessment : assessments.getAssessments()) {
             id.add(service.insertAssessment(assessment));
@@ -53,7 +52,6 @@ public class AssessmentController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteAssessment(@RequestParam("id") int id){
-        AssessmentService service = new AssessmentService();
         service.deleteAssessment(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -64,7 +62,6 @@ public class AssessmentController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllACs() {
-        AssessmentService service = new AssessmentService();
         Map<String, List<AssessmentCilo>> map = service.getACsMap();
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -73,7 +70,6 @@ public class AssessmentController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getACById(@RequestParam(value = "id") int id) {
-        AssessmentService service = new AssessmentService();
         Map<String, AssessmentCilo> map = service.getACMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -82,7 +78,6 @@ public class AssessmentController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertAC(@RequestBody AssessmentCiloList assessmentCilos){
-        AssessmentService service = new AssessmentService();
         for (AssessmentCilo assessment_cilo : assessmentCilos.getAssessmentCilos()) {
             service.insertAC(assessment_cilo);
         }
@@ -95,7 +90,6 @@ public class AssessmentController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteAC(@RequestParam("id") int id){
-        AssessmentService service = new AssessmentService();
         service.deleteAC(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -106,10 +100,9 @@ public class AssessmentController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateAssessment(@RequestBody Assessment assessment){
-        AssessmentService assessmentService = new AssessmentService();
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
-        assessmentService.updateAssessment(assessment);
+        service.updateAssessment(assessment);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -119,9 +112,8 @@ public class AssessmentController {
     @CrossOrigin
     public ModelAndView updateAC(@RequestBody AssessmentCilo assessmentCilo){
         Map<String, Boolean> map = new HashMap<>();
-        AssessmentService assessmentService = new AssessmentService();
         map.put("status", false);
-        assessmentService.updateAC(assessmentCilo);
+        service.updateAC(assessmentCilo);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }

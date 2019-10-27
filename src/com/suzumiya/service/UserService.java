@@ -25,7 +25,6 @@ public class UserService {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.userDao = (UserDao) ac.getBean("userDao");
         this.redisDao = (RedisDao) ac.getBean("redisDao");
-        this.setUsers();
     }
 
     public List<User> getUser_S() {
@@ -77,6 +76,7 @@ public class UserService {
 
     public Map<String, List<User>> getUsersMap() {
         Map<String, List<User>> result = new HashMap<>();
+        this.setUsers();
         result.put("users", users);
         return result;
     }

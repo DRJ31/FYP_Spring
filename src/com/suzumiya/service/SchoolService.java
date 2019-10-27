@@ -30,9 +30,6 @@ public class SchoolService {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.schoolDao = (SchoolDao) ac.getBean("schoolDao");
         this.redisDao = (RedisDao) ac.getBean("redisDao");
-        this.setSchools();
-        this.setAuditSchools();
-        this.setAuditTeachers();
     }
 
     public void setAuditTeacher_S(int id){
@@ -106,6 +103,7 @@ public class SchoolService {
 
     public Map<String, List<School>> getSchoolsMap() {
         Map<String, List<School>> result = new HashMap<>();
+        this.setSchools();
         result.put("schools", schools);
         return result;
     }
@@ -175,6 +173,7 @@ public class SchoolService {
 
     public Map<String, List<AuditSchool>> getAuditSchoolsMap() {
         Map<String, List<AuditSchool>> result = new HashMap<>();
+        this.setAuditSchools();
         result.put("audits", auditSchools);
         return result;
     }
@@ -200,6 +199,7 @@ public class SchoolService {
 
     public Map<String, List<AuditTeacher>> getAuditTeachersMap() {
         Map<String, List<AuditTeacher>> result = new HashMap<>();
+        this.setAuditTeachers();
         result.put("audits", auditTeachers);
         return result;
     }

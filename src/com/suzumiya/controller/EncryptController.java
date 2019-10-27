@@ -24,7 +24,6 @@ public class EncryptController {
                 buf.append(Integer.toHexString(i));
             }
             s = buf.toString();
-            System.out.println(s);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

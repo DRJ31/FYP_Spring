@@ -17,7 +17,6 @@ public class TextBookService {
     public TextBookService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.textBookDao = (TextBookDao) ac.getBean("textBookDao");
-        this.setTextBooks();
     }
 
     public List<TextBook> getTextBooks() {
@@ -46,6 +45,7 @@ public class TextBookService {
 
     public Map<String, List<TextBook>> getTextBooksMap() {
         Map<String, List<TextBook>> result = new HashMap<>();
+        this.setTextBooks();
         result.put("textBooks", textBooks);
         return result;
     }

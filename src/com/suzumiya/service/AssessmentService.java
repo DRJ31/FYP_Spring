@@ -20,8 +20,6 @@ public class AssessmentService {
     public AssessmentService() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.assessmentDao = (AssessmentDao) ac.getBean("assessmentDao");
-        this.setAssessments();
-        this.setAssessment_Cilos();
     }
 
     public void setAssessment_Cilos() {
@@ -66,6 +64,7 @@ public class AssessmentService {
 
     public Map<String, List<Assessment>> getAssessmentsMap() {
         Map<String, List<Assessment>> result = new HashMap<>();
+        this.setAssessments();
         result.put("assessments", assessments);
         return result;
     }
@@ -87,6 +86,7 @@ public class AssessmentService {
 
     public Map<String, List<AssessmentCilo>> getACsMap() {
         Map<String, List<AssessmentCilo>> result = new HashMap<>();
+        this.setAssessment_Cilos();
         result.put("assessment_Cilos", assessment_Cilos);
         return result;
     }

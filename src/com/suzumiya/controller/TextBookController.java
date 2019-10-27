@@ -14,11 +14,12 @@ import java.util.Map;
 
 @Controller
 public class TextBookController {
+    private TextBookService service = new TextBookService();
+
     @RequestMapping(value = "/api/textBooks", method = {RequestMethod.GET})
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllTextBooks() {
-        TextBookService service = new TextBookService();
         Map<String, List<TextBook>> map = service.getTextBooksMap();
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -27,7 +28,6 @@ public class TextBookController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getTextBookByTid(@RequestParam(value = "id") int id) {
-        TextBookService service = new TextBookService();
         Map<String, TextBook> map = service.getTextBookMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -36,7 +36,6 @@ public class TextBookController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView insertTextBook(@RequestBody TextBookList textBooks){
-        TextBookService service = new TextBookService();
         for (TextBook textBook : textBooks.getTextBooks()) {
             service.insertTextBook(textBook);
         }
@@ -49,7 +48,6 @@ public class TextBookController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteTextBook(@RequestParam("id") int id){
-        TextBookService service = new TextBookService();
         service.deleteTextBook(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -60,7 +58,6 @@ public class TextBookController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteTextBook(@RequestBody TextBook textBook){
-        TextBookService service = new TextBookService();
         service.updateTextBook(textBook);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);

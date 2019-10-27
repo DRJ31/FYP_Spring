@@ -29,8 +29,6 @@ public class SyllabusService {
         ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
         this.syllabusDao = (SyllabusDao) ac.getBean("syllabusDao");
         this.redisDao = (RedisDao) ac.getBean("redisDao");
-        this.setSyllabuses();
-        this.setCilos();
     }
 
     public List<Syllabus> getSyllabuses_T() {
@@ -100,6 +98,7 @@ public class SyllabusService {
 
     public Map<String, List<Syllabus>> getSyllabusesMap() {
         Map<String, List<Syllabus>> result = new HashMap<>();
+        this.setSyllabuses();
         result.put("syllabuses", syllabuses);
         return result;
     }
@@ -169,6 +168,7 @@ public class SyllabusService {
 
     public Map<String, List<Cilo>> selectAllCilo(){
         Map<String, List<Cilo>> result = new HashMap<>();
+        this.setCilos();
         result.put("cilos", cilos);
         return result;
     }

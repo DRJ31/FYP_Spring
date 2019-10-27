@@ -1,10 +1,8 @@
 package com.suzumiya.controller;
 
-import com.suzumiya.model.TextBook;
-import com.suzumiya.model.audit.AuditSchool;
-import com.suzumiya.model.audit.AuditTeacher;
+import com.alibaba.fastjson.JSONObject;
+import com.suzumiya.dao.RedisDao;
 import com.suzumiya.model.Favorite;
-import com.suzumiya.model.Syllabus;
 import com.suzumiya.model.user.Avatar;
 import com.suzumiya.model.user.Token;
 import com.suzumiya.model.user.User;
@@ -13,6 +11,8 @@ import com.suzumiya.service.SyllabusService;
 import com.suzumiya.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,55 +28,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class UserController {
-
-    private Map<String, User> loginMap = new HashMap<>();
+    private ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
+    private RedisDao redisDao = (RedisDao) ac.getBean("redisDao");
     private String rootPath = "/var/www/syllabus/static/";
     String filePath = rootPath + "application/";
     String avatarPath = rootPath +"avatar/";
+    private UserService service = new UserService();
 
-    public Map<String, User> getLoginMap() {
-        return loginMap;
+    private User getUser(String token) {
+        redisDao.expire("token_" + token, 1800);
+        return JSONObject.parseObject(redisDao.get("token_" + token), User.class);
     }
-
-    public void setLoginMap(Map<String, User> loginMap) {
-        this.loginMap = loginMap;
-    }
-
-    @RequestMapping(value = "/api/syllabuses", method = {RequestMethod.POST})
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView getAllSyllabuses(@RequestBody Token token) {
-        SyllabusService service = new SyllabusService();
-        User user = loginMap.get(token.getToken());
-        Map<String, List<Syllabus>> map = new HashMap<>();
-        int role = user.getRole().getId();
-        switch (role){
-            case 1:
-                map = service.getSyllabusesMap();
-                break;
-            case 2:
-                map = service.selectSyllabuses_S(user.getSchool_id());
-                break;
-            case 3:
-                map = service.selectSyllabuses_T(user.getId());
-                break;
-            default:
-                map.put("syllabuses", null);
-                return null;
-        }
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
 
     @RequestMapping(value = "/api/users", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllUsers(@RequestBody Token token) {
-        UserService service = new UserService();
-        User user = loginMap.get(token.getToken());
+        User user = getUser(token.getToken());
         Map<String, List<User>> map;
         if (user.getRole().getId() == 1) {
             map = service.getUsersMap();
@@ -91,7 +63,6 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getUserByUid(@RequestParam(value = "id") int id) {
-        UserService service = new UserService();
         Map<String, User> map = service.getUserMap(id);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -102,7 +73,6 @@ public class UserController {
     public ModelAndView insertUser(@RequestBody User user){
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
-        UserService service = new UserService();
         if (service.checkUserDuplicate(user) != null)
             return new ModelAndView(new MappingJackson2JsonView(), map);
         user.encryptPassword();
@@ -115,7 +85,6 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView deleteUser(@RequestParam("id") int id){
-        UserService service = new UserService();
         service.deleteUser(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", true);
@@ -131,20 +100,17 @@ public class UserController {
         Map<String, String> currentMap = new HashMap<>();
         user.encryptPassword();
         token = e.encrypt(token);
-        UserService service = new UserService();
-        User u = service.getUserByName(user);
-        try {
-            for (Map.Entry<String, User> entry : loginMap.entrySet()) {
-                if (entry.getValue().getName().equals(user.getName())) {
-                    currentMap.put("token", entry.getKey());
-                    return new ModelAndView(new MappingJackson2JsonView(), currentMap);
-                }
-            }
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
+        Set<String> tokens = redisDao.keys("token_*");
+        User tmp;
+        for (String tok : tokens) {
+            tmp = JSONObject.parseObject(redisDao.get(tok), User.class);
+            if (tmp.getName().equals(user.getName()))
+                redisDao.del(tok);
         }
+        User u = service.getUserByName(user);
         if (u != null) {
-            loginMap.put(token, u);
+            redisDao.set("token_" + token, JSONObject.toJSONString(user));
+            redisDao.expire("token_" + token, 1800);
             currentMap.put("token", token);
         }
         else {
@@ -158,7 +124,7 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView userLoginStatus(@RequestBody Token token){
-        User user = loginMap.get(token.getToken());
+        User user = getUser(token.getToken());
         Map<String, User> map = new HashMap<>();
         map.put("user", user);
         return new ModelAndView(new MappingJackson2JsonView(), map);
@@ -170,105 +136,26 @@ public class UserController {
     public String userLogout(@RequestBody Token token){
         String name = null;
         try {
-            name = loginMap.get(token.getToken()).getName();
-            loginMap.remove(token.getToken());
+            name = getUser(token.getToken()).getName();
+            redisDao.del("token_" + token.getToken());
         }catch (Exception e){
             e.printStackTrace();
         }
         return name;
     }
 
-    @RequestMapping(value = "/api/favorite",method = RequestMethod.POST)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView insertFavorite(@RequestBody Favorite favorite){
-        SyllabusService syllabusService = new SyllabusService();
-        SchoolService schoolService = new SchoolService();
-        int uid = loginMap.get(favorite.getToken()).getId();
-        favorite.setUser_id(uid);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", false);
-        if (favorite.getSyllabus_id() != 0){
-            if (syllabusService.checkFavoriteDuplicate(favorite) != null)
-                return new ModelAndView(new MappingJackson2JsonView(), map);
-            syllabusService.insertFavoriteSyllabus(favorite);
-        }
-        if (favorite.getSchool_id() != 0){
-            if (schoolService.checkFavoriteDuplicate(favorite) != null)
-                return new ModelAndView(new MappingJackson2JsonView(), map);
-            schoolService.insertFavoriteSchool(favorite);
-        }
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @RequestMapping(value = "/api/favorite",method = RequestMethod.DELETE)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView deleteFavorite(@RequestBody Favorite favorite){
-        SyllabusService syllabusService = new SyllabusService();
-        SchoolService schoolService = new SchoolService();
-        int uid = loginMap.get(favorite.getToken()).getId();
-        favorite.setUser_id(uid);
-        if (favorite.getSyllabus_id() != 0){
-            syllabusService.deleteFavoriteSyllabus(favorite);
-        }
-        if (favorite.getSchool_id() != 0){
-            schoolService.deleteFavoriteSchool(favorite);
-        }
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @RequestMapping(value = "/api/audit",method = RequestMethod.DELETE)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView deleteAudit(@RequestParam("id") int id){
-        SchoolService service = new SchoolService();
-        service.deleteAudit(id);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @RequestMapping(value = "/api/audit",method = RequestMethod.PUT)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView updateRole(@RequestParam("id") int id){
-        SchoolService schoolService = new SchoolService();
-        UserService userService = new UserService();
-        AuditSchool auditSchool = schoolService.getAuditSchoolMap(id).get("audit");
-        int uid = auditSchool.getUser_id();
-        userService.updateSchoolRole(uid);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", false);
-        try {
-            schoolService.insertAuditSchool(auditSchool);
-        } catch (Exception e) {
-            return new ModelAndView(new MappingJackson2JsonView(), map);
-        }
-        schoolService.deleteAudit(id);
-        int school_id = schoolService.getSchoolByName(auditSchool.getSchool_name()).getId();
-        userService.updateSchoolId(new User(uid, school_id));
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
     @RequestMapping(value = "/api/password", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public ModelAndView updatePassword(@RequestBody Token token){
-        UserService userService = new UserService();
         Map<String, Boolean> map = new HashMap<>();
-        User user = loginMap.get(token.getToken());
+        User user = getUser(token.getToken());
         token.encrypt();
-        System.out.println(user.getPassword());
-        System.out.println(token.getOld_pass());
         if (user.getPassword().equals(token.getOld_pass())){
             user.setPassword(token.getNew_pass());
-            loginMap.put(token.getToken(), user);
-            userService.updatePassword(user);
+            redisDao.set("token_" + token.getToken(), JSONObject.toJSONString(user));
+            redisDao.expire("token_" + token.getToken(), 1800);
+            service.updatePassword(user);
             map.put("status", true);
             return new ModelAndView(new MappingJackson2JsonView(), map);
         }
@@ -282,78 +169,19 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateUser(@RequestBody Token token){
-        UserService userService = new UserService();
         Map<String, Boolean> map = new HashMap<>();
-        User user = loginMap.get(token.getToken());
+        User user = getUser(token.getToken());
         map.put("status", false);
         user.setEmail(token.getEmail());
-        System.out.println(token.getEmail());
         user.setRole_id(token.getRole_id());
-        System.out.println(token.getRole_id());
         try {
-            userService.updateUser(user);
+            service.updateUser(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        loginMap.put(token.getToken(), user);
+        redisDao.set("token_" + token.getToken(), JSONObject.toJSONString(user));
+        redisDao.expire("token_" + token.getToken(), 1800);
         map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @RequestMapping(value = "/api/audit/teacher",method = RequestMethod.POST)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView insertAuditTeacher(@RequestBody AuditTeacher auditTeacher){
-        SchoolService schoolService = new SchoolService();
-        int uid = loginMap.get(auditTeacher.getToken()).getId();
-        auditTeacher.setUser_id(uid);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", false);
-        try {
-            schoolService.insertAuditTeacher(auditTeacher);
-        } catch (Exception e) {
-            return new ModelAndView(new MappingJackson2JsonView(), map);
-        }
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @RequestMapping(value = "/api/audit/teacher",method = RequestMethod.DELETE)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView deleteAuditTeacher(@RequestParam("id") int id){
-        SchoolService service = new SchoolService();
-        service.deleteAuditTeacher(id);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @RequestMapping(value = "/api/audit/teacher",method = RequestMethod.PUT)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView updateTeacherRole(@RequestParam("id") int id){
-        SchoolService schoolService = new SchoolService();
-        UserService userService = new UserService();
-        AuditTeacher auditTeacher = schoolService.getAuditTeacherMap(id).get("audit");
-        int uid = auditTeacher.getUser_id();
-        userService.updateTeacherRole(uid);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("status", false);
-        schoolService.deleteAuditTeacher(id);
-        int school_id = schoolService.getSchoolByName(auditTeacher.getSchool_name()).getId();
-        userService.updateSchoolId(new User(uid, school_id));
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
-    @RequestMapping(value = "/api/audit/teachers", method = {RequestMethod.POST})
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView selectAllAuditSchoolTeacher(@RequestBody Token token) {
-        SchoolService service = new SchoolService();
-        User user = loginMap.get(token.getToken());
-        Map<String, List<AuditTeacher>> map = service.getAuditSchoolTeachersMap(user.getSchool_id());
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
 
@@ -389,31 +217,12 @@ public class UserController {
                 headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/audit",method = RequestMethod.POST)
-    @ResponseBody
-    @CrossOrigin
-    public ModelAndView insertAudit(@RequestBody AuditSchool auditSchool){
-        int uid = loginMap.get(auditSchool.getToken()).getId();
-        auditSchool.setUser_id(uid);
-        Map<String, Boolean> map = new HashMap<>();
-        SchoolService schoolService = new SchoolService();
-        map.put("status", false);
-        try {
-            schoolService.insertAudit(auditSchool);
-        } catch (Exception e) {
-            return new ModelAndView(new MappingJackson2JsonView(), map);
-        }
-        map.put("status", true);
-        return new ModelAndView(new MappingJackson2JsonView(), map);
-    }
-
     @RequestMapping(value = "/api/user/avatar", method = {RequestMethod.POST})
     @ResponseBody
     @CrossOrigin
     public String getAvatar(@RequestBody Token token){
-        User user = loginMap.get(token.getToken());
-        UserService userService = new UserService();
-        Avatar avatar = userService.selectAvatar(user.getId());
+        User user = getUser(token.getToken());
+        Avatar avatar = service.selectAvatar(user.getId());
         return avatar.getFilename();
     }
 
@@ -427,13 +236,12 @@ public class UserController {
             if(!dir.isDirectory()) {
                 dir.mkdir();
             }
-            User user = loginMap.get(token);
+            User user = getUser(token);
             String originalFileName = partFile.getOriginalFilename();
             String suffix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1).toLowerCase();
             String newFileName = user.getName() + user.getEmail() + "." + suffix;
             File file = new File(avatarPath + newFileName);
             partFile.transferTo(file);
-            UserService service = new UserService();
             Avatar avatar = new Avatar(user.getId(), newFileName);
             try {
                 service.insertAvatar(avatar);
@@ -455,11 +263,10 @@ public class UserController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView updateTeacher(@RequestBody User user){
-        UserService userService = new UserService();
         Map<String, Boolean> map = new HashMap<>();
         map.put("status", false);
         try {
-            userService.updateUser(user);
+            service.updateUser(user);
         } catch (Exception e) {
             e.printStackTrace();
         }

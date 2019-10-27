@@ -108,6 +108,8 @@ public class SchoolController {
         service.deleteAudit(id);
         int school_id = service.getSchoolByName(auditSchool.getSchool_name()).getId();
         userService.updateSchoolId(new User(uid, school_id));
+        redisDao.del("user_" + JSONObject.parseObject(redisDao.get("user_id_" + uid), User.class).getName());
+        redisDao.del("user_id_" + uid);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }
@@ -124,6 +126,8 @@ public class SchoolController {
         service.deleteAuditTeacher(id);
         int school_id = service.getSchoolByName(auditTeacher.getSchool_name()).getId();
         userService.updateSchoolId(new User(uid, school_id));
+        redisDao.del("user_" + JSONObject.parseObject(redisDao.get("user_id_" + uid), User.class).getName());
+        redisDao.del("user_id_" + uid);
         map.put("status", true);
         return new ModelAndView(new MappingJackson2JsonView(), map);
     }

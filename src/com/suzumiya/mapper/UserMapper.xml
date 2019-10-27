@@ -26,7 +26,7 @@
     <select id="selectAll" resultMap="allUsers">
         select user.*,role.*,school.id as school_id,school.name as school_name
         from user left outer join school on user.school_id = school.id,role
-        where user.role_id=role.id
+        where user.role_id=role.id and user.role_id != 1
     </select>
     <select id="selectByUid" resultMap="allUsers">
         select user.*,role.*,school.id as school_id,school.name as school_name
@@ -56,7 +56,7 @@
     <select id="selectUser_S" resultMap="allUsers">
         select user.*,role.*,school.id as school_id,school.name as school_name
         from user left outer join school on user.school_id = school.id,role
-        where user.role_id=role.id and user.school_id = #{s_id} and user.role_id != 1 and user.role_id != 4
+        where user.role_id=role.id and user.school_id = #{s_id} and user.role_id = 3
     </select>
     <update id="updateTeacherRole">
         update user set user.role_id = 3 where user.id = #{id}

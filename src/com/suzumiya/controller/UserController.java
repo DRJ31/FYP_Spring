@@ -109,7 +109,7 @@ public class UserController {
         }
         User u = service.getUserByName(user);
         if (u != null) {
-            redisDao.set("token_" + token, JSONObject.toJSONString(user));
+            redisDao.set("token_" + token, JSONObject.toJSONString(u));
             redisDao.expire("token_" + token, 1800);
             currentMap.put("token", token);
         }

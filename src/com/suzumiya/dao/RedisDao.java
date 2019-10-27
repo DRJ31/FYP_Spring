@@ -1,6 +1,7 @@
 package com.suzumiya.dao;
 
 import org.springframework.stereotype.Repository;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.Set;
@@ -10,23 +11,35 @@ public class RedisDao {
     private JedisPool jedisPool;
 
     public String get(String key) {
-        return jedisPool.getResource().get(key);
+        Jedis jedis = jedisPool.getResource();
+        String result = jedis.get(key);
+        jedis.close();
+        return result;
     }
 
-    public String set(String key, String value) {
-        return jedisPool.getResource().set(key, value);
+    public void set(String key, String value) {
+        Jedis jedis = jedisPool.getResource();
+        jedis.set(key, value);
+        jedis.close();
     }
 
-    public long expire(String key, int expire) {
-        return jedisPool.getResource().expire(key, expire);
+    public void expire(String key, int expire) {
+        Jedis jedis = jedisPool.getResource();
+        jedis.expire(key, expire);
+        jedis.close();
     }
 
     public Set<String> keys(String pattern) {
-        return jedisPool.getResource().keys(pattern);
+        Jedis jedis = jedisPool.getResource();
+        Set<String> results = jedis.keys(pattern);
+        jedis.close();
+        return results;
     }
 
-    public long del(String key) {
-        return jedisPool.getResource().del(key);
+    public void del(String key) {
+        Jedis jedis = jedisPool.getResource();
+        jedis.del(key);
+        jedis.close();
     }
 
     public void setJedisPool(JedisPool jedisPool) {

@@ -58,6 +58,9 @@
         from user left outer join school on user.school_id = school.id,role
         where user.role_id=role.id and user.school_id = #{s_id} and user.role_id = 3
     </select>
+    <select id="selectByMail" resultMap="allUsers">
+        select * from user where email = #{email}
+    </select>
     <update id="updateTeacherRole">
         update user set user.role_id = 3 where user.id = #{id}
     </update>

@@ -2,12 +2,10 @@ package com.suzumiya.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.suzumiya.dao.RedisDao;
-import com.suzumiya.model.Favorite;
 import com.suzumiya.model.user.Avatar;
 import com.suzumiya.model.user.Token;
 import com.suzumiya.model.user.User;
-import com.suzumiya.service.SchoolService;
-import com.suzumiya.service.SyllabusService;
+import com.suzumiya.service.MailService;
 import com.suzumiya.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.annotations.Param;
@@ -18,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -37,7 +36,7 @@ public class UserController {
     private String rootPath = "/var/www/syllabus/static/";
     String filePath = rootPath + "application/";
     String avatarPath = rootPath +"avatar/";
-    private UserService service = new UserService();
+    private UserService service = (UserService) ac.getBean("userService");
 
     private User getUser(String token) {
         redisDao.expire("token_" + token, 1800);
@@ -156,6 +155,65 @@ public class UserController {
             redisDao.set("token_" + token.getToken(), JSONObject.toJSONString(user));
             redisDao.expire("token_" + token.getToken(), 1800);
             service.updatePassword(user);
+            map.put("status", true);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+        else {
+            map.put("status", false);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+    }
+
+    @RequestMapping(value = "/api/password/check", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView resetCheck(@RequestBody Token token){
+        Map<String, Boolean> map = new HashMap<>();
+        String userJson = redisDao.get("reset_" + token.getToken());
+        if (!StringUtils.isEmpty(userJson)){
+            map.put("status", true);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+        else {
+            map.put("status", false);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+    }
+
+    @RequestMapping(value = "/api/password/reset", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView resetPassword(@RequestBody Token token){
+        Map<String, Boolean> map = new HashMap<>();
+        String userJson = redisDao.get("reset_" + token.getToken());
+        if (!StringUtils.isEmpty(userJson)){
+            User user = JSONObject.parseObject(userJson, User.class);
+            token.encrypt();
+            user.setPassword(token.getNew_pass());
+            service.updatePassword(user);
+            redisDao.del("reset_" + token.getToken());
+            map.put("status", true);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+        else {
+            map.put("status", false);
+            return new ModelAndView(new MappingJackson2JsonView(), map);
+        }
+    }
+
+    @RequestMapping(value = "/api/password/mail", method = {RequestMethod.POST})
+    @ResponseBody
+    @CrossOrigin
+    public ModelAndView emailReset(@RequestBody Token token){
+        Map<String, Boolean> map = new HashMap<>();
+        User user = service.getUserByEmail(token.getEmail());
+        if (user != null){
+            EncryptController ec = new EncryptController();
+            MailService mailService = (MailService) ac.getBean("mailService");
+            String encrypted = ec.encrypt(Long.toString(System.currentTimeMillis()));
+            redisDao.set("reset_" + encrypted, JSONObject.toJSONString(user));
+            redisDao.expire("reset_" + encrypted, 1800);
+            mailService.send(token.getEmail(), encrypted);
             map.put("status", true);
             return new ModelAndView(new MappingJackson2JsonView(), map);
         }

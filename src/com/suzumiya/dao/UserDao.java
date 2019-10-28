@@ -33,6 +33,10 @@ public class UserDao extends SqlSessionDaoSupport implements Dao<User> {
         return getSqlSession().selectOne("com.suzumiya.mapper.UserMapper.checkUserDuplicate", user);
     }
 
+    public User selectByMail(@Param("email") String email) {
+        return getSqlSession().selectOne("com.suzumiya.mapper.UserMapper.selectByMail", email);
+    }
+
     public void updateSchoolRole(@Param("id") int id){
         getSqlSession().update("com.suzumiya.mapper.UserMapper.updateSchoolRole", id);
     }

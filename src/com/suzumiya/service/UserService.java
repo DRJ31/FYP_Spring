@@ -21,10 +21,8 @@ public class UserService {
     private List<User> user_S;
     private RedisDao redisDao;
 
-    public UserService() {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
-        this.userDao = (UserDao) ac.getBean("userDao");
-        this.redisDao = (RedisDao) ac.getBean("redisDao");
+    public void setRedisDao(RedisDao redisDao) {
+        this.redisDao = redisDao;
     }
 
     public List<User> getUser_S() {
@@ -72,6 +70,11 @@ public class UserService {
             User realUser = JSONObject.parseObject(userJson, User.class);
             this.user = realUser.getPassword().equals(user.getPassword()) ? realUser : null;
         }
+    }
+
+    public User getUserByEmail(String email) {
+        this.user = userDao.selectByMail(email);
+        return this.user;
     }
 
     public Map<String, List<User>> getUsersMap() {

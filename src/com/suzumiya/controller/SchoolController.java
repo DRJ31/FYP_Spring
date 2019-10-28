@@ -163,7 +163,6 @@ public class SchoolController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView selectAllAuditSchoolTeacher(@RequestBody Token token) {
-        SchoolService service = new SchoolService();
         User user = getUser(token.getToken());
         Map<String, List<AuditTeacher>> map = service.getAuditSchoolTeachersMap(user.getSchool_id());
         return new ModelAndView(new MappingJackson2JsonView(), map);

@@ -67,7 +67,6 @@ public class SyllabusController {
     @ResponseBody
     @CrossOrigin
     public ModelAndView getAllSyllabuses(@RequestBody Token token) {
-        SyllabusService service = new SyllabusService();
         User user = getUser(token.getToken());
         Map<String, List<Syllabus>> map = new HashMap<>();
         int role = user.getRole().getId();

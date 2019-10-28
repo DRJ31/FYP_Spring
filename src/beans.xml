@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- Configuration for properties -->
     <bean id="configPropertyConfigurer"
@@ -37,21 +32,13 @@
           class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
         <property name="prefix" value="com/suzumiya/templates/"/>
         <property name="suffix" value=".html"/>
-        <!-- HTML is the default value, added here for the sake of clarity. -->
         <property name="templateMode" value="HTML"/>
-        <!-- Template cache is true by default. Set to false if you want -->
-        <!-- templates to be automatically updated when modified. -->
         <property name="cacheable" value="true"/>
     </bean>
 
     <bean id="templateEngine"
           class="org.thymeleaf.spring5.SpringTemplateEngine">
         <property name="templateResolver" ref="templateResolver"/>
-        <!-- Enabling the SpringEL compiler with Spring 4.2.4 or newer can speed up -->
-        <!-- execution in most scenarios, but might be incompatible with specific -->
-        <!-- cases when expressions in one template are reused across different data -->
-        <!-- ypes, so this flag is "false" by default for safer backwards -->
-        <!-- compatibility. -->
         <property name="enableSpringELCompiler" value="true"/>
     </bean>
 
@@ -76,13 +63,9 @@
 
     <!-- Configuration for redis -->
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-        <!-- 最大连接数 -->
         <property name="maxTotal" value="50" />
-        <!-- 最大空闲连接数 -->
         <property name="maxIdle" value="50" />
-        <!-- 释放连接的扫描间隔（毫秒） -->
         <property name="timeBetweenEvictionRunsMillis" value="30000" />
-        <!-- 连接最小空闲时间 -->
         <property name="minEvictableIdleTimeMillis" value="60000" />
     </bean>
 
@@ -132,5 +115,4 @@
     <bean class="com.suzumiya.service.AssessmentService" id="assessmentService">
         <property name="assessmentDao" ref="assessmentDao" />
     </bean>
-
 </beans>

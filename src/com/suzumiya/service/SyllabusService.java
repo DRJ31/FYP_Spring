@@ -1,17 +1,12 @@
 package com.suzumiya.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.suzumiya.dao.RedisDao;
 import com.suzumiya.dao.SyllabusDao;
 import com.suzumiya.model.*;
 import com.suzumiya.model.relationship.PiloCilo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -12,11 +12,11 @@ public class EncryptController {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(s.getBytes());
-            byte b[] = md.digest();
+            byte[] b = md.digest();
             int i;
-            StringBuffer buf = new StringBuffer("");
-            for (int offset = 0; offset < b.length; offset++) {
-                i = b[offset];
+            StringBuilder buf = new StringBuilder();
+            for (byte value : b) {
+                i = value;
                 if (i < 0)
                     i += 256;
                 if (i < 16)

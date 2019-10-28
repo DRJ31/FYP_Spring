@@ -9,7 +9,6 @@ import com.suzumiya.model.list.PiloList;
 import com.suzumiya.model.list.TlaList;
 import com.suzumiya.model.relationship.PiloCilo;
 import com.suzumiya.model.relationship.list.PiloCiloList;
-import com.suzumiya.model.user.School;
 import com.suzumiya.model.user.Token;
 import com.suzumiya.model.user.User;
 import com.suzumiya.service.SchoolService;

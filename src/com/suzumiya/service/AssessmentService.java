@@ -3,9 +3,6 @@ package com.suzumiya.service;
 import com.suzumiya.dao.AssessmentDao;
 import com.suzumiya.model.Assessment;
 import com.suzumiya.model.relationship.AssessmentCilo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.HashMap;
 import java.util.List;

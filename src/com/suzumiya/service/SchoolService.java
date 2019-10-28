@@ -7,9 +7,6 @@ import com.suzumiya.model.audit.AuditSchool;
 import com.suzumiya.model.audit.AuditTeacher;
 import com.suzumiya.model.Favorite;
 import com.suzumiya.model.user.School;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;

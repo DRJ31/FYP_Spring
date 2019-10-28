@@ -5,9 +5,6 @@ import com.suzumiya.dao.RedisDao;
 import com.suzumiya.dao.UserDao;
 import com.suzumiya.model.user.Avatar;
 import com.suzumiya.model.user.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;

@@ -5,6 +5,8 @@ import com.suzumiya.model.list.AssessmentList;
 import com.suzumiya.model.relationship.AssessmentCilo;
 import com.suzumiya.model.relationship.list.AssessmentCiloList;
 import com.suzumiya.service.AssessmentService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +19,8 @@ import java.util.Map;
 
 @Controller
 public class AssessmentController {
-    private AssessmentService service = new AssessmentService();
+    private ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
+    private AssessmentService service = (AssessmentService) ac.getBean("assessmentService");
 
     @RequestMapping(value = "/api/assessments", method = {RequestMethod.GET})
     @ResponseBody

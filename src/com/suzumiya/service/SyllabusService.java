@@ -6,6 +6,7 @@ import com.suzumiya.dao.RedisDao;
 import com.suzumiya.dao.SyllabusDao;
 import com.suzumiya.model.*;
 import com.suzumiya.model.relationship.PiloCilo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
@@ -25,10 +26,8 @@ public class SyllabusService {
     private List<Cilo> cilos;
     private RedisDao redisDao;
 
-    public SyllabusService() {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
-        this.syllabusDao = (SyllabusDao) ac.getBean("syllabusDao");
-        this.redisDao = (RedisDao) ac.getBean("redisDao");
+    public void setRedisDao(RedisDao redisDao) {
+        this.redisDao = redisDao;
     }
 
     public List<Syllabus> getSyllabuses_T() {

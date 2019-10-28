@@ -8,13 +8,65 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
-    <!-- Configuration for mybatis -->
+    <!-- Configuration for properties -->
+    <bean id="configPropertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:application.properties"/>
+    </bean>
 
+    <bean id="config" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:application.properties" />
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="${spring.mail.host}" />
+        <property name="port" value="${spring.mail.port}" />
+        <property name="username" value="${spring.mail.username}" />
+        <property name="password" value="${spring.mail.password}" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.timeout">25000</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.starttls.required">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="templateResolver"
+          class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="com/suzumiya/templates/"/>
+        <property name="suffix" value=".html"/>
+        <!-- HTML is the default value, added here for the sake of clarity. -->
+        <property name="templateMode" value="HTML"/>
+        <!-- Template cache is true by default. Set to false if you want -->
+        <!-- templates to be automatically updated when modified. -->
+        <property name="cacheable" value="true"/>
+    </bean>
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+        <!-- Enabling the SpringEL compiler with Spring 4.2.4 or newer can speed up -->
+        <!-- execution in most scenarios, but might be incompatible with specific -->
+        <!-- cases when expressions in one template are reused across different data -->
+        <!-- ypes, so this flag is "false" by default for safer backwards -->
+        <!-- compatibility. -->
+        <property name="enableSpringELCompiler" value="true"/>
+    </bean>
+
+    <bean class="com.suzumiya.service.MailService" id="mailService">
+        <property name="mailSender" ref="mailSender" />
+        <property name="from" value="${spring.mail.username}" />
+        <property name="templateEngine" ref="templateEngine" />
+    </bean>
+
+    <!-- Configuration for mybatis -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://118.89.41.245:3306/spring" />
-        <property name="username" value="demonist" />
-        <property name="password" value="19980423" />
+        <property name="url" value="jdbc:mysql://${MySQLHost}:3306/spring" />
+        <property name="username" value="${MySQLUser}" />
+        <property name="password" value="${MySQLPass}" />
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -45,7 +97,6 @@
     </bean>
 
     <!-- Settings for different Dao -->
-
     <bean id="userDao" class="com.suzumiya.dao.UserDao">
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
@@ -61,4 +112,25 @@
     <bean id="assessmentDao" class="com.suzumiya.dao.AssessmentDao">
         <property name="sqlSessionFactory" ref="sqlSessionFactory" />
     </bean>
+
+    <!-- Service Beans -->
+    <bean class="com.suzumiya.service.UserService" id="userService">
+        <property name="redisDao" ref="redisDao" />
+        <property name="userDao" ref="userDao" />
+    </bean>
+    <bean class="com.suzumiya.service.TextBookService" id="textBookService">
+        <property name="textBookDao" ref="textBookDao" />
+    </bean>
+    <bean class="com.suzumiya.service.SyllabusService" id="syllabusService">
+        <property name="redisDao" ref="redisDao" />
+        <property name="syllabusDao" ref="syllabusDao" />
+    </bean>
+    <bean class="com.suzumiya.service.SchoolService" id="schoolService">
+        <property name="redisDao" ref="redisDao" />
+        <property name="schoolDao" ref="schoolDao" />
+    </bean>
+    <bean class="com.suzumiya.service.AssessmentService" id="assessmentService">
+        <property name="assessmentDao" ref="assessmentDao" />
+    </bean>
+
 </beans>

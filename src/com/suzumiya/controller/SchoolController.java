@@ -22,10 +22,10 @@ import java.util.Map;
 
 @Controller
 public class SchoolController {
-    private SchoolService service = new SchoolService();
-    private UserService userService = new UserService();
     private ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
     private RedisDao redisDao = (RedisDao) ac.getBean("redisDao");
+    private SchoolService service = (SchoolService) ac.getBean("schoolService");
+    private UserService userService = (UserService) ac.getBean("userService");
 
     private User getUser(String token) {
         redisDao.expire("token_" + token, 1800);

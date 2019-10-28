@@ -7,6 +7,7 @@ import com.suzumiya.model.audit.AuditSchool;
 import com.suzumiya.model.audit.AuditTeacher;
 import com.suzumiya.model.Favorite;
 import com.suzumiya.model.user.School;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
@@ -26,10 +27,8 @@ public class SchoolService {
     private List<AuditTeacher> auditTeacher_S;
     private RedisDao redisDao;
 
-    public SchoolService() {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
-        this.schoolDao = (SchoolDao) ac.getBean("schoolDao");
-        this.redisDao = (RedisDao) ac.getBean("redisDao");
+    public void setRedisDao(RedisDao redisDao) {
+        this.redisDao = redisDao;
     }
 
     public void setAuditTeacher_S(int id){

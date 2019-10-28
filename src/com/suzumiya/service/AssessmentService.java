@@ -3,6 +3,7 @@ package com.suzumiya.service;
 import com.suzumiya.dao.AssessmentDao;
 import com.suzumiya.model.Assessment;
 import com.suzumiya.model.relationship.AssessmentCilo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,11 +17,6 @@ public class AssessmentService {
     private Assessment assessment;
     private List<AssessmentCilo> assessment_Cilos;
     private AssessmentCilo assessment_cilo;
-
-    public AssessmentService() {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
-        this.assessmentDao = (AssessmentDao) ac.getBean("assessmentDao");
-    }
 
     public void setAssessment_Cilos() {
         this.assessment_Cilos = assessmentDao.selectAC();

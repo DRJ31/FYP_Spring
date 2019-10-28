@@ -28,10 +28,10 @@ import java.util.Map;
 
 @Controller
 public class SyllabusController {
-    private SyllabusService service = new SyllabusService();
-    private SchoolService schoolService = new SchoolService();
     private ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
     private RedisDao redisDao = (RedisDao) ac.getBean("redisDao");
+    private SyllabusService service = (SyllabusService) ac.getBean("syllabusService");
+    private SchoolService schoolService = (SchoolService) ac.getBean("schoolService");
 
     private User getUser(String token) {
         redisDao.expire("token_" + token, 1800);

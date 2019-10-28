@@ -25,6 +25,7 @@ hs_err_pid*
 # Files
 .DS_Store
 *.iml
+*.properties
 
 # Folders
 .idea/

@@ -3,6 +3,8 @@ package com.suzumiya.controller;
 import com.suzumiya.model.TextBook;
 import com.suzumiya.model.list.TextBookList;
 import com.suzumiya.service.TextBookService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,7 +16,8 @@ import java.util.Map;
 
 @Controller
 public class TextBookController {
-    private TextBookService service = new TextBookService();
+    private ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
+    private TextBookService service = (TextBookService) ac.getBean("textBookService");
 
     @RequestMapping(value = "/api/textBooks", method = {RequestMethod.GET})
     @ResponseBody

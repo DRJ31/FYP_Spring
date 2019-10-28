@@ -2,6 +2,7 @@ package com.suzumiya.service;
 
 import com.suzumiya.dao.TextBookDao;
 import com.suzumiya.model.TextBook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -14,10 +15,6 @@ public class TextBookService {
     private TextBookDao textBookDao;
     private TextBook textBook;
 
-    public TextBookService() {
-        ApplicationContext ac = new ClassPathXmlApplicationContext("beans.xml");
-        this.textBookDao = (TextBookDao) ac.getBean("textBookDao");
-    }
 
     public List<TextBook> getTextBooks() {
         return textBooks;

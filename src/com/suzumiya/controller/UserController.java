@@ -223,7 +223,7 @@ public class UserController {
     public String getAvatar(@RequestBody Token token){
         User user = getUser(token.getToken());
         Avatar avatar = service.selectAvatar(user.getId());
-        return avatar.getFilename();
+        return avatar == null ? "" : avatar.getFilename();
     }
 
     @RequestMapping(value = "/api/user/avatar/upload", method = {RequestMethod.POST})
